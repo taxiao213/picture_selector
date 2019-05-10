@@ -3,4 +3,54 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="top_title_bg">#0BB658</color>
+
+    <color name="grey_00">#00000000</color>
+    <color name="grey_33">#333333</color>
+    <color name="grey_3e">#3e3e3e</color>
+    <color name="grey_d3">#d3d3d3</color>
+    <color name="grey_dc">#dcdcdc</color>
+    <color name="grey_ab">#ababab</color>
+    <color name="grey_64">#646464</color>
+    <color name="grey_ef">#efefef</color>
+    <color name="grey_f4">#f4f4f4</color>
+    <color name="grey_f7">#f7f7f7</color>
+    <color name="grey_e8">#e8e8e8</color>
+    <color name="grey_ee">#eeeeee</color>
+    <color name="grey_e2">#e2e2e2</color>
+    <color name="grey_db">#dbdbdb</color>
+    <color name="grey_66">#666666</color>
+    <color name="grey_dg">#f8f8f8</color>
+    <color name="grey_d1">#d1d1d1</color>
+    <color name="grey_df">#666666</color>
+    <color name="grey_eb">#ebebeb</color>
+    <color name="grey_99">#999999</color>
+    <color name="grey_cc">#cccccc</color>
+    <color name="grey_97">#97dd9d</color>
+    <color name="grey_96">#e96968</color>
+    <color name="grey_78">#ff7866</color>
+
+    <color name="white_trans_95">#0cffffff</color>
+    <color name="white_trans_90">#19ffffff</color>
+    <color name="whter_trans_85">#21ffffff</color>
+    <color name="white_trans_80">#33ffffff</color>
+    <color name="white_trans_75">#3fffffff</color>
+    <color name="white_trans_70">#4cffffff</color>
+    <color name="white_trans_65">#59ffffff</color>
+    <color name="white_trans_60">#66ffffff</color>
+    <color name="white_trans_55">#72ffffff</color>
+    <color name="white_trans_50">#7fffffff</color>
+    <color name="white_trans_45">#8cffffff</color>
+    <color name="white_trans_40">#99ffffff</color>
+    <color name="white_trans_35">#a5ffffff</color>
+    <color name="white_trans_30">#b2ffffff</color>
+    <color name="white_trans_25">#bfffffff</color>
+    <color name="white_trans_20">#ccffffff</color>
+    <color name="white_trans_15">#d8ffffff</color>
+    <color name="white_trans_10">#e5ffffff</color>
+    <color name="white_trans_5">#f2ffffff</color>
+    <color name="white_trans">#ffffff</color>
+
+
 </resources>

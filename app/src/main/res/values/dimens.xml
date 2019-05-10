@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--顶部-->
+    <!--顶部栏的高度-->
+    <dimen name="picture_selector_top_height">50dp</dimen>
+    <!--标题文字大小-->
+    <dimen name="picture_selector_top_text_size">14sp</dimen>
+
+    <!--底部-->
+    <!--底部栏的高度-->
+    <dimen name="picture_selector_bottom_height">90dp</dimen>
+    <!--中间原图文字大小-->
+    <dimen name="picture_selector_bottom_text_size">14sp</dimen>
+
+    <!--滑动显示的时间状态-->
+    <!--滑动显示的高度-->
+    <dimen name="picture_selector_slide_height">40dp</dimen>
+    <!--滑动显示的文字大小-->
+    <dimen name="picture_selector_slide_text_size">12sp</dimen>
+
+</resources>
