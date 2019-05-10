@@ -1,4 +1,4 @@
-package com.selector.picture.picture_selection.base;
+package com.selector.picture.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;

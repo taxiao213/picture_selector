@@ -1,11 +1,11 @@
-package com.selector.picture.picture_selection.base;
+package com.selector.picture.base;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.selector.picture.picture_selection.R;
+import com.selector.picture.R;
 
 /**
  * Create by Han on 2019/5/10
@@ -32,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView();
         initData();
         dialog = new ProgressDialog(mActivity);
+        setTheme(R.style.pictrue_white_Theme);
     }
 
     /**

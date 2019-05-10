@@ -1,7 +1,7 @@
-package com.selector.picture.picture_selection.fragment;
+package com.selector.picture.fragment;
 
-import com.selector.picture.picture_selection.R;
-import com.selector.picture.picture_selection.base.BaseFragment;
+import com.selector.picture.R;
+import com.selector.picture.base.BaseFragment;
 
 /**
  * 图片选择的fragment
