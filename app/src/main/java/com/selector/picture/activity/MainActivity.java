@@ -17,7 +17,7 @@ public class MainActivity extends BaseActivity {
         if (manager != null) {
             FragmentTransaction transaction = manager.beginTransaction();
             pictureSelectorFragment = new PictureSelectorFragment();
-            transaction.replace(R.id.fl, pictureSelectorFragment);
+            transaction.replace(R.id.fl, pictureSelectorFragment).commit();
         }
     }
 

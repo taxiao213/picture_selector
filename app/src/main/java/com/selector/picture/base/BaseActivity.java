@@ -26,13 +26,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.pictrue_white_Theme);
         super.onCreate(savedInstanceState);
         mActivity = BaseActivity.this;
         setContentView(R.layout.activity_base);
         initView();
         initData();
         dialog = new ProgressDialog(mActivity);
-        setTheme(R.style.pictrue_white_Theme);
     }
 
     /**
