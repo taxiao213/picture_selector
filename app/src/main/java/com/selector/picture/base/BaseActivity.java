@@ -2,6 +2,7 @@ package com.selector.picture.base;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,7 +17,7 @@ import com.selector.picture.R;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
-    protected abstract void initView();//初始化view
+    protected abstract void initView(Bundle savedInstanceState);//初始化view
 
     protected abstract void initData();//初始化数据
 
@@ -26,11 +27,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(R.style.pictrue_white_Theme);
         super.onCreate(savedInstanceState);
+        setTheme(R.style.pictrue_white_Theme);
         mActivity = BaseActivity.this;
         setContentView(R.layout.activity_base);
-        initView();
+        initView(savedInstanceState);
         initData();
         dialog = new ProgressDialog(mActivity);
     }
