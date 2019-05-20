@@ -17,6 +17,8 @@ import com.selector.picture.R;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
+    protected abstract void setThem();//设置主题
+
     protected abstract void initView(Bundle savedInstanceState);//初始化view
 
     protected abstract void initData();//初始化数据
@@ -28,7 +30,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.pictrue_white_Theme);
+//        setTheme(R.style.pictrue_white_Theme);
+        setThem();
         mActivity = BaseActivity.this;
         setContentView(R.layout.activity_base);
         initView(savedInstanceState);

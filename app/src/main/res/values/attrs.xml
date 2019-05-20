@@ -4,12 +4,13 @@
     <attr name="picture_selector_top_bg" format="reference|color" />                     <!--顶部栏的背景色-->
     <attr name="picture_selector_top_height" format="dimension" />                       <!--顶部栏的高度-->
     <attr name="picture_selector_top_back_icon" format="reference" />                    <!--后退按钮图标-->
-    <attr name="picture_selector_top_title_size" format="dimension" />                   <!--标题文字大小-->
-    <attr name="picture_selector_top_title_color" format="reference|color" />            <!--标题文字颜色-->
+    <attr name="picture_selector_top_left_text_size" format="dimension" />               <!--左侧标题文字大小-->
+    <attr name="picture_selector_top_left_text_color" format="reference|color" />        <!--左侧标题文字颜色-->
+    <attr name="picture_selector_top_left_text_content" format="string" />               <!--左侧标题文字默认内容-->
+    <attr name="picture_selector_top_send_text_bg" format="reference|color" />           <!--发送文字的背景色-->
     <attr name="picture_selector_top_send_text_size" format="dimension" />               <!--发送文字大小-->
     <attr name="picture_selector_top_send_text_color" format="reference|color" />        <!--发送文字颜色-->
-    <attr name="picture_selector_top_send_text_bg" format="reference|color" />           <!--发送文字的背景色-->
-
+    <attr name="picture_selector_top_send_text_content" format="string" />               <!--发送文字默认内容-->
     <!--底部-->
     <attr name="picture_selector_bottom_bg" format="reference|color" />                  <!--底部栏的背景色-->
     <attr name="picture_selector_bottom_height" format="dimension" />                    <!--底部栏的高度-->
@@ -28,7 +29,7 @@
     <attr name="picture_selector_slide_text_size" format="dimension" />                  <!--滑动显示的文字大小-->
     <attr name="picture_selector_slide_text_color" format="reference|color" />           <!--滑动显示的文字颜色-->
 
-    <!--recyclerview图片选择-->
-
+    <!--recyclerview-->
+    <attr name="picture_selector_ry_bg" format="reference|color" />                      <!--recyclerview背景色-->
 
 </resources>

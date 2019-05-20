@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.selector.picture.R;
 import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.constant.Constant;
 
@@ -21,21 +22,16 @@ import java.lang.ref.WeakReference;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PicSelector implements Parcelable {
+public class PicSelector {
 
     private WeakReference<Activity> mActivity;
     private WeakReference<Fragment> mFragment;
-    private int mTheme;//相册选择主题
-    private int mMinSelectNum;//设置图片可选择最小数量 默认最小1个
-    private int mMaxSelectNum;//设置图片可选择最大数量 默认最大9个
-    private int mGridSize;//设置图片网格数量 默认3列
+
     private int mRequestCode;//设置返回的请求code
+    private PicConfig mConfig;
 
     private PicSelector(Activity activity, Fragment fragment) {
-        this.mTheme = Constant.PIC_DEFAULT_THEME;
-        this.mMinSelectNum = Constant.PIC_MIN_SELECT_NUM;
-        this.mMaxSelectNum = Constant.PIC_MAX_SELECT_NUM;
-        this.mGridSize = Constant.PIC_GRID_SIZE_NUM;
+        mConfig = PicConfig.getInstances();
         mActivity = new WeakReference(activity);
         mFragment = new WeakReference(fragment);
     }
@@ -46,14 +42,6 @@ public class PicSelector implements Parcelable {
 
     private PicSelector(Activity activity) {
         this(activity, null);
-    }
-
-    private PicSelector(Parcel in) {
-        mTheme = in.readInt();
-        mMinSelectNum = in.readInt();
-        mMaxSelectNum = in.readInt();
-        mGridSize = in.readInt();
-        mRequestCode = in.readInt();
     }
 
 
@@ -84,7 +72,7 @@ public class PicSelector implements Parcelable {
      * @return PicSelector
      */
     public PicSelector theme(int theme) {
-        this.mTheme = theme;
+        mConfig.theme(theme);
         return this;
     }
 
@@ -92,7 +80,7 @@ public class PicSelector implements Parcelable {
      * 获取主题
      */
     public int getTheme() {
-        return mTheme;
+        return mConfig.getTheme();
     }
 
     /**
@@ -102,7 +90,7 @@ public class PicSelector implements Parcelable {
      * @return PicSelector
      */
     public PicSelector minSelectNum(int num) {
-        this.mMinSelectNum = num;
+        mConfig.minSelectNum(num);
         return this;
     }
 
@@ -110,7 +98,7 @@ public class PicSelector implements Parcelable {
      * 获取图片可选择最小数量，默认最小1个 最大9个
      */
     public int getMinSelectNum() {
-        return mMinSelectNum;
+        return mConfig.getMinSelectNum();
     }
 
     /**
@@ -120,7 +108,7 @@ public class PicSelector implements Parcelable {
      * @return PicSelector
      */
     public PicSelector maxSelectNum(int num) {
-        this.mMaxSelectNum = num;
+        mConfig.maxSelectNum(num);
         return this;
     }
 
@@ -128,7 +116,7 @@ public class PicSelector implements Parcelable {
      * 获取图片可选择最大数量，默认最小1个 最大9个
      */
     public int getMaxSelectNum() {
-        return mMaxSelectNum;
+        return mConfig.getMaxSelectNum();
     }
 
     /**
@@ -138,15 +126,28 @@ public class PicSelector implements Parcelable {
      * @return PicSelector
      */
     public PicSelector gridSize(int num) {
-        this.mGridSize = num;
+        mConfig.gridSize(num);
         return this;
     }
 
     /**
      * 获取图片网格数量 默认3列
+     *
+     * @return int
      */
     public int getGridSize() {
-        return mGridSize;
+        return mConfig.getGridSize();
+    }
+
+    /**
+     * 选择的模式
+     *
+     * @param mimeType int{@link MimeType#TYPE_ALL,MimeType#TYPE_IMAGE,MimeType#TYPE_AUDIO,MimeType#TYPE_VIDEO}
+     * @return PicSelector
+     */
+    public PicSelector choose(int mimeType) {
+        mConfig.MIME_TYPE = mimeType;
+        return this;
     }
 
     /**
@@ -165,6 +166,7 @@ public class PicSelector implements Parcelable {
         } else {
             activity.startActivityForResult(intent, mRequestCode);
         }
+        activity.overridePendingTransition(R.anim.activity_enter, 0);
     }
 
     /**
@@ -184,11 +186,7 @@ public class PicSelector implements Parcelable {
      */
     @NonNull
     private Intent getIntent(Activity activity) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constant.PIC_INTENT_BUNDLE_KEY, PicSelector.this);
-        Intent intent = new Intent(activity, PhotoSelectActivity.class);
-        intent.putExtra(Constant.PIC_INTENT_ACTIVITY_KEY, bundle);
-        return intent;
+        return new Intent(activity, PhotoSelectActivity.class);
     }
 
     /**
@@ -209,30 +207,5 @@ public class PicSelector implements Parcelable {
         return mFragment == null ? null : mFragment.get();
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mTheme);
-        dest.writeInt(mMinSelectNum);
-        dest.writeInt(mMaxSelectNum);
-        dest.writeInt(mGridSize);
-        dest.writeInt(mRequestCode);
-    }
-
-    public static final Creator<PicSelector> CREATOR = new Creator<PicSelector>() {
-        @Override
-        public PicSelector createFromParcel(Parcel in) {
-            return new PicSelector(in);
-        }
-
-        @Override
-        public PicSelector[] newArray(int size) {
-            return new PicSelector[size];
-        }
-    };
 }
 

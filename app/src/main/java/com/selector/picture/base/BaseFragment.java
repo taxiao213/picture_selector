@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 public abstract class BaseFragment extends Fragment {
 
     private BaseActivity mActivity;
+    private View view;
 
     protected abstract int initView();//初始化view
 
@@ -36,13 +37,18 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(initView(), container, false);
+        view = inflater.inflate(initView(), container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initData();
+    }
+
+    public View getView() {
+        return view;
     }
 
     /**

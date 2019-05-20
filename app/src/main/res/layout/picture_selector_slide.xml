@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_top_lef_text"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_top_slide_lef_text"
     android:layout_width="wrap_content"
     android:layout_height="?attr/picture_selector_slide_height"
     android:layout_alignParentStart="true"
@@ -8,4 +9,5 @@
     android:background="?attr/picture_selector_slide_text_bg"
     android:paddingStart="10dp"
     android:textColor="?attr/picture_selector_slide_text_color"
-    android:textSize="?attr/picture_selector_slide_text_size" />
+    android:textSize="?attr/picture_selector_slide_text_size"
+    tools:ignore="RtlSymmetry" />

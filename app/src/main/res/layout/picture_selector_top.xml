@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_top_root"
     android:layout_width="match_parent"
     android:layout_height="?attr/picture_selector_top_height"
     android:background="?attr/picture_selector_top_bg"
@@ -19,10 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/iv_top_left_back"
-        android:textColor="?attr/picture_selector_bottom_left_text_color"
-        android:textSize="?attr/picture_selector_bottom_left_text_size" />
+        android:text="?attr/picture_selector_top_left_text_content"
+        android:textColor="?attr/picture_selector_top_left_text_color"
+        android:textSize="?attr/picture_selector_top_left_text_size" />
 
     <TextView
         android:id="@+id/tv_top_send_text"
@@ -37,6 +38,7 @@
         android:paddingEnd="7dp"
         android:paddingStart="7dp"
         android:paddingTop="5dp"
+        android:text="?attr/picture_selector_top_send_text_content"
         android:textColor="?attr/picture_selector_top_send_text_color"
         android:textSize="?attr/picture_selector_top_send_text_size" />
 </RelativeLayout>

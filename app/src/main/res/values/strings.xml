@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Picture_Selection</string>
+
+    <string name="picture_selector_top_left_text">图片和视频</string>
+    <string name="picture_selector_top_send_text_default">发送</string>
+    <string name="picture_selector_top_send_text_select">发送(%s1/%s2)</string>
+
+
 </resources>

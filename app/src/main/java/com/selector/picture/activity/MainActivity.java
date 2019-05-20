@@ -7,12 +7,18 @@ import android.view.View;
 
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
+import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicSelector;
 import com.selector.picture.fragment.PictureSelectorFragment;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private PictureSelectorFragment pictureSelectorFragment;
+
+    @Override
+    protected void setThem() {
+
+    }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .minSelectNum(1)
                 .maxSelectNum(9)
                 .gridSize(3)
+                .choose(MimeType.TYPE_ALL)
                 .theme(R.style.pictrue_white_Theme)
                 .setResult(10);
     }

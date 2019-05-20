@@ -16,9 +16,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ry"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="?attr/picture_selector_ry_bg"
+            android:scrollbars="vertical" />
     </FrameLayout>
-
 
     <include layout="@layout/picture_selector_bottom" />
 
