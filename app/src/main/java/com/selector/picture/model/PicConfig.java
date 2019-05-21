@@ -1,10 +1,6 @@
 package com.selector.picture.model;
 
-import android.app.Activity;
-
 import com.selector.picture.constant.Constant;
-
-import java.util.IllegalFormatCodePointException;
 
 /**
  * 相册选择配置
@@ -19,17 +15,16 @@ public class PicConfig {
     private int mMinSelectNum;//设置图片可选择最小数量 默认最小1个
     private int mMaxSelectNum;//设置图片可选择最大数量 默认最大9个
     private int mGridSize;//设置图片网格数量 默认3列
-    public final static int TYPE_ALL = 0;
-    public final static int TYPE_IMAGE = 1;
-    public final static int TYPE_VIDEO = 2;
-    public final static int TYPE_AUDIO = 3;
-    public int MIME_TYPE = TYPE_ALL;
+    private int mimeType;//图片选择的类型
+    private boolean mIsGif;//是否选择动图，默认没有动图
 
     private PicConfig() {
         this.mTheme = Constant.PIC_DEFAULT_THEME;
         this.mMinSelectNum = Constant.PIC_MIN_SELECT_NUM;
         this.mMaxSelectNum = Constant.PIC_MAX_SELECT_NUM;
         this.mGridSize = Constant.PIC_GRID_SIZE_NUM;
+        this.mimeType = Constant.PIC_CHOOSE_MIMETYPE;
+        this.mIsGif = Constant.PIC_CHOOSE_IS_GIF;
     }
 
     public static PicConfig getInstances() {
@@ -41,14 +36,6 @@ public class PicConfig {
             }
         }
         return mPicConfig;
-    }
-
-    public static PicConfig getmPicConfig() {
-        return mPicConfig;
-    }
-
-    public static void setmPicConfig(PicConfig mPicConfig) {
-        PicConfig.mPicConfig = mPicConfig;
     }
 
     /**
@@ -123,47 +110,38 @@ public class PicConfig {
         return mGridSize;
     }
 
+    /**
+     * 设置选区图片的格式
+     *
+     * @param type int
+     */
     public void imageType(int type) {
-        this.MIME_TYPE = type;
+        this.mimeType = type;
     }
 
-    public static int isPictureType(String pictureType) {
-        switch (pictureType) {
-            case "image/png":
-            case "image/PNG":
-            case "image/jpeg":
-            case "image/JPEG":
-            case "image/webp":
-            case "image/WEBP":
-            case "image/gif":
-            case "image/bmp":
-            case "image/GIF":
-            case "imagex-ms-bmp":
-                return PicConfig.TYPE_IMAGE;
-            case "video/3gp":
-            case "video/3gpp":
-            case "video/3gpp2":
-            case "video/avi":
-            case "video/mp4":
-            case "video/quicktime":
-            case "video/x-msvideo":
-            case "video/x-matroska":
-            case "video/mpeg":
-            case "video/webm":
-            case "video/mp2ts":
-                return PicConfig.TYPE_VIDEO;
-            case "audio/mpeg":
-            case "audio/x-ms-wma":
-            case "audio/x-wav":
-            case "audio/amr":
-            case "audio/wav":
-            case "audio/aac":
-            case "audio/mp4":
-            case "audio/quicktime":
-            case "audio/lamr":
-            case "audio/3gpp":
-                return PicConfig.TYPE_AUDIO;
-        }
-        return PicConfig.TYPE_IMAGE;
+    /**
+     * 获取图片格式
+     *
+     * @return int
+     */
+    public int getImageType() {
+        return mimeType;
     }
+
+    /**
+     * 设置动图
+     */
+    public void gif(boolean isGif) {
+        this.mIsGif = isGif;
+    }
+
+    /**
+     * 是否选择动图
+     *
+     * @return int
+     */
+    public boolean isGif() {
+        return mIsGif;
+    }
+
 }

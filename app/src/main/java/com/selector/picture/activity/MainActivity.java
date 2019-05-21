@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         PicSelector.create(MainActivity.this)
                 .minSelectNum(1)
                 .maxSelectNum(9)
-                .gridSize(3)
+                .gridSize(4)
                 .choose(MimeType.TYPE_ALL)
                 .theme(R.style.pictrue_white_Theme)
                 .setResult(10);

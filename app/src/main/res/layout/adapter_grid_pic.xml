@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.selector.picture.view.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_placeholder" />
+
+    <LinearLayout
+        android:id="@+id/ll_check"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:padding="8dp"
+        tools:ignore="RtlHardcoded">
+
+        <TextView
+            android:id="@+id/tv_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/picture_selector_ry_checkbox"
+            android:gravity="center"
+            android:textColor="@color/white_trans"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_gif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/image_gif"
+        android:text="@string/picture_selector_pic_gif_tag"
+        android:textColor="@color/white_trans"
+        android:textSize="11sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_long_chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/image_gif"
+        android:text="@string/picture_selector_pic_long"
+        android:textColor="@color/white_trans"
+        android:textSize="11sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_video_bg"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/bottom_video_icon"
+        android:gravity="center_vertical"
+        android:paddingStart="5dp"
+        android:paddingTop="8dp"
+        android:text="@string/picture_selector_video_duration"
+        android:textColor="@color/white_trans"
+        android:textSize="11sp"
+        android:visibility="gone"
+        tools:ignore="RtlSymmetry" />
+</com.selector.picture.view.SquareRelativeLayout>

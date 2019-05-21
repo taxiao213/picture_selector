@@ -1,15 +1,31 @@
 package com.selector.picture.fragment;
 
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.adapter.GridItemDecoration;
+import com.selector.picture.adapter.GridPicAdapter;
 import com.selector.picture.base.BaseFragment;
+import com.selector.picture.model.LocalMedia;
+import com.selector.picture.model.LocalMediaFolder;
+import com.selector.picture.model.PicConfig;
 import com.selector.picture.model.PicSelector;
+import com.selector.picture.utils.UIUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 图片选择的fragment
@@ -19,6 +35,10 @@ import com.selector.picture.model.PicSelector;
  * Github:https://github.com/yin13753884368
  */
 public class PictureSelectorFragment extends BaseFragment {
+
+    private List<LocalMedia> list;
+    private GridPicAdapter adapter;
+    private FragmentActivity activity;
 
     @Override
     protected int initView() {
@@ -39,6 +59,14 @@ public class PictureSelectorFragment extends BaseFragment {
         TextView tvBottomLeftText = view.findViewById(R.id.tv_bottom_lef_text);//底部左侧标题
         CheckBox tvBottomCenterText = view.findViewById(R.id.ck_bottom_center_text);//底部中间标题
         TextView tvBottomPreviewText = view.findViewById(R.id.tv_bottom_preview_text);//底部右侧预览按钮
+
+        activity = getActivity();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, PicConfig.getInstances().getGridSize(), GridLayoutManager.VERTICAL, false);
+        ry.setLayoutManager(gridLayoutManager);
+        ry.addItemDecoration(new GridItemDecoration());
+        list = new ArrayList<>();
+        adapter = new GridPicAdapter(activity, list);
+        ry.setAdapter(adapter);
     }
 
     /**
@@ -48,5 +76,20 @@ public class PictureSelectorFragment extends BaseFragment {
      */
     public void setConfiguration(PicSelector picSelector) {
 
+    }
+
+    /**
+     * 加载图片数据
+     *
+     * @param localMediaFolders List<LocalMediaFolder>
+     */
+    public void setList(List<LocalMediaFolder> localMediaFolders) {
+        list.clear();
+        if (localMediaFolders != null && localMediaFolders.size() > 0) {
+            list.addAll(localMediaFolders.get(0).getImages());
+        }
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }
