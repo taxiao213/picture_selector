@@ -146,7 +146,18 @@ public class PicSelector {
      * @return PicSelector
      */
     public PicSelector choose(int mimeType) {
-        mConfig.MIME_TYPE = mimeType;
+        mConfig.imageType(mimeType);
+        return this;
+    }
+
+    /**
+     * 设置动图
+     *
+     * @param isGif true 选择的有Gif动图，false没有，默认是没有动图
+     * @return PicSelector
+     */
+    public PicSelector gif(boolean isGif) {
+        mConfig.gif(isGif);
         return this;
     }
 

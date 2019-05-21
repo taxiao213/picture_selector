@@ -1,6 +1,7 @@
 package com.selector.picture.constant;
 
 import com.selector.picture.R;
+import com.selector.picture.model.MimeType;
 
 /**
  * 常量类
@@ -10,11 +11,15 @@ import com.selector.picture.R;
  * Github:https://github.com/yin13753884368
  */
 public class Constant {
+    public static String FRAGMENT_TAG = "fragment_tag";//Fragment tag
+
     public static int PIC_DEFAULT_THEME = R.style.pictrue_white_Theme;//相册选择主题
     public static int PIC_MIN_SELECT_NUM = 1;//设置图片可选择最小数量 默认最小1个
     public static int PIC_MAX_SELECT_NUM = 9;//设置图片可选择最大数量 默认最大9个
     public static int PIC_GRID_SIZE_NUM = 3;//设置图片网格数量 默认3个
+    public static int PIC_CHOOSE_MIMETYPE = MimeType.TYPE_ALL;//设置图片选择格式 默认全部
+    public static boolean PIC_CHOOSE_IS_GIF =false;//设置图片是否选择动图 默认false
+
     public static String PIC_INTENT_BUNDLE_KEY = "pic_intent_bundle_key";//bundle 意图
     public static String PIC_INTENT_ACTIVITY_KEY = "pic_intent_activity_key";//intent 意图
-    public static String FRAGMENT_TAG = "fragment_tag";//Fragment tag
 }

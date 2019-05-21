@@ -31,5 +31,6 @@
 
     <!--recyclerview-->
     <attr name="picture_selector_ry_bg" format="reference|color" />                      <!--recyclerview背景色-->
+    <attr name="picture_selector_ry_checkbox" format="reference" />                      <!--checkbox样式-->
 
 </resources>
