@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/ll_bottom_lef_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/tv_bottom_center_text"
@@ -47,7 +47,7 @@
     <TextView
         android:id="@+id/tv_bottom_preview_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="15dp"

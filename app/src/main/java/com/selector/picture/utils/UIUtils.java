@@ -32,6 +32,7 @@ public class UIUtils {
      * @param dp      int值
      */
     public static int dp2px(Context context, float dp) {
+        if (context == null) return 0;
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
@@ -44,8 +45,29 @@ public class UIUtils {
      * @param px      int值
      */
     public static int px2dp(Context context, int px) {
+        if (context == null) return 0;
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (px / scale + 0.5f);
+    }
+
+    /**
+     * 获取屏幕宽度
+     *
+     * @param context 上下文
+     */
+    public static int getScreenWidth(Context context) {
+        if (context == null) return 0;
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    /**
+     * 获取屏幕高度
+     *
+     * @param context 上下文
+     */
+    public static int getScreenHeight(Context context) {
+        if (context == null) return 0;
+        return context.getResources().getDisplayMetrics().heightPixels;
     }
 
     /**

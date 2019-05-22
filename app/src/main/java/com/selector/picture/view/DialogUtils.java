@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.selector.picture.R;
 import com.selector.picture.model.LocalMediaFolder;
@@ -53,16 +55,15 @@ public class DialogUtils {
                 View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_selector_pic, null, false);
                 window.setContentView(view);
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                RecyclerView ry = view.findViewById(R.id.ry);
-                RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT);
-                //RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) ry.getLayoutParams();
-                params.width = RecyclerView.LayoutParams.MATCH_PARENT;
-                params.height = RecyclerView.LayoutParams.MATCH_PARENT;
-                params.bottomMargin = UIUtils.dp2px(mContext, R.dimen.picture_selector_bottom_height);
-                params.topMargin = UIUtils.dp2px(mContext, R.dimen.picture_selector_top_height + 100);
-                ry.setLayoutParams(params);
                 window.setGravity(Gravity.BOTTOM);
+                WindowManager.LayoutParams windowAttributes = window.getAttributes();
+                windowAttributes.y = (int) mContext.getResources().getDimension(R.dimen.picture_selector_bottom_height);
+                window.setAttributes(windowAttributes);
                 window.setBackgroundDrawable(new ColorDrawable());
+                RecyclerView ry = view.findViewById(R.id.ry);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ry.getLayoutParams();
+                params.height = UIUtils.getScreenHeight(mContext) - (int) mContext.getResources().getDimension(R.dimen.picture_selector_top_height) - UIUtils.dp2px(mContext, 120);
+                ry.setLayoutParams(params);
             }
 
 
