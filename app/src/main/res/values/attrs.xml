@@ -19,7 +19,7 @@
     <attr name="picture_selector_bottom_left_text_subscript" format="reference" />       <!--左侧相册名称文字角标-->
     <attr name="picture_selector_bottom_center_text_size" format="dimension" />          <!--中间原图文字大小-->
     <attr name="picture_selector_bottom_center_text_color" format="reference|color" />   <!--中间原图文字颜色-->
-    <attr name="picture_selector_bottom_center_text_checkbox" format="reference" />      <!--中间原图文字checkbox背景-->
+    <attr name="picture_selector_bottom_center_text_drawable_left" format="reference" /> <!--中间原图文字背景-->
     <attr name="picture_selector_bottom_preview_text_size" format="dimension" />         <!--右侧预览文字大小-->
     <attr name="picture_selector_bottom_preview_text_color" format="reference|color" />  <!--右侧预览文字颜色-->
 

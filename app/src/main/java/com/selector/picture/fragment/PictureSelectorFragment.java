@@ -26,6 +26,7 @@ import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.PicConfig;
 import com.selector.picture.model.PicSelector;
 import com.selector.picture.utils.UIUtils;
+import com.selector.picture.view.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
     private FragmentActivity activity;
     private TextView tvBottomLeftText;
     private TextView tvBottomCenterText;
+    private List<LocalMediaFolder> localMediaFolders;
 
     @Override
     protected int initView() {
@@ -104,9 +106,23 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
      * @param localMediaFolders List<LocalMediaFolder>
      */
     public void setList(List<LocalMediaFolder> localMediaFolders) {
-        list.clear();
+        this.localMediaFolders = localMediaFolders;
         if (localMediaFolders != null && localMediaFolders.size() > 0) {
-            list.addAll(localMediaFolders.get(0).getImages());
+            LocalMediaFolder mediaFolders = localMediaFolders.get(0);
+            refreshPic(mediaFolders);
+            tvBottomLeftText.setText(mediaFolders.getName());
+        }
+    }
+
+    /**
+     * 刷新列表数据
+     *
+     * @param localMediaFolders LocalMediaFolder
+     */
+    private void refreshPic(LocalMediaFolder localMediaFolders) {
+        list.clear();
+        if (localMediaFolders != null) {
+            list.addAll(localMediaFolders.getImages());
         }
         if (adapter != null) {
             adapter.notifyDataSetChanged();
@@ -126,9 +142,9 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
                     //顶部右侧发送按钮
 
                     break;
-                case R.id.rl_bottom_root:
+                case R.id.ll_bottom_lef_text:
                     //弹框选择相册
-
+                    new DialogUtils(activity, localMediaFolders);
                     break;
                 case R.id.tv_bottom_center_text:
                     //是否选择原图

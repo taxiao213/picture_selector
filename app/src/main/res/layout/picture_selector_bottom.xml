@@ -37,7 +37,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:drawablePadding="5dp"
-        android:drawableStart="@drawable/bottom_original_image_selector"
+        android:drawableStart="?attr/picture_selector_bottom_center_text_drawable_left"
         android:gravity="center_vertical"
         android:text="@string/picture_selector_bottom_center_text"
         android:textColor="?attr/picture_selector_bottom_center_text_color"

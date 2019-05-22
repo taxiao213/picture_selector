@@ -8,7 +8,7 @@
     <string name="picture_selector_bottom_preview_default">预览</string>
     <string name="picture_selector_bottom_preview_text">预览(%s1)</string>
 
-    <string name="picture_camera_roll">相机胶卷</string>
+    <string name="picture_camera_roll">@string/picture_selector_top_left_text</string>
     <string name="picture_all_audio">所有音频</string>
     <string name="picture_selector_pic_gif_tag">动图</string>
     <string name="picture_selector_pic_long">长图</string>

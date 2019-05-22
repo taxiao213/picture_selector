@@ -52,8 +52,8 @@
         <item name="picture_selector_bottom_center_text_size">@dimen/picture_selector_bottom_text_size</item>
         <!--中间原图文字颜色-->
         <item name="picture_selector_bottom_center_text_color">@color/white_trans</item>
-        <!--中间原图文字checkbox背景-->
-        <item name="picture_selector_bottom_center_text_checkbox">@drawable/bottom_original_image_selector</item>
+        <!--中间原图文字selector背景-->
+        <item name="picture_selector_bottom_center_text_drawable_left">@drawable/bottom_original_image_selector</item>
         <!--右侧预览文字大小-->
         <item name="picture_selector_bottom_preview_text_size">@dimen/picture_selector_bottom_text_size</item>
         <!--右侧预览文字颜色-->
@@ -71,7 +71,7 @@
 
         <!--recyclerview-->
         <!--背景色-->
-        <item name="picture_selector_ry_bg">@android:color/black</item>
+        <item name="picture_selector_ry_bg">@android:color/white</item>
         <item name="picture_selector_ry_checkbox">@drawable/picture_checkbox_selector</item>
     </style>
 
