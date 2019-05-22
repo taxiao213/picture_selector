@@ -1,5 +1,12 @@
 package com.selector.picture.utils;
 
+import android.content.Context;
+import android.widget.ImageView;
+
+import com.bumptech.glide.request.RequestOptions;
+import com.selector.picture.GlideApp;
+import com.selector.picture.R;
+import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.PicConfig;
 
@@ -9,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * 工具类合集
+ * 图片加载工具类
  * Create by Han on 2019/5/21
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -74,5 +81,34 @@ public class PicUtils {
                 return lsize == rsize ? 0 : (lsize < rsize ? 1 : -1);
             }
         });
+    }
+
+    /**
+     * 加载图片
+     *
+     * @param context   Context
+     * @param imageView ImageView
+     * @param file      文件路径
+     */
+    public void loadImage(Context context, ImageView imageView, String file) {
+
+        PicConfig instances = PicConfig.getInstances();
+        int overrideWidth = instances.getOverrideWidth();//获取压缩宽度
+        int overrideHeight = instances.getOverrideHeight();//获取压缩高度
+        float multiplier = instances.getMultiplier();//Glide压缩资源系数
+        RequestOptions options = new RequestOptions();
+        if (overrideWidth <= 0 || overrideHeight <= 0) {
+            options.sizeMultiplier(multiplier);
+        } else {
+            options.override(overrideWidth, overrideHeight);
+        }
+        GlideApp.with(context)
+                .asBitmap()
+                .load(file)
+                .centerCrop()
+                .apply(options)
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.image_placeholder)
+                .into(imageView);
     }
 }

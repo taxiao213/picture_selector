@@ -79,6 +79,10 @@ public class LocalMedia implements Parcelable {
         return compressed;
     }
 
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
     public String getPictureType() {
         if (TextUtils.isEmpty(pictureType)) {
             pictureType = "image/jpeg";

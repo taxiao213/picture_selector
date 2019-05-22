@@ -8,9 +8,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.selector.picture.R;
 import com.selector.picture.adapter.GridItemDecoration;
 import com.selector.picture.adapter.GridPicAdapter;
 import com.selector.picture.base.BaseFragment;
+import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.PicConfig;
@@ -34,11 +37,13 @@ import java.util.List;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PictureSelectorFragment extends BaseFragment {
+public class PictureSelectorFragment extends BaseFragment implements View.OnClickListener {
 
     private List<LocalMedia> list;
     private GridPicAdapter adapter;
     private FragmentActivity activity;
+    private TextView tvBottomLeftText;
+    private TextView tvBottomCenterText;
 
     @Override
     protected int initView() {
@@ -56,17 +61,32 @@ public class PictureSelectorFragment extends BaseFragment {
         TextView tvTopSlideLeftText = view.findViewById(R.id.tv_top_slide_lef_text);//recyclerview 滑动时显示的提示框
         RecyclerView ry = view.findViewById(R.id.ry);//recyclerview
         RelativeLayout rlBottomRoot = view.findViewById(R.id.rl_bottom_root);//底部根布局
-        TextView tvBottomLeftText = view.findViewById(R.id.tv_bottom_lef_text);//底部左侧标题
-        CheckBox tvBottomCenterText = view.findViewById(R.id.ck_bottom_center_text);//底部中间标题
+        LinearLayout llBottomLeftText = view.findViewById(R.id.ll_bottom_lef_text);//底部底部左侧标题根布局
+        tvBottomLeftText = view.findViewById(R.id.tv_bottom_lef_text);//底部左侧标题
+        tvBottomCenterText = view.findViewById(R.id.tv_bottom_center_text);//底部中间原图标题
         TextView tvBottomPreviewText = view.findViewById(R.id.tv_bottom_preview_text);//底部右侧预览按钮
 
         activity = getActivity();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, PicConfig.getInstances().getGridSize(), GridLayoutManager.VERTICAL, false);
+        ry.setPadding(UIUtils.dp2px(activity, Constant.PIC_GRID_SPACE), 0, 0, 0);
         ry.setLayoutManager(gridLayoutManager);
         ry.addItemDecoration(new GridItemDecoration());
         list = new ArrayList<>();
         adapter = new GridPicAdapter(activity, list);
         ry.setAdapter(adapter);
+        ivTopLeftBack.setOnClickListener(this);
+        tvTopSendText.setOnClickListener(this);
+        llBottomLeftText.setOnClickListener(this);
+        tvBottomCenterText.setOnClickListener(this);
+        tvBottomPreviewText.setOnClickListener(this);
+        initBottomCenterText();
+    }
+
+    /**
+     * 设置原图  默认false
+     */
+    private void initBottomCenterText() {
+        tvBottomCenterText.setSelected(PicConfig.getInstances().isLoadOriginalImage());
     }
 
     /**
@@ -90,6 +110,37 @@ public class PictureSelectorFragment extends BaseFragment {
         }
         if (adapter != null) {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v != null) {
+            switch (v.getId()) {
+                case R.id.iv_top_left_back:
+                    if (activity != null) {
+                        activity.finish();
+                    }
+                    break;
+                case R.id.tv_top_send_text:
+                    //顶部右侧发送按钮
+
+                    break;
+                case R.id.rl_bottom_root:
+                    //弹框选择相册
+
+                    break;
+                case R.id.tv_bottom_center_text:
+                    //是否选择原图
+                    PicConfig.getInstances().setLoadOriginalImage(!PicConfig.getInstances().isLoadOriginalImage());
+                    initBottomCenterText();
+                    break;
+                case R.id.tv_bottom_preview_text:
+                    //底部右侧预览按钮
+
+                    break;
+
+            }
         }
     }
 }

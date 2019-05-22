@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.selector.picture.R;
 import com.selector.picture.model.LocalMedia;
-import com.selector.picture.model.LocalMediaFolder;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ import java.util.List;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class GridPicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
 
     private Context mContext;
     private List<LocalMedia> mList;
@@ -32,15 +31,15 @@ public class GridPicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public GridPicViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_grid_pic, viewGroup, false);
-        return new GridPicViewHolder(view);
+        return new GridPicViewHolder(view, GridPicAdapter.this);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull GridPicViewHolder viewHolder, int position) {
         GridPicViewHolder picViewHolder = (GridPicViewHolder) viewHolder;
-        picViewHolder.bindViewHolder(mContext,mList.get(position));
+        picViewHolder.bindViewHolder(mContext, mList.get(position));
     }
 
     @Override

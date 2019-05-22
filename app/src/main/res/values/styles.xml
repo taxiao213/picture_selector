@@ -39,7 +39,7 @@
 
         <!--底部-->
         <!--底部栏的背景色-->
-        <item name="picture_selector_bottom_bg">@color/white_trans_95</item>
+        <item name="picture_selector_bottom_bg">@color/grey_2f</item>
         <!--底部栏的高度-->
         <item name="picture_selector_bottom_height">@dimen/picture_selector_bottom_height</item>
         <!--左侧相册名称文字大小-->

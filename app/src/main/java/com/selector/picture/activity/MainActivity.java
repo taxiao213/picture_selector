@@ -52,6 +52,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .gridSize(4)
                 .choose(MimeType.TYPE_ALL)
                 .theme(R.style.pictrue_white_Theme)
+//                .glideOverride(100,100)
+//                .sizeMultiplier(0.5F)
                 .setResult(10);
     }
 }

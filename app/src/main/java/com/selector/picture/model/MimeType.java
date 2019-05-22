@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
+ * 获取文件类型
  * Create by Han on 2019/5/20
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -31,6 +32,12 @@ public class MimeType {
         return MimeType.TYPE_AUDIO;
     }
 
+    /**
+     * 返回文件类型
+     *
+     * @param pictureType String
+     * @return int
+     */
     public static int isPictureType(String pictureType) {
         switch (pictureType) {
             case "image/png":
@@ -69,5 +76,20 @@ public class MimeType {
                 return MimeType.TYPE_AUDIO;
         }
         return MimeType.TYPE_IMAGE;
+    }
+
+    /**
+     * 是否是gif
+     *
+     * @param pictureType String
+     * @return boolean
+     */
+    public static boolean isGif(String pictureType) {
+        switch (pictureType) {
+            case "image/gif":
+            case "image/GIF":
+                return true;
+        }
+        return false;
     }
 }

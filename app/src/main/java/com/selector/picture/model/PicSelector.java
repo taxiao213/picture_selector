@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
@@ -158,6 +160,41 @@ public class PicSelector {
      */
     public PicSelector gif(boolean isGif) {
         mConfig.gif(isGif);
+        return this;
+    }
+
+    /**
+     * 设置加载图片的宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+     *
+     * @param width  glide width
+     * @param height glide height
+     * @return PicSelector
+     */
+    public PicSelector glideOverride(@IntRange(from = 100) int width, @IntRange(from = 100) int height) {
+        mConfig.overrideWidth(width, height);
+        return this;
+    }
+
+    /**
+     * Glide压缩资源
+     *
+     * @param sizeMultiplier Applies a multiplier to the {@link com.bumptech.glide.request.target.Target}'s size before
+     *                       loading the resource. Useful for loading thumbnails or trying to avoid loading huge resources
+     * @return PicSelector
+     */
+    public PicSelector sizeMultiplier(@FloatRange(from = 0, to = 1) float sizeMultiplier) {
+        mConfig.sizeMultiplier(sizeMultiplier);
+        return this;
+    }
+
+    /**
+     * 是否加载动画
+     *
+     * @param loadAnimation true 加载动画 false 不加载动画
+     * @return PicSelector
+     */
+    public PicSelector loadAnimation(boolean loadAnimation) {
+        mConfig.loadAnimation(loadAnimation);
         return this;
     }
 

@@ -30,6 +30,7 @@
     <color name="grey_97">#97dd9d</color>
     <color name="grey_96">#e96968</color>
     <color name="grey_78">#ff7866</color>
+    <color name="grey_2f">#2f322e</color>
 
     <color name="white_trans_95">#0cffffff</color>
     <color name="white_trans_90">#19ffffff</color>
@@ -52,5 +53,7 @@
     <color name="white_trans_5">#f2ffffff</color>
     <color name="white_trans">#ffffff</color>
 
+    <color name="image_overlay_true">#80000000</color>
+    <color name="image_overlay_false">#20000000</color>
 
 </resources>

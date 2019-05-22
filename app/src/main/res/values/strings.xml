@@ -4,6 +4,9 @@
     <string name="picture_selector_top_left_text">图片和视频</string>
     <string name="picture_selector_top_send_text_default">发送</string>
     <string name="picture_selector_top_send_text_select">发送(%s1/%s2)</string>
+    <string name="picture_selector_bottom_center_text">原图</string>
+    <string name="picture_selector_bottom_preview_default">预览</string>
+    <string name="picture_selector_bottom_preview_text">预览(%s1)</string>
 
     <string name="picture_camera_roll">相机胶卷</string>
     <string name="picture_all_audio">所有音频</string>

@@ -7,11 +7,12 @@
     android:background="?attr/picture_selector_bottom_bg">
 
     <LinearLayout
+        android:id="@+id/ll_bottom_lef_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@id/ck_bottom_center_text"
+        android:layout_toStartOf="@id/tv_bottom_center_text"
         android:orientation="horizontal">
 
         <TextView
@@ -28,18 +29,17 @@
     </LinearLayout>
 
 
-    <CheckBox
-        android:id="@+id/ck_bottom_center_text"
+    <TextView
+        android:id="@+id/tv_bottom_center_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
-        android:button="@null"
         android:drawablePadding="5dp"
         android:drawableStart="@drawable/bottom_original_image_selector"
         android:gravity="center_vertical"
-        android:paddingStart="5dp"
+        android:text="@string/picture_selector_bottom_center_text"
         android:textColor="?attr/picture_selector_bottom_center_text_color"
         android:textSize="?attr/picture_selector_bottom_center_text_size"
         tools:ignore="RtlSymmetry" />
@@ -52,6 +52,7 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="15dp"
         android:gravity="center"
+        android:text="@string/picture_selector_bottom_preview_default"
         android:textColor="?attr/picture_selector_bottom_preview_text_color"
         android:textSize="?attr/picture_selector_bottom_preview_text_size" />
 </RelativeLayout>
