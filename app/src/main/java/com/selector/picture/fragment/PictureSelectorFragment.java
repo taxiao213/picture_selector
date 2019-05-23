@@ -2,11 +2,14 @@ package com.selector.picture.fragment;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -158,5 +161,22 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
 
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.e("fragment----","onSaveInstanceState");
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.e("fragment----","onRestoreInstanceState");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

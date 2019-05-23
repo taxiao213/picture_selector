@@ -149,36 +149,28 @@ public class UIUtils {
 
     /**
      * 放大动画
-     *
-     * @return ScaleAnimation
      */
     private static void zoom(ImageView iv_img) {
-        if (PicConfig.getInstances().isAnimation()) {
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(
-                    ObjectAnimator.ofFloat(iv_img, "scaleX", 1f, 1.12f),
-                    ObjectAnimator.ofFloat(iv_img, "scaleY", 1f, 1.12f)
-            );
-            set.setDuration(450);
-            set.start();
-        }
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(
+                ObjectAnimator.ofFloat(iv_img, "scaleX", 1f, 1.12f),
+                ObjectAnimator.ofFloat(iv_img, "scaleY", 1f, 1.12f)
+        );
+        set.setDuration(450);
+        set.start();
     }
 
     /**
      * 缩小动画
-     *
-     * @return ScaleAnimation
      */
     private static void disZoom(ImageView iv_img) {
-        if (PicConfig.getInstances().isAnimation()) {
-            AnimatorSet set = new AnimatorSet();
-            set.playTogether(
-                    ObjectAnimator.ofFloat(iv_img, "scaleX", 1.12f, 1f),
-                    ObjectAnimator.ofFloat(iv_img, "scaleY", 1.12f, 1f)
-            );
-            set.setDuration(450);
-            set.start();
-        }
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(
+                ObjectAnimator.ofFloat(iv_img, "scaleX", 1.12f, 1f),
+                ObjectAnimator.ofFloat(iv_img, "scaleY", 1.12f, 1f)
+        );
+        set.setDuration(450);
+        set.start();
     }
 
 }
