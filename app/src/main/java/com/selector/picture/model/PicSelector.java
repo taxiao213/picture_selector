@@ -2,9 +2,6 @@ package com.selector.picture.model;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -12,9 +9,7 @@ import android.support.v4.app.Fragment;
 
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoSelectActivity;
-import com.selector.picture.constant.Constant;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 
 /**
@@ -214,7 +209,7 @@ public class PicSelector {
         } else {
             activity.startActivityForResult(intent, mRequestCode);
         }
-        activity.overridePendingTransition(R.anim.activity_enter, 0);
+        activity.overridePendingTransition(R.anim.anim_activity_enter, 0);
     }
 
     /**

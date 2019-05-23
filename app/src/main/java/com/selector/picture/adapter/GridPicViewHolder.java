@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +27,7 @@ import com.selector.picture.utils.UIUtils;
 public class GridPicViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView iv_picture;
-    private LinearLayout ll_check;
+    private RelativeLayout ll_check;
     private TextView tv_check;
     private TextView tv_gif;
     private TextView tv_long_chart;
@@ -67,7 +68,7 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
         tv_gif.setVisibility(MimeType.isGif(mimeType) ? View.VISIBLE : View.GONE);
         tv_long_chart.setVisibility(UIUtils.isLongImg(model) ? View.VISIBLE : View.GONE);
         boolean checked = model.isChecked();
-        tv_check.setSelected(checked);
+        UIUtils.setSelectStatus(iv_picture, tv_check, checked);
         currentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,8 +78,9 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
         ll_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //点击是否选中
-                UIUtils.setSelectStatus(iv_picture, tv_check, model);
+                boolean selected = !(model.isChecked());//是否选中
+                model.setChecked(selected);
+                UIUtils.setSelectAnimation(iv_picture, selected);
                 adapter.notifyItemChanged(getAdapterPosition());
             }
         });

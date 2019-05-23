@@ -2,13 +2,17 @@ package com.selector.picture.utils;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -101,40 +105,80 @@ public class UIUtils {
 
     /**
      * 设置选中文件的状态
+     * <p>
+     * LocalMedia
+     * 1.PorterDuff.Mode.CLEAR 所绘制不会提交到画布上。
+     * 2.PorterDuff.Mode.SRC 显示上层绘制图片
+     * 3.PorterDuff.Mode.DST  显示下层绘制图片
+     * 4.PorterDuff.Mode.SRC_OVER 正常绘制显示，上下层绘制叠盖。
+     * 5.PorterDuff.Mode.DST_OVER 上下层都显示。下层居上显示。
+     * 6.PorterDuff.Mode.SRC_IN 取两层绘制交集。显示上层。
+     * 7.PorterDuff.Mode.DST_IN 取两层绘制交集。显示下层。
+     * 8.PorterDuff.Mode.SRC_OUT 取上层绘制非交集部分。
+     * 9.PorterDuff.Mode.DST_OUT 取下层绘制非交集部分。
+     * 10.PorterDuff.Mode.SRC_ATOP 取下层非交集部分与上层交集部分
+     * 11.PorterDuff.Mode.DST_ATOP 取上层非交集部分与下层交集部分
+     * 12.PorterDuff.Mode.XOR 取两层绘制非交集。两层绘制非交集。
+     * 13.PorterDuff.Mode.DARKEN 上下层都显示。变暗
+     * 14.PorterDuff.Mode.LIGHTEN 上下层都显示。变量
+     * 15.PorterDuff.Mode.MULTIPLY 取两层绘制交集
+     * 16.PorterDuff.Mode.SCREEN 上下层都显示。
      *
-     * @param view      TextView 选中效果
-     * @param imageView ImageView
-     * @param model     LocalMedia
-     *                  1.PorterDuff.Mode.CLEAR 所绘制不会提交到画布上。
-     *                  2.PorterDuff.Mode.SRC 显示上层绘制图片
-     *                  3.PorterDuff.Mode.DST  显示下层绘制图片
-     *                  4.PorterDuff.Mode.SRC_OVER 正常绘制显示，上下层绘制叠盖。
-     *                  5.PorterDuff.Mode.DST_OVER 上下层都显示。下层居上显示。
-     *                  6.PorterDuff.Mode.SRC_IN 取两层绘制交集。显示上层。
-     *                  7.PorterDuff.Mode.DST_IN 取两层绘制交集。显示下层。
-     *                  8.PorterDuff.Mode.SRC_OUT 取上层绘制非交集部分。
-     *                  9.PorterDuff.Mode.DST_OUT 取下层绘制非交集部分。
-     *                  10.PorterDuff.Mode.SRC_ATOP 取下层非交集部分与上层交集部分
-     *                  11.PorterDuff.Mode.DST_ATOP 取上层非交集部分与下层交集部分
-     *                  12.PorterDuff.Mode.XOR 取两层绘制非交集。两层绘制非交集。
-     *                  13.PorterDuff.Mode.DARKEN 上下层都显示。变暗
-     *                  14.PorterDuff.Mode.LIGHTEN 上下层都显示。变量
-     *                  15.PorterDuff.Mode.MULTIPLY 取两层绘制交集
-     *                  16.PorterDuff.Mode.SCREEN 上下层都显示。
+     * @param imageView 图片
+     * @param tv_check  复选框view
+     * @param selected  true 选中 false 不选择
      */
-    public static void setSelectStatus(ImageView imageView, TextView view, LocalMedia model) {
-        boolean selected = !(model.isChecked());//是否选中
-        model.setChecked(selected);
-        view.setSelected(selected);
+    public static void setSelectStatus(ImageView imageView, TextView tv_check, boolean selected) {
+        tv_check.setSelected(selected);
         if (selected) {
-            if (PicConfig.getInstances().isAnimation()) {
-                Animator animator = AnimatorInflater.loadAnimator(view.getContext(), R.animator.made_in);
-                animator.setTarget(view);
-                animator.start();
-            }
-            imageView.setColorFilter(R.color.image_overlay_true, PorterDuff.Mode.SRC_ATOP);
+            imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), R.color.image_overlay_true), PorterDuff.Mode.SRC_ATOP);
         } else {
-            imageView.setColorFilter(R.color.image_overlay_false, PorterDuff.Mode.SRC_ATOP);
+            imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), R.color.image_overlay_false), PorterDuff.Mode.SRC_ATOP);
         }
     }
+
+    public static void setSelectAnimation(ImageView imageView, boolean selected) {
+        if (PicConfig.getInstances().isAnimation()) {
+            if (selected) {
+                zoom(imageView);
+            } else {
+                disZoom(imageView);
+            }
+        }
+    }
+
+    /**
+     * 放大动画
+     *
+     * @return ScaleAnimation
+     */
+    private static void zoom(ImageView iv_img) {
+        if (PicConfig.getInstances().isAnimation()) {
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(
+                    ObjectAnimator.ofFloat(iv_img, "scaleX", 1f, 1.12f),
+                    ObjectAnimator.ofFloat(iv_img, "scaleY", 1f, 1.12f)
+            );
+            set.setDuration(450);
+            set.start();
+        }
+    }
+
+    /**
+     * 缩小动画
+     *
+     * @return ScaleAnimation
+     */
+    private static void disZoom(ImageView iv_img) {
+        if (PicConfig.getInstances().isAnimation()) {
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(
+                    ObjectAnimator.ofFloat(iv_img, "scaleX", 1.12f, 1f),
+                    ObjectAnimator.ofFloat(iv_img, "scaleY", 1.12f, 1f)
+            );
+            set.setDuration(450);
+            set.start();
+        }
+    }
+
 }

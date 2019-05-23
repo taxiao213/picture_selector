@@ -11,25 +11,25 @@
         android:scaleType="centerCrop"
         android:src="@drawable/image_placeholder" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_check"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:gravity="right"
-        android:orientation="vertical"
-        android:padding="8dp"
-        tools:ignore="RtlHardcoded">
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/tv_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/picture_selector_ry_checkbox"
-            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:drawableStart="?attr/picture_selector_ry_checkbox"
+            android:paddingBottom="10dp"
+            android:paddingStart="10dp"
             android:textColor="@color/white_trans"
-            android:textSize="12sp" />
-    </LinearLayout>
+            android:textSize="12sp"
+            tools:ignore="RtlSymmetry" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_gif"

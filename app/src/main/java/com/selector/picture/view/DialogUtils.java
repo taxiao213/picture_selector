@@ -56,6 +56,7 @@ public class DialogUtils {
                 window.setContentView(view);
                 window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 window.setGravity(Gravity.BOTTOM);
+                window.setWindowAnimations(R.style.BottomDialogAnimation);
                 WindowManager.LayoutParams windowAttributes = window.getAttributes();
                 windowAttributes.y = (int) mContext.getResources().getDimension(R.dimen.picture_selector_bottom_height);
                 window.setAttributes(windowAttributes);
