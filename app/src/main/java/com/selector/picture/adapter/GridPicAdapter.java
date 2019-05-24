@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.selector.picture.R;
+import com.selector.picture.fragment.PictureSelectorFragment;
 import com.selector.picture.model.LocalMedia;
+import com.selector.picture.utils.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
+ * 图片加载Adapter
  * Create by Han on 2019/5/21
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -23,9 +27,13 @@ public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
 
     private Context mContext;
     private List<LocalMedia> mList;
+    private OnItemClickListener<LocalMedia> mOnItemClickListener;
+    private PictureSelectorFragment mFragment;
 
-    public GridPicAdapter(Context context, List<LocalMedia> list) {
+    public GridPicAdapter(Context context, PictureSelectorFragment fragment, OnItemClickListener<LocalMedia> onItemClickListener, List<LocalMedia> list) {
         this.mContext = context;
+        this.mFragment = fragment;
+        this.mOnItemClickListener = onItemClickListener;
         this.mList = list;
     }
 
@@ -33,7 +41,7 @@ public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
     @Override
     public GridPicViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_grid_pic, viewGroup, false);
-        return new GridPicViewHolder(view, GridPicAdapter.this);
+        return new GridPicViewHolder(view, GridPicAdapter.this, mOnItemClickListener);
     }
 
     @Override
@@ -45,5 +53,18 @@ public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    /**
+     * 获取选中的集合
+     *
+     * @return List<LocalMedia>
+     */
+    public List<LocalMedia> getSendMedia() {
+        if (mFragment != null) {
+            return mFragment.getSendMedia();
+        } else {
+            return null;
+        }
     }
 }

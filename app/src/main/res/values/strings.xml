@@ -3,10 +3,12 @@
 
     <string name="picture_selector_top_left_text">图片和视频</string>
     <string name="picture_selector_top_send_text_default">发送</string>
-    <string name="picture_selector_top_send_text_select">发送(%s1/%s2)</string>
+    <string name="picture_selector_top_send_text_select">发送(%1$s/%2$s)</string>
     <string name="picture_selector_bottom_center_text">原图</string>
     <string name="picture_selector_bottom_preview_default">预览</string>
-    <string name="picture_selector_bottom_preview_text">预览(%s1)</string>
+    <string name="picture_selector_bottom_preview_text">预览(%1$s)</string>
+    <string name="picture_selector_notice_count">你最多只能选择%1$s个图片或者视频</string>
+    <string name="picture_selector_dialog_count">%1$s张</string>
 
     <string name="picture_camera_roll">@string/picture_selector_top_left_text</string>
     <string name="picture_all_audio">所有音频</string>

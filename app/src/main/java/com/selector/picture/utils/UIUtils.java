@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.selector.picture.R;
 import com.selector.picture.constant.Constant;
@@ -193,5 +194,14 @@ public class UIUtils {
             scaleAnimation.setFillAfter(true);
             imageView.startAnimation(scaleAnimation);
         }
+    }
+
+    /**
+     * 提示语
+     *
+     * @param context context
+     */
+    public static void toastShow(Context context, String str) {
+        Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,7 +16,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.selector.picture.R;
+import com.selector.picture.adapter.AlbumAdapter;
 import com.selector.picture.model.LocalMediaFolder;
+import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -31,11 +34,13 @@ import java.util.List;
 public class DialogUtils {
     private Context mContext;
     private List<LocalMediaFolder> mList;
+    private OnItemClickListener<LocalMediaFolder> mOnItemClickListener;
     private AlertDialog dialog;
 
-    public DialogUtils(Context context, List<LocalMediaFolder> localMediaFolders) {
+    public DialogUtils(Context context, List<LocalMediaFolder> localMediaFolders, OnItemClickListener<LocalMediaFolder> onItemClickListener) {
         this.mContext = context;
         this.mList = localMediaFolders;
+        this.mOnItemClickListener = onItemClickListener;
         initDialog();
     }
 
@@ -65,9 +70,23 @@ public class DialogUtils {
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ry.getLayoutParams();
                 params.height = UIUtils.getScreenHeight(mContext) - (int) mContext.getResources().getDimension(R.dimen.picture_selector_top_height) - UIUtils.dp2px(mContext, 120);
                 ry.setLayoutParams(params);
+                AlbumAdapter albumAdapter = new AlbumAdapter(mContext, mList, new OnItemClickListener<LocalMediaFolder>() {
+                    @Override
+                    public void onItemClick(LocalMediaFolder localMediaFolder) {
+                        mOnItemClickListener.onItemClick(localMediaFolder);
+                        dissMiss();
+                    }
+                });
+                LinearLayoutManager manager = new LinearLayoutManager(mContext);
+                ry.setLayoutManager(manager);
+                ry.setAdapter(albumAdapter);
             }
+        }
+    }
 
-
+    private void dissMiss() {
+        if (dialog != null) {
+            dialog.dismiss();
         }
     }
 

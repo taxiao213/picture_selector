@@ -23,24 +23,19 @@
         <!--后退按钮图标-->
         <item name="picture_selector_top_back_icon">@drawable/top_back_icon</item>
         <!--左侧标题文字大小-->
-        <item name="picture_selector_top_left_text_size">@dimen/picture_selector_top_text_size
-        </item>
+        <item name="picture_selector_top_left_text_size">@dimen/picture_selector_top_text_size</item>
         <!--左侧标题文字颜色-->
         <item name="picture_selector_top_left_text_color">@color/grey_33</item>
         <!--左侧标题文字默认内容-->
-        <item name="picture_selector_top_left_text_content">@string/picture_selector_top_left_text
-        </item>
+        <item name="picture_selector_top_left_text_content">@string/picture_selector_top_left_text</item>
         <!--发送文字的背景色-->
-        <item name="picture_selector_top_send_text_bg">@drawable/shape_top_text_bg</item>
+        <item name="picture_selector_top_send_text_bg">@drawable/top_send_text_bg_selector</item>
         <!--发送文字大小-->
-        <item name="picture_selector_top_send_text_size">@dimen/picture_selector_top_text_size
-        </item>
+        <item name="picture_selector_top_send_text_size">@dimen/picture_selector_top_text_size</item>
         <!--发送文字颜色-->
-        <item name="picture_selector_top_send_text_color">@color/white_trans</item>
+        <item name="picture_selector_top_send_text_color">@color/top_send_text_color_selector</item>
         <!--发送文字默认内容-->
-        <item name="picture_selector_top_send_text_content">
-            @string/picture_selector_top_send_text_default
-        </item>
+        <item name="picture_selector_top_send_text_content">@string/picture_selector_top_send_text_default</item>
 
         <!--底部-->
         <!--底部栏的背景色-->
@@ -48,29 +43,19 @@
         <!--底部栏的高度-->
         <item name="picture_selector_bottom_height">@dimen/picture_selector_bottom_height</item>
         <!--左侧相册名称文字大小-->
-        <item name="picture_selector_bottom_left_text_size">
-            @dimen/picture_selector_bottom_text_size
-        </item>
+        <item name="picture_selector_bottom_left_text_size">@dimen/picture_selector_bottom_text_size</item>
         <!--左侧相册名称文字颜色-->
         <item name="picture_selector_bottom_left_text_color">@color/white_trans</item>
         <!--左侧相册名称文字角标-->
-        <item name="picture_selector_bottom_left_text_subscript">
-            @drawable/bottom_left_text_subscript
-        </item>
+        <item name="picture_selector_bottom_left_text_subscript">@drawable/bottom_left_text_subscript</item>
         <!--中间原图文字大小-->
-        <item name="picture_selector_bottom_center_text_size">
-            @dimen/picture_selector_bottom_text_size
-        </item>
+        <item name="picture_selector_bottom_center_text_size">@dimen/picture_selector_bottom_text_size</item>
         <!--中间原图文字颜色-->
         <item name="picture_selector_bottom_center_text_color">@color/white_trans</item>
         <!--中间原图文字selector背景-->
-        <item name="picture_selector_bottom_center_text_drawable_left">
-            @drawable/bottom_original_image_selector
-        </item>
+        <item name="picture_selector_bottom_center_text_drawable_left">@drawable/bottom_original_image_selector</item>
         <!--右侧预览文字大小-->
-        <item name="picture_selector_bottom_preview_text_size">
-            @dimen/picture_selector_bottom_text_size
-        </item>
+        <item name="picture_selector_bottom_preview_text_size">@dimen/picture_selector_bottom_text_size</item>
         <!--右侧预览文字颜色-->
         <item name="picture_selector_bottom_preview_text_color">@color/white_trans</item>
 
@@ -87,7 +72,7 @@
         <!--recyclerview-->
         <!--背景色-->
         <item name="picture_selector_ry_bg">@android:color/white</item>
-        <item name="picture_selector_ry_checkbox">@drawable/picture_checkbox_selector</item>
+        <item name="picture_selector_ry_checkbox">@drawable/image_checkbox_selector</item>
     </style>
 
     <!--底部选择相册弹框-->

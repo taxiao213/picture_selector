@@ -14,10 +14,14 @@ import com.selector.picture.R;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.MimeType;
+import com.selector.picture.model.PicConfig;
 import com.selector.picture.utils.DateUtils;
+import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.PicUtils;
 import com.selector.picture.utils.StringUtils;
 import com.selector.picture.utils.UIUtils;
+
+import java.util.List;
 
 /**
  * Create by Han on 2019/5/21
@@ -35,11 +39,13 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
     private TextView tv_duration;
     private View currentView;
     private GridPicAdapter adapter;
+    private OnItemClickListener<com.selector.picture.model.LocalMedia> mOnItemClickListener;
 
-    public GridPicViewHolder(@NonNull View itemView, GridPicAdapter adapter) {
+    public GridPicViewHolder(@NonNull View itemView, GridPicAdapter adapter, OnItemClickListener<LocalMedia> onItemClickListener) {
         super(itemView);
         this.currentView = itemView;
         this.adapter = adapter;
+        this.mOnItemClickListener = onItemClickListener;
         iv_picture = itemView.findViewById(R.id.iv_picture);
         ll_check = itemView.findViewById(R.id.ll_check);
         tv_check = itemView.findViewById(R.id.tv_check);
@@ -48,7 +54,8 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
         tv_duration = itemView.findViewById(R.id.tv_duration);
     }
 
-    public void bindViewHolder(Context context, final LocalMedia model) {
+
+    public void bindViewHolder(final Context context, final LocalMedia model) {
         if (context == null || model == null) return;
         PicUtils.getInstances().loadImage(context, iv_picture, model.getPath());
         String mimeType = StringUtils.nullToString(model.getPictureType());
@@ -83,9 +90,21 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 boolean selected = !(model.isChecked());//是否选中
+                if (selected) {
+                    if (adapter != null) {
+                        List<LocalMedia> sendMedia = adapter.getSendMedia();
+                        if (sendMedia != null && (sendMedia.size() >= PicConfig.getInstances().getMaxSelectNum())) {
+                            UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+                            return;
+                        }
+                    }
+                }
                 model.setChecked(selected);
                 UIUtils.setSelectStatus(iv_picture, tv_check, selected, Constant.TYPE2);
                 UIUtils.setSelectAnimation(iv_picture, selected);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(model);
+                }
             }
         });
     }

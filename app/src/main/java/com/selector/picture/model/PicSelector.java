@@ -86,7 +86,7 @@ public class PicSelector {
      * @param num int
      * @return PicSelector
      */
-    public PicSelector minSelectNum(int num) {
+    public PicSelector minSelectNum(@IntRange(from = 1) int num) {
         mConfig.minSelectNum(num);
         return this;
     }
@@ -104,7 +104,7 @@ public class PicSelector {
      * @param num int
      * @return PicSelector
      */
-    public PicSelector maxSelectNum(int num) {
+    public PicSelector maxSelectNum(@IntRange(from = 1) int num) {
         mConfig.maxSelectNum(num);
         return this;
     }
