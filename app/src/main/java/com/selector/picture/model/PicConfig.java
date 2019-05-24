@@ -25,6 +25,7 @@ public class PicConfig {
     private float sizeMultiplier;//设置Glide加载资源压缩系数(0.0F,1.0F)，默认0.8F
     private boolean loadAnimation;//设置是否加载动画，默认false
     private boolean loadOriginalImage;//是否选择原图，默认false
+    private boolean loadVoice;//是否有点击声音，默认false
 
     private PicConfig() {
         this.mTheme = Constant.PIC_DEFAULT_THEME;
@@ -38,6 +39,7 @@ public class PicConfig {
         this.overrideHeight = 0;
         this.loadAnimation = Constant.PIC_LOAD_ANIMATION;
         this.loadOriginalImage = Constant.PIC_LOAD_ORIGINAL_IMAGE;
+        this.loadVoice = Constant.PIC_LOAD_VOICE;
     }
 
     public static PicConfig getInstances() {
@@ -227,6 +229,15 @@ public class PicConfig {
     /**
      * 是否加载原图
      *
+     * @param loadOriginalImage true 加载 false不加载
+     */
+    public void setLoadOriginalImage(boolean loadOriginalImage) {
+        this.loadOriginalImage = loadOriginalImage;
+    }
+
+    /**
+     * 是否加载原图
+     *
      * @return true 加载 false不加载
      */
     public boolean isLoadOriginalImage() {
@@ -234,11 +245,20 @@ public class PicConfig {
     }
 
     /**
-     * 是否加载原图
+     * 是否有点击声音，默认false
      *
-     * @param loadOriginalImage true 加载 false不加载
+     * @param loadVoice true 有声音 false 没有声音
      */
-    public void setLoadOriginalImage(boolean loadOriginalImage) {
-        this.loadOriginalImage = loadOriginalImage;
+    public void loadVoice(boolean loadVoice) {
+        this.loadVoice = loadVoice;
+    }
+
+    /**
+     * 是否有点击声音，默认false
+     *
+     * @return true 有声音 false 没有声音
+     */
+    public boolean isloadVoice() {
+        return loadVoice;
     }
 }

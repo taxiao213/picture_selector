@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.selector.picture.R;
+import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.MimeType;
 import com.selector.picture.utils.DateUtils;
@@ -68,7 +69,10 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
         tv_gif.setVisibility(MimeType.isGif(mimeType) ? View.VISIBLE : View.GONE);
         tv_long_chart.setVisibility(UIUtils.isLongImg(model) ? View.VISIBLE : View.GONE);
         boolean checked = model.isChecked();
-        UIUtils.setSelectStatus(iv_picture, tv_check, checked);
+        UIUtils.setSelectStatus(iv_picture, tv_check, checked, Constant.TYPE1);
+        if (checked) {
+            UIUtils.setSelectAnimation(iv_picture, checked);
+        }
         currentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,8 +84,8 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 boolean selected = !(model.isChecked());//是否选中
                 model.setChecked(selected);
+                UIUtils.setSelectStatus(iv_picture, tv_check, selected, Constant.TYPE2);
                 UIUtils.setSelectAnimation(iv_picture, selected);
-                adapter.notifyItemChanged(getAdapterPosition());
             }
         });
     }

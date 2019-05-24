@@ -26,16 +26,12 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         if (manager != null) {
             int gridSize = manager.getSpanCount();//每列数
             int spacing = UIUtils.dp2px(view.getContext(), Constant.PIC_GRID_SPACE);
-            if (position % gridSize == 0) {
-                outRect.right = spacing;
-            } else {
-                outRect.right = spacing;
-            }
+            outRect.right = spacing;
             if (position < gridSize) {
                 outRect.top = spacing;
-                setBottom(outRect, position, gridSize, spacing);
+                setBottom(outRect, spacing);
             } else {
-                setBottom(outRect, position, gridSize, spacing);
+                setBottom(outRect, spacing);
             }
         }
     }
@@ -43,16 +39,10 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 设置底部边距
      *
-     * @param outRect  Rect
-     * @param position int
-     * @param gridSize int
-     * @param spacing  int
+     * @param outRect Rect
+     * @param spacing int
      */
-    private void setBottom(@NonNull Rect outRect, int position, int gridSize, int spacing) {
-        if (position % gridSize == 0) {
-            outRect.bottom = 0;
-        } else {
-            outRect.bottom = spacing;
-        }
+    private void setBottom(@NonNull Rect outRect, int spacing) {
+        outRect.bottom = spacing;
     }
 }

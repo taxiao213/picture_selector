@@ -194,6 +194,17 @@ public class PicSelector {
     }
 
     /**
+     * 是否有点击声音，默认false
+     *
+     * @param loadVoice true 有声音 false 没有声音
+     * @return PicSelector
+     */
+    public PicSelector loadVoice(boolean loadVoice) {
+        mConfig.loadVoice(loadVoice);
+        return this;
+    }
+
+    /**
      * 设置返回的请求code
      *
      * @param requestCode int

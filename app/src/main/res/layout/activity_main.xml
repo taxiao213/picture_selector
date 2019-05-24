@@ -11,4 +11,27 @@
         android:gravity="center"
         android:text="选择图片" />
 
+    <TextView
+        android:id="@+id/tv_zoom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="放大" />
+
+    <TextView
+        android:id="@+id/tv_dis_zoom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="缩小" />
+
+
+    <ImageView
+        android:id="@+id/iv_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:src="@mipmap/ic_launcher" />
+
 </LinearLayout>

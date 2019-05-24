@@ -106,10 +106,10 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
     /**
      * 加载图片数据
      *
-     * @param localMediaFolders List<LocalMediaFolder>
+     * @param localMedia List<LocalMediaFolder>
      */
-    public void setList(List<LocalMediaFolder> localMediaFolders) {
-        this.localMediaFolders = localMediaFolders;
+    public void setList(List<LocalMediaFolder> localMedia) {
+        this.localMediaFolders = localMedia;
         if (localMediaFolders != null && localMediaFolders.size() > 0) {
             LocalMediaFolder mediaFolders = localMediaFolders.get(0);
             refreshPic(mediaFolders);

@@ -1,22 +1,18 @@
 package com.selector.picture.utils;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.PicConfig;
 
@@ -104,7 +100,7 @@ public class UIUtils {
     }
 
     /**
-     * 设置选中文件的状态
+     * 设置选中文件的状态 选中有阴影
      * <p>
      * LocalMedia
      * 1.PorterDuff.Mode.CLEAR 所绘制不会提交到画布上。
@@ -127,16 +123,28 @@ public class UIUtils {
      * @param imageView 图片
      * @param tv_check  复选框view
      * @param selected  true 选中 false 不选择
+     * @param type      Constant.TYPE2 点击音效效果 {@link Constant#TYPE1,Constant#TYPE2}
      */
-    public static void setSelectStatus(ImageView imageView, TextView tv_check, boolean selected) {
+    public static void setSelectStatus(ImageView imageView, TextView tv_check, boolean selected, int type) {
         tv_check.setSelected(selected);
         if (selected) {
+            if (type == Constant.TYPE2) {
+                if (PicConfig.getInstances().isloadVoice()) {
+                    VoiceUtils.playVoice(imageView.getContext(), selected);
+                }
+            }
             imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), R.color.image_overlay_true), PorterDuff.Mode.SRC_ATOP);
         } else {
             imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), R.color.image_overlay_false), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
+    /**
+     * 设置选中执行的动画
+     *
+     * @param imageView 执行动画的view
+     * @param selected  true 选中 false 不选择
+     */
     public static void setSelectAnimation(ImageView imageView, boolean selected) {
         if (PicConfig.getInstances().isAnimation()) {
             if (selected) {
@@ -150,27 +158,40 @@ public class UIUtils {
     /**
      * 放大动画
      */
-    private static void zoom(ImageView iv_img) {
+    private static void zoom(ImageView imageView) {
         AnimatorSet set = new AnimatorSet();
         set.playTogether(
-                ObjectAnimator.ofFloat(iv_img, "scaleX", 1f, 1.12f),
-                ObjectAnimator.ofFloat(iv_img, "scaleY", 1f, 1.12f)
-        );
-        set.setDuration(450);
+                ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.12f),
+                ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.12f));
+        set.setDuration(Constant.PIC_ANIMATION_DURATION);
         set.start();
     }
 
     /**
      * 缩小动画
      */
-    private static void disZoom(ImageView iv_img) {
+    private static void disZoom(ImageView imageView) {
         AnimatorSet set = new AnimatorSet();
         set.playTogether(
-                ObjectAnimator.ofFloat(iv_img, "scaleX", 1.12f, 1f),
-                ObjectAnimator.ofFloat(iv_img, "scaleY", 1.12f, 1f)
-        );
-        set.setDuration(450);
+                ObjectAnimator.ofFloat(imageView, "scaleX", 1.12f, 1f),
+                ObjectAnimator.ofFloat(imageView, "scaleY", 1.12f, 1f));
+        set.setDuration(Constant.PIC_ANIMATION_DURATION);
         set.start();
     }
 
+    public static void setAnimation(ImageView imageView, boolean selected) {
+        if (selected) {
+            ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 1.2f, 1f, 1.2f, Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
+            scaleAnimation.setDuration(Constant.PIC_ANIMATION_DURATION);
+            scaleAnimation.start();
+            scaleAnimation.setFillAfter(true);
+            imageView.startAnimation(scaleAnimation);
+        } else {
+            ScaleAnimation scaleAnimation = new ScaleAnimation(1.2f, 1f, 1.2f, 1f, Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
+            scaleAnimation.setDuration(Constant.PIC_ANIMATION_DURATION);
+            scaleAnimation.start();
+            scaleAnimation.setFillAfter(true);
+            imageView.startAnimation(scaleAnimation);
+        }
+    }
 }

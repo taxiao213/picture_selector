@@ -19,10 +19,19 @@ public class Constant {
     public static int PIC_GRID_SIZE_NUM = 3;//设置图片网格数量 默认3个
     public static int PIC_CHOOSE_MIMETYPE = MimeType.TYPE_ALL;//设置图片选择格式 默认全部
     public static float PIC_CHOOSE_MULTIPLIER = 0.8F;//设置Glide加载资源压缩系数(0.0F,1.0F)，默认0.8F
-    public static float PIC_GRID_SPACE = 2.5F;//设置网格的间距
+    public static float PIC_GRID_SPACE = 2.2F;//设置网格的间距
     public static boolean PIC_CHOOSE_IS_GIF = true;//设置是否选择动图 默认true
     public static boolean PIC_LOAD_ANIMATION = false;//设置是否加载动画，默认false
     public static boolean PIC_LOAD_ORIGINAL_IMAGE = false;//设置是否加载原图，默认false
+    public static boolean PIC_LOAD_VOICE = false;//是否有点击声音，默认false
+    public static int PIC_ANIMATION_DURATION = 450;//设置执行动画的时间
+
+
+    public static int TYPE1 = 1;//参数区分
+    public static int TYPE2 = 2;//参数区分
+    public static int TYPE3 = 3;//参数区分
+    public static int TYPE4 = 4;//参数区分
+    public static int TYPE5 = 5;//参数区分
 
     public static String PIC_INTENT_BUNDLE_KEY = "pic_intent_bundle_key";//bundle 意图
     public static String PIC_INTENT_ACTIVITY_KEY = "pic_intent_activity_key";//intent 意图
