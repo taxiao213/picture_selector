@@ -122,7 +122,7 @@ public class LocalMediaLoader {
 
 
     public void loadMedia(final FragmentActivity activity, final ImageLoadListener imageLoadListener) {
-        LoaderManager manager = activity.getSupportLoaderManager();
+        final LoaderManager manager = activity.getSupportLoaderManager();
         if (manager != null) {
             final int type = PicConfig.getInstances().getImageType();
             manager.initLoader(type, null, new LoaderManager.LoaderCallbacks<Cursor>() {
@@ -218,6 +218,7 @@ public class LocalMediaLoader {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    manager.destroyLoader(type);
                 }
 
                 @Override
