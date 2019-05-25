@@ -5,11 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.selector.picture.R;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
@@ -94,7 +92,17 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
                     if (adapter != null) {
                         List<LocalMedia> sendMedia = adapter.getSendMedia();
                         if (sendMedia != null && (sendMedia.size() >= PicConfig.getInstances().getMaxSelectNum())) {
-                            UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+                            if (PicConfig.getInstances().getImageType() == MimeType.TYPE_ALL) {
+                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_all_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+                            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_IMAGE) {
+                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_pic_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+                            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_VIDEO) {
+                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_video_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+                            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_AUDIO) {
+                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_audio_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+                            } else {
+                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_all_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+                            }
                             return;
                         }
                     }

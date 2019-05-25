@@ -2,6 +2,8 @@ package com.selector.picture.model;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Parcelable;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -9,8 +11,11 @@ import android.support.v4.app.Fragment;
 
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoSelectActivity;
+import com.selector.picture.constant.Constant;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 相册选择实体
@@ -231,6 +236,23 @@ public class PicSelector {
     public int getRequestCode() {
         return mRequestCode;
     }
+
+    /**
+     * 返回选择后的结果
+     *
+     * @param data Intent
+     * @return ArrayList<String>
+     */
+    public static ArrayList<String> obtainResult(Intent data) {
+        if (data == null) return null;
+        return data.getStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY);
+    }
+
+//    public static List<Uri> obtainResult(Intent data) {
+//        if (data == null) return null;
+//        return data.getParcelableArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY);
+//    }
+
 
     /**
      * 跳转的界面

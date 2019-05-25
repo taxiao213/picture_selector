@@ -76,6 +76,11 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
         }
     }
 
+    public void setResult(Intent intent){
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -11,6 +11,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/pic_placeholder" />
+            android:src="@drawable/picture_placeholder" />
     </item>
 </layer-list>

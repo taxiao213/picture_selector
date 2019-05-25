@@ -1,9 +1,11 @@
 package com.selector.picture.fragment;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Picture;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.adapter.GridItemDecoration;
 import com.selector.picture.adapter.GridPicAdapter;
 import com.selector.picture.base.BaseFragment;
@@ -55,7 +58,7 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
     private TextView tvBottomLeftText;
     private TextView tvBottomCenterText;
     private List<LocalMediaFolder> localMediaFolders;//本地所有数据的集合
-    private List<LocalMedia> sendMedia;//发送和预览的集合
+    private ArrayList<LocalMedia> sendMedia;//发送和预览的集合
     private TextView tvTopSendText;
     private TextView tvBottomPreviewText;
 
@@ -160,7 +163,7 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
                     break;
                 case R.id.tv_top_send_text:
                     //顶部右侧发送按钮
-
+                    setResult();
                     break;
                 case R.id.ll_bottom_lef_text:
                     //弹框选择相册
@@ -230,6 +233,26 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
     public void setSelected(boolean isSelected) {
         tvTopSendText.setSelected(isSelected);
         tvBottomPreviewText.setSelected(isSelected);
+    }
+
+
+    /**
+     * 选择后返回数据
+     */
+    private void setResult() {
+        if (sendMedia != null && sendMedia.size() > 0) {
+            if (activity != null) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                for (LocalMedia media : sendMedia) {
+                    if (media != null) {
+                        arrayList.add(StringUtils.nullToString(media.getPath()));
+                    }
+                }
+                Intent intent = new Intent();
+                intent.putStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY, arrayList);
+                ((PhotoSelectActivity) activity).setResult(intent);
+            }
+        }
     }
 
     /**

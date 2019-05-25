@@ -1,17 +1,23 @@
 package com.selector.picture.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
 import com.selector.picture.model.MimeType;
+import com.selector.picture.model.PicConfig;
 import com.selector.picture.model.PicSelector;
 import com.selector.picture.fragment.PictureSelectorFragment;
 import com.selector.picture.utils.UIUtils;
+
+import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -71,5 +77,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                .glideOverride(100,100)
 //                .sizeMultiplier(0.5F)
                 .setResult(10);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
+                case 10:
+                    ArrayList<String> strings = PicSelector.obtainResult(data);
+                    Log.e("--- ", "list == " + strings.toString());
+                    break;
+            }
+        }
     }
 }

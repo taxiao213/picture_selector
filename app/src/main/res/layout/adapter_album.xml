@@ -10,8 +10,12 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/dialog_pic_bg"
+        android:paddingBottom="4dp"
+        android:paddingEnd="4dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_placeholder" />
+        android:src="@drawable/image_placeholder"
+        tools:ignore="RtlSymmetry" />
 
     <View
         android:layout_width="match_parent"
