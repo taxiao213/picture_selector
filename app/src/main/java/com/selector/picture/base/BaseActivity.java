@@ -1,12 +1,17 @@
 package com.selector.picture.base;
 
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.selector.picture.R;
+import com.selector.picture.utils.UIUtils;
 
 /**
  * Create by Han on 2019/5/10
@@ -37,6 +42,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView(savedInstanceState);
         initData();
         dialog = new ProgressDialog(mActivity);
+
+        UIUtils.changeStatusBar(this, false);
+
     }
 
     /**
