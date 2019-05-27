@@ -1,5 +1,6 @@
 package com.selector.picture.fragment;
 
+import com.selector.picture.R;
 import com.selector.picture.base.BaseFragment;
 
 /**
@@ -12,7 +13,7 @@ import com.selector.picture.base.BaseFragment;
 public class PhotoPreviewsFragment extends BaseFragment {
     @Override
     protected int initView() {
-        return 0;
+        return R.layout.fragment_photo_previews;
     }
 
     @Override

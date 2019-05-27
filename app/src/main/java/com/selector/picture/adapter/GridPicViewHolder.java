@@ -1,6 +1,7 @@
 package com.selector.picture.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.activity.PhotoPreviewsActivity;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.MimeType;
@@ -82,7 +84,7 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 //跳转预览
-
+                context.startActivity(new Intent(context, PhotoPreviewsActivity.class));
             }
         });
         ll_check.setOnClickListener(new View.OnClickListener() {

@@ -73,6 +73,13 @@
         <!--背景色-->
         <item name="picture_selector_ry_bg">@android:color/white</item>
         <item name="picture_selector_ry_checkbox">@drawable/image_checkbox_selector</item>
+
+        <!--预览界面-->
+        <!--预览界面底部布局-->
+        <item name="picture_selector_previews_ll_bg">@color/black_trans_90</item>
+        <!--预览界面底部recyclerview高度-->
+        <item name="picture_selector_previews_ry_height">@dimen/picture_selector_previews_ry_height</item>
+
     </style>
 
     <!--底部选择相册弹框-->

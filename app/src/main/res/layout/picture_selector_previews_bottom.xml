@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_bottom_root_previews"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/picture_selector_bottom_height">
+
+    <TextView
+        android:id="@+id/tv_bottom_lef_text_previews"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="15dp"
+        android:layout_toStartOf="@id/tv_bottom_center_text"
+        android:maxLines="1"
+        android:textColor="?attr/picture_selector_bottom_left_text_color"
+        android:textSize="?attr/picture_selector_bottom_left_text_size" />
+
+    <TextView
+        android:id="@+id/tv_bottom_center_text_previews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:drawablePadding="5dp"
+        android:drawableStart="?attr/picture_selector_bottom_center_text_drawable_left"
+        android:gravity="center_vertical"
+        android:text="@string/picture_selector_bottom_center_text"
+        android:textColor="?attr/picture_selector_bottom_center_text_color"
+        android:textSize="?attr/picture_selector_bottom_center_text_size"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/tv_bottom_select_text_previews"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="15dp"
+        android:drawableStart="?attr/picture_selector_ry_checkbox"
+        android:gravity="center_vertical"
+        android:paddingBottom="10dp"
+        android:paddingStart="10dp"
+        android:text="@string/picture_previews_bottom_select_default"
+        android:textColor="?attr/picture_selector_bottom_preview_text_color"
+        android:textSize="?attr/picture_selector_bottom_preview_text_size"
+        tools:ignore="RtlSymmetry" />
+</RelativeLayout>

@@ -18,4 +18,10 @@
     <!--滑动显示的文字大小-->
     <dimen name="picture_selector_slide_text_size">12sp</dimen>
 
+    <!--预览界面-->
+    <dimen name="picture_selector_previews_margin_top">10dp</dimen>
+    <dimen name="picture_selector_previews_margin_start">5dp</dimen>
+    <!--预览界面recyclerview高度-->
+    <dimen name="picture_selector_previews_ry_height">80dp</dimen>
+
 </resources>

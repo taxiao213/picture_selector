@@ -206,7 +206,7 @@ public class LocalMediaLoader {
                                     PicUtils.getInstances().sortFolder(imageFolders);
                                     imageFolders.add(0, allImageFolder);
                                     allImageFolder.setFirstImagePath(latelyImages.get(0).getPath());
-                                    String title = type == MimeType.ofAudio() ? activity.getString(R.string.picture_all_audio) : activity.getString(R.string.picture_camera_roll);
+                                    String title = type == MimeType.ofAudio() ? activity.getString(R.string.picture_all_audio) : activity.getString(R.string.picture_selector_top_left_text);
                                     allImageFolder.setName(title);
                                     allImageFolder.setImages(latelyImages);
                                 }

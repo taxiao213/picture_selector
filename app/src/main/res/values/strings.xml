@@ -13,7 +13,6 @@
     <string name="picture_selector_notice_audio_count">你最多只能选择%1$s个音频</string>
     <string name="picture_selector_dialog_count">%1$s张</string>
 
-    <string name="picture_camera_roll">@string/picture_selector_top_left_text</string>
     <string name="picture_all_audio">所有音频</string>
     <string name="picture_selector_pic_gif_tag">动图</string>
     <string name="picture_selector_pic_long">长图</string>
@@ -21,4 +20,6 @@
 
     <string name="picture_selector_slide_week">本周</string>
     <string name="picture_selector_slide_month">这个月</string>
+
+    <string name="picture_previews_bottom_select_default">选择</string>
 </resources>

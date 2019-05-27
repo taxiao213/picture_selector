@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
+import com.selector.picture.constant.Constant;
 import com.selector.picture.fragment.PhotoPreviewsFragment;
+import com.selector.picture.fragment.PhotoSelectFragment;
 
 /**
  * 图片预览

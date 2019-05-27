@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--<include layout="@layout/picture_selector_top" />-->
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_root_previews"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/picture_selector_ry_bg"
+        android:orientation="vertical">
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/ry_previews"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/picture_selector_previews_ry_height"-->
+        <!--android:layout_marginBottom="@dimen/picture_selector_previews_margin_top"-->
+        <!--android:layout_marginStart="@dimen/picture_selector_previews_margin_start"-->
+        <!--android:layout_marginTop="@dimen/picture_selector_previews_margin_top"-->
+        <!--android:orientation="horizontal" />-->
+
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0.5dp"-->
+        <!--android:background="@color/grey_ef" />-->
+
+        <!--<include layout="@layout/picture_selector_previews_bottom" />-->
+    </LinearLayout>
+</FrameLayout>
