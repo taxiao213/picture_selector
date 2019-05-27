@@ -1,6 +1,5 @@
 package com.selector.picture.activity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,7 +17,7 @@ import com.selector.picture.utils.ImageLoadListener;
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
 import com.selector.picture.constant.Constant;
-import com.selector.picture.fragment.PictureSelectorFragment;
+import com.selector.picture.fragment.PhotoSelectFragment;
 import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.LocalMediaLoader;
 import com.selector.picture.model.PicConfig;
@@ -30,7 +29,7 @@ import java.util.List;
  */
 public class PhotoSelectActivity extends BaseActivity implements ImageLoadListener<List<LocalMediaFolder>> {
 
-    private PictureSelectorFragment pictureSelectorFragment;
+    private PhotoSelectFragment pictureSelectorFragment;
     private String[] permissionArray = new String[]{android.Manifest.permission_group.STORAGE};
     private int permissionRequestCode = 100;
 
@@ -45,12 +44,12 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
         if (savedInstanceState == null) {
             if (manager != null) {
                 FragmentTransaction transaction = manager.beginTransaction();
-                pictureSelectorFragment = new PictureSelectorFragment();
+                pictureSelectorFragment = new PhotoSelectFragment();
                 transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG).show(pictureSelectorFragment).commit();
             }
         } else {
             if (manager != null) {
-                pictureSelectorFragment = (PictureSelectorFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG);
+                pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG);
             }
         }
     }

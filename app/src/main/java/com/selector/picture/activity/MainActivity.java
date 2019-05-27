@@ -3,8 +3,6 @@ package com.selector.picture.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,16 +10,13 @@ import android.widget.ImageView;
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
 import com.selector.picture.model.MimeType;
-import com.selector.picture.model.PicConfig;
 import com.selector.picture.model.PicSelector;
-import com.selector.picture.fragment.PictureSelectorFragment;
 import com.selector.picture.utils.UIUtils;
 
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
-    private PictureSelectorFragment pictureSelectorFragment;
     private ImageView ivPicture;
 
     @Override

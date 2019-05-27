@@ -1,6 +1,14 @@
 package com.selector.picture.utils;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+
+import com.selector.picture.R;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * 时间转换工具类
@@ -62,7 +70,75 @@ public class DateUtils {
             //转换成分秒
             time = timeParseMinute(duration);
         }
-        System.out.println(time);
         return time;
+    }
+
+    /**
+     * recyclerview滑动时间转换
+     *
+     * @param context  Context
+     * @param duration 时间 毫秒值 59:59
+     * @return String
+     */
+    public static String slideTimeParse(Context context, long duration) {
+        String time = "";
+        SimpleDateFormat formatYM = new SimpleDateFormat("yyyy/MM");
+        long timeOfMonthStart = getTimeOfMonthStart();
+        if (duration >= timeOfMonthStart) {
+            long timeOfWeekStart = getTimeOfWeekStart();
+            if (duration >= timeOfWeekStart) {
+                time = context.getString(R.string.picture_selector_slide_week);
+            } else {
+                time = context.getString(R.string.picture_selector_slide_month);
+            }
+        } else {
+            time = formatYM.format(duration);
+        }
+        return time;
+    }
+
+    /**
+     * 获取本周第一天的时间 <code>SUNDAY</code> in the U.S. 所以要加一
+     *
+     * @return long
+     */
+    private static long getTimeOfWeekStart() {
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.HOUR_OF_DAY, 0);
+        ca.clear(Calendar.MINUTE);
+        ca.clear(Calendar.SECOND);
+        ca.clear(Calendar.MILLISECOND);
+        ca.set(Calendar.DAY_OF_WEEK, ca.getFirstDayOfWeek() + 1);
+        return ca.getTimeInMillis();
+    }
+
+    /**
+     * 获取本月第一天的时间
+     *
+     * @return long
+     */
+    private static long getTimeOfMonthStart() {
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.HOUR_OF_DAY, 0);
+        ca.clear(Calendar.MINUTE);
+        ca.clear(Calendar.SECOND);
+        ca.clear(Calendar.MILLISECOND);
+        ca.set(Calendar.DAY_OF_MONTH, 1);
+        return ca.getTimeInMillis();
+    }
+
+    /**
+     * 获取本年第一天的时间
+     *
+     * @return long
+     */
+    private static long getTimeOfYearStart() {
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.HOUR_OF_DAY, 0);
+        ca.clear(Calendar.MINUTE);
+        ca.clear(Calendar.SECOND);
+        ca.clear(Calendar.MILLISECOND);
+        ca.set(Calendar.DAY_OF_YEAR, 1);
+        return ca.getTimeInMillis();
     }
 }

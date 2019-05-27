@@ -18,4 +18,7 @@
     <string name="picture_selector_pic_gif_tag">动图</string>
     <string name="picture_selector_pic_long">长图</string>
     <string name="picture_selector_video_duration">00:00</string>
+
+    <string name="picture_selector_slide_week">本周</string>
+    <string name="picture_selector_slide_month">这个月</string>
 </resources>

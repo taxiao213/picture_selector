@@ -1,23 +1,15 @@
 package com.selector.picture.fragment;
 
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Picture;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,6 +25,7 @@ import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.PicConfig;
 import com.selector.picture.model.PicSelector;
+import com.selector.picture.utils.DateUtils;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.StringUtils;
 import com.selector.picture.utils.UIUtils;
@@ -40,7 +33,6 @@ import com.selector.picture.view.DialogUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -50,7 +42,7 @@ import java.util.List;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PictureSelectorFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener<LocalMedia> {
+public class PhotoSelectFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener<LocalMedia> {
 
     private List<LocalMedia> list;
     private GridPicAdapter adapter;
@@ -61,10 +53,11 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
     private ArrayList<LocalMedia> sendMedia;//发送和预览的集合
     private TextView tvTopSendText;
     private TextView tvBottomPreviewText;
+    private TextView tvTopSlideLeftText;
 
     @Override
     protected int initView() {
-        return R.layout.fragment_picture_selector;
+        return R.layout.fragment_photo_select;
     }
 
     @Override
@@ -72,9 +65,9 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
         View view = getView();
         RelativeLayout rlTopRoot = view.findViewById(R.id.rl_top_root);//顶部根布局
         ImageView ivTopLeftBack = view.findViewById(R.id.iv_top_left_back);//顶部左侧后退按钮
-        TextView tvTopLeftText = view.findViewById(R.id.tv_top_lef_text);//顶部左侧标题
+        final TextView tvTopLeftText = view.findViewById(R.id.tv_top_lef_text);//顶部左侧标题
         tvTopSendText = view.findViewById(R.id.tv_top_send_text); //顶部右侧发送按钮
-        TextView tvTopSlideLeftText = view.findViewById(R.id.tv_top_slide_lef_text);//recyclerview 滑动时显示的提示框
+        tvTopSlideLeftText = view.findViewById(R.id.tv_top_slide_lef_text); //recyclerview 滑动时显示的提示框
         RecyclerView ry = view.findViewById(R.id.ry);//recyclerview
         RelativeLayout rlBottomRoot = view.findViewById(R.id.rl_bottom_root);//底部根布局
         LinearLayout llBottomLeftText = view.findViewById(R.id.ll_bottom_lef_text);//底部底部左侧标题根布局
@@ -88,8 +81,37 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
         ry.setLayoutManager(gridLayoutManager);
         ry.addItemDecoration(new GridItemDecoration());
         list = new ArrayList<>();
-        adapter = new GridPicAdapter(activity, PictureSelectorFragment.this, this, list);
+        adapter = new GridPicAdapter(activity, PhotoSelectFragment.this, this, list);
         ry.setAdapter(adapter);
+        ry.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+                    tvTopSlideLeftText.setVisibility(View.VISIBLE);
+                } else {
+                    tvTopSlideLeftText.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //滑动状态
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                if (layoutManager instanceof GridLayoutManager) {
+                    int visibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                    if (list != null) {
+                        LocalMedia media = list.get(visibleItemPosition);
+                        if (media != null) {
+                            String addedTime = StringUtils.nullToString(media.getAddedTime());
+                            String timeParse = DateUtils.slideTimeParse(activity, Long.valueOf(addedTime) * Constant.PIC_UNITS_SECONDS);
+                            tvTopSlideLeftText.setText(timeParse);
+                        }
+                    }
+                }
+            }
+        });
         sendMedia = new ArrayList<>();
         ivTopLeftBack.setOnClickListener(this);
         tvTopSendText.setOnClickListener(this);
@@ -210,6 +232,7 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
         setText();
     }
 
+
     /**
      * 设置发送和预览按钮状态
      */
@@ -280,5 +303,6 @@ public class PictureSelectorFragment extends BaseFragment implements View.OnClic
     public void onResume() {
         super.onResume();
     }
+
 
 }

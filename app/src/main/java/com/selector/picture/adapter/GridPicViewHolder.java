@@ -82,6 +82,7 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 //跳转预览
+
             }
         });
         ll_check.setOnClickListener(new View.OnClickListener() {

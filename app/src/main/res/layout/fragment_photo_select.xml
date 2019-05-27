@@ -11,14 +11,14 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <include layout="@layout/picture_selector_slide" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ry"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/picture_selector_ry_bg"
             android:scrollbars="vertical" />
+
+        <include layout="@layout/picture_selector_slide" />
     </FrameLayout>
 
     <include layout="@layout/picture_selector_bottom" />

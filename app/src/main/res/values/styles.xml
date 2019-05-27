@@ -63,7 +63,7 @@
         <!--滑动显示的高度-->
         <item name="picture_selector_slide_height">@dimen/picture_selector_slide_height</item>
         <!--滑动显示的文字背景色-->
-        <item name="picture_selector_slide_text_bg">@color/white_trans_70</item>
+        <item name="picture_selector_slide_text_bg">@color/black_trans_90</item>
         <!--滑动显示的文字大小-->
         <item name="picture_selector_slide_text_size">@dimen/picture_selector_slide_text_size</item>
         <!--滑动显示的文字颜色-->

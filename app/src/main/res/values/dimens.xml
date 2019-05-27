@@ -14,7 +14,7 @@
 
     <!--滑动显示的时间状态-->
     <!--滑动显示的高度-->
-    <dimen name="picture_selector_slide_height">40dp</dimen>
+    <dimen name="picture_selector_slide_height">25dp</dimen>
     <!--滑动显示的文字大小-->
     <dimen name="picture_selector_slide_text_size">12sp</dimen>
 

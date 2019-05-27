@@ -8,11 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.selector.picture.R;
-import com.selector.picture.fragment.PictureSelectorFragment;
+import com.selector.picture.fragment.PhotoSelectFragment;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.utils.OnItemClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,9 +27,9 @@ public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
     private Context mContext;
     private List<LocalMedia> mList;
     private OnItemClickListener<LocalMedia> mOnItemClickListener;
-    private PictureSelectorFragment mFragment;
+    private PhotoSelectFragment mFragment;
 
-    public GridPicAdapter(Context context, PictureSelectorFragment fragment, OnItemClickListener<LocalMedia> onItemClickListener, List<LocalMedia> list) {
+    public GridPicAdapter(Context context, PhotoSelectFragment fragment, OnItemClickListener<LocalMedia> onItemClickListener, List<LocalMedia> list) {
         this.mContext = context;
         this.mFragment = fragment;
         this.mOnItemClickListener = onItemClickListener;

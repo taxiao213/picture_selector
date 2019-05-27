@@ -17,22 +17,32 @@ public class LocalMedia implements Parcelable {
     private String path;//路径
     private String compressPath;//压缩路径
     private String cutPath;//剪切路径
-    private int size;//文件大小(B)
     private String displayName;//文件名称，带后缀
     private String title;//文件名称，无后缀
     private String pictureType;//文件类型
+    private String addedTime;//文件创建时间
+    private String modifiedTime;//文件最后一次修改时间
+    private int size;//文件大小(B)
     private int mimeType;//文件类型
     private int width;
     private int height;
+    private int position;
+    private int num;
     private long duration;
     private boolean isChecked;
     private boolean isCut;
-    private int position;
-    private int num;
     private boolean compressed;
 
     public LocalMedia() {
 
+    }
+
+    public String getAddedTime() {
+        return addedTime;
+    }
+
+    public String getModifiedTime() {
+        return modifiedTime;
     }
 
     public String getId() {
@@ -90,7 +100,7 @@ public class LocalMedia implements Parcelable {
         return pictureType;
     }
 
-    public LocalMedia(String id, String path, int size, String displayName, String title, String pictureType, int mimeType, int width, int height, long duration) {
+    public LocalMedia(String id, String path, int size, String displayName, String title, String pictureType, int mimeType, int width, int height, String addedTime, String modifiedTime, long duration) {
         this.id = id;
         this.path = path;
         this.size = size;
@@ -100,7 +110,15 @@ public class LocalMedia implements Parcelable {
         this.mimeType = mimeType;
         this.width = width;
         this.height = height;
+        this.addedTime = addedTime;
+        this.modifiedTime = modifiedTime;
         this.duration = duration;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     protected LocalMedia(Parcel in) {
@@ -108,18 +126,20 @@ public class LocalMedia implements Parcelable {
         path = in.readString();
         compressPath = in.readString();
         cutPath = in.readString();
-        size = in.readInt();
         displayName = in.readString();
         title = in.readString();
         pictureType = in.readString();
+        addedTime = in.readString();
+        modifiedTime = in.readString();
+        size = in.readInt();
+        mimeType = in.readInt();
         width = in.readInt();
         height = in.readInt();
+        position = in.readInt();
+        num = in.readInt();
         duration = in.readLong();
         isChecked = in.readByte() != 0;
         isCut = in.readByte() != 0;
-        position = in.readInt();
-        num = in.readInt();
-        mimeType = in.readInt();
         compressed = in.readByte() != 0;
     }
 
@@ -136,28 +156,25 @@ public class LocalMedia implements Parcelable {
     };
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(path);
         dest.writeString(compressPath);
         dest.writeString(cutPath);
-        dest.writeInt(size);
         dest.writeString(displayName);
         dest.writeString(title);
         dest.writeString(pictureType);
+        dest.writeString(addedTime);
+        dest.writeString(modifiedTime);
+        dest.writeInt(size);
+        dest.writeInt(mimeType);
         dest.writeInt(width);
         dest.writeInt(height);
+        dest.writeInt(position);
+        dest.writeInt(num);
         dest.writeLong(duration);
         dest.writeByte((byte) (isChecked ? 1 : 0));
         dest.writeByte((byte) (isCut ? 1 : 0));
-        dest.writeInt(position);
-        dest.writeInt(num);
-        dest.writeInt(mimeType);
         dest.writeByte((byte) (compressed ? 1 : 0));
     }
 }

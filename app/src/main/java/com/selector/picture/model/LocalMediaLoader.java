@@ -30,7 +30,6 @@ public class LocalMediaLoader {
     private static LocalMediaLoader mLocalMediaLoader;
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
     private static final String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
-    private static final String DURATION = "duration";
     private static final String NOT_GIF = "!='image/gif'";
     private static final int AUDIO_DURATION = 500;// 过滤掉小于500毫秒的录音
     private long videoMaxS = 0;
@@ -61,7 +60,9 @@ public class LocalMediaLoader {
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.WIDTH,
             MediaStore.MediaColumns.HEIGHT,
-            DURATION};
+            MediaStore.MediaColumns.DATE_ADDED,//单位是秒
+            MediaStore.MediaColumns.DATE_MODIFIED,//单位是秒
+            MediaStore.Video.VideoColumns.DURATION};
 
     // 图片
     private static final String SELECTION = MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
@@ -184,9 +185,13 @@ public class LocalMediaLoader {
 
                                     int height = data.getInt(data.getColumnIndexOrThrow(PROJECTION[7]));//高 像素
 
-                                    int duration = data.getInt(data.getColumnIndexOrThrow(PROJECTION[8]));//时间
+                                    String addedTime = data.getString(data.getColumnIndexOrThrow(PROJECTION[8]));//文件创建时间
 
-                                    LocalMedia image = new LocalMedia(id, path, size, displayName, title, pictureType, type, width, height, duration);
+                                    String modifiedTime = data.getString(data.getColumnIndexOrThrow(PROJECTION[9]));//文件最后一次修改时间
+
+                                    int duration = data.getInt(data.getColumnIndexOrThrow(PROJECTION[10]));//时间
+
+                                    LocalMedia image = new LocalMedia(id, path, size, displayName, title, pictureType, type, width, height, addedTime, modifiedTime, duration);
 
                                     LocalMediaFolder folder = PicUtils.getInstances().getImageFolder(path, imageFolders);
                                     List<LocalMedia> images = folder.getImages();

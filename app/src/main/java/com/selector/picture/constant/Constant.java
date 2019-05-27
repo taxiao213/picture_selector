@@ -27,11 +27,14 @@ public class Constant {
     public static int PIC_ANIMATION_DURATION = 450;//设置执行动画的时间
 
 
+
     public static int TYPE1 = 1;//参数区分
     public static int TYPE2 = 2;//参数区分
     public static int TYPE3 = 3;//参数区分
     public static int TYPE4 = 4;//参数区分
     public static int TYPE5 = 5;//参数区分
+
+    public static long PIC_UNITS_SECONDS = 1000L;//从数据库查询的秒值*1000 转换为毫秒值
 
     public static String PIC_INTENT_BUNDLE_KEY = "pic_intent_bundle_key";//bundle 意图
     public static String PIC_INTENT_ACTIVITY_KEY = "pic_intent_activity_key";//intent 意图
