@@ -21,5 +21,6 @@
     <string name="picture_selector_slide_week">本周</string>
     <string name="picture_selector_slide_month">这个月</string>
 
+    <string name="picture_previews_bottom_left_text">编辑</string>
     <string name="picture_previews_bottom_select_default">选择</string>
 </resources>

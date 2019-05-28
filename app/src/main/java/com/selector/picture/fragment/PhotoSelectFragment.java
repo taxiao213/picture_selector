@@ -65,7 +65,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         View view = getView();
         RelativeLayout rlTopRoot = view.findViewById(R.id.rl_top_root);//顶部根布局
         ImageView ivTopLeftBack = view.findViewById(R.id.iv_top_left_back);//顶部左侧后退按钮
-        final TextView tvTopLeftText = view.findViewById(R.id.tv_top_lef_text);//顶部左侧标题
+        TextView tvTopLeftText = view.findViewById(R.id.tv_top_lef_text);//顶部左侧标题
         tvTopSendText = view.findViewById(R.id.tv_top_send_text); //顶部右侧发送按钮
         tvTopSlideLeftText = view.findViewById(R.id.tv_top_slide_lef_text); //recyclerview 滑动时显示的提示框
         RecyclerView ry = view.findViewById(R.id.ry);//recyclerview

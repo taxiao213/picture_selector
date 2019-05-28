@@ -10,9 +10,9 @@
 
     <!--白色主题样式-->
     <style name="pictrue.white.Theme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--标题栏背景色-->
+        <!--导航栏颜色-->
         <item name="colorPrimary">@color/white_trans</item>
-        <!--状态栏背景色-->
+        <!--通知栏颜色-->
         <item name="colorPrimaryDark">@color/white_trans</item>
 
         <!--顶部-->

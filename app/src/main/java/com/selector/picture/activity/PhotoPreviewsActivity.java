@@ -9,6 +9,7 @@ import com.selector.picture.base.BaseActivity;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.fragment.PhotoPreviewsFragment;
 import com.selector.picture.fragment.PhotoSelectFragment;
+import com.selector.picture.model.PicConfig;
 
 /**
  * 图片预览
@@ -23,7 +24,7 @@ public class PhotoPreviewsActivity extends BaseActivity {
 
     @Override
     protected void setThem() {
-
+        setTheme(PicConfig.getInstances().getTheme());
     }
 
     @Override
