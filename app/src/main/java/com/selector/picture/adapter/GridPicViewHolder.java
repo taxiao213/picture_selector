@@ -2,6 +2,7 @@ package com.selector.picture.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoPreviewsActivity;
+import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.MimeType;
@@ -21,6 +23,7 @@ import com.selector.picture.utils.PicUtils;
 import com.selector.picture.utils.StringUtils;
 import com.selector.picture.utils.UIUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +58,7 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void bindViewHolder(final Context context, final LocalMedia model) {
+    public void bindViewHolder(final PhotoSelectActivity context, final LocalMedia model) {
         if (context == null || model == null) return;
         PicUtils.getInstances().loadImage(context, iv_picture, model.getPath());
         String mimeType = StringUtils.nullToString(model.getPictureType());
@@ -84,7 +87,7 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 //跳转预览
-                context.startActivity(new Intent(context, PhotoPreviewsActivity.class));
+                UIUtils.startActivityForResult(context, adapter.getCurrentMedia(), model);
             }
         });
         ll_check.setOnClickListener(new View.OnClickListener() {

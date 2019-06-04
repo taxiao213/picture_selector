@@ -1,11 +1,14 @@
 package com.selector.picture.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.selector.picture.model.LocalMedia;
 import com.selector.picture.utils.ImageLoadListener;
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
@@ -22,6 +26,7 @@ import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.LocalMediaLoader;
 import com.selector.picture.model.PicConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,9 +80,28 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
         }
     }
 
-    public void setResult(Intent intent){
-        setResult(RESULT_OK,intent);
+    public void setResult(Intent intent) {
+        setResult(RESULT_OK, intent);
         finish();
+    }
+
+    public void startActivity(){
+        Intent intent = new Intent(mActivity, PhotoPreviewsActivity.class);
+        intent.putParcelableArrayListExtra(Constant.ACTION_TYPE1, new ArrayList<LocalMedia>());
+        mActivity.startActivityForResult(intent, Constant.TYPE1);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case Constant.TYPE1:
+                    if (pictureSelectorFragment != null) {
+                        pictureSelectorFragment.setResult();
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
@@ -118,12 +142,12 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.e("----","onSaveInstanceState");
+        Log.e("----", "onSaveInstanceState");
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.e("----","onRestoreInstanceState");
+        Log.e("----", "onRestoreInstanceState");
     }
 }

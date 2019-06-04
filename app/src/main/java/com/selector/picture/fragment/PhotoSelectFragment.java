@@ -2,6 +2,7 @@ package com.selector.picture.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.activity.PhotoPreviewsActivity;
 import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.adapter.GridItemDecoration;
 import com.selector.picture.adapter.GridPicAdapter;
@@ -81,7 +83,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         ry.setLayoutManager(gridLayoutManager);
         ry.addItemDecoration(new GridItemDecoration());
         list = new ArrayList<>();
-        adapter = new GridPicAdapter(activity, PhotoSelectFragment.this, this, list);
+        adapter = new GridPicAdapter((PhotoSelectActivity) activity, PhotoSelectFragment.this, this, list);
         ry.setAdapter(adapter);
         ry.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -202,8 +204,11 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                     initBottomCenterText();
                     break;
                 case R.id.tv_bottom_preview_text:
-                    //底部右侧预览按钮
-
+                    //底部右侧预览按钮3
+                    if (activity != null) {
+                       // UIUtils.startActivityForResult((PhotoSelectActivity) activity, getSendMedia(), null);
+                        ((PhotoSelectActivity)activity).startActivity();
+                    }
                     break;
 
             }
@@ -262,7 +267,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
     /**
      * 选择后返回数据
      */
-    private void setResult() {
+    public void setResult() {
         if (sendMedia != null && sendMedia.size() > 0) {
             if (activity != null) {
                 ArrayList<String> arrayList = new ArrayList<>();

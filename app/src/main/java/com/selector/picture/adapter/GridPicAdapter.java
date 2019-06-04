@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.selector.picture.R;
+import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.fragment.PhotoSelectFragment;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.utils.OnItemClickListener;
@@ -24,12 +25,12 @@ import java.util.List;
  */
 public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
 
-    private Context mContext;
+    private PhotoSelectActivity mContext;
     private List<LocalMedia> mList;
     private OnItemClickListener<LocalMedia> mOnItemClickListener;
     private PhotoSelectFragment mFragment;
 
-    public GridPicAdapter(Context context, PhotoSelectFragment fragment, OnItemClickListener<LocalMedia> onItemClickListener, List<LocalMedia> list) {
+    public GridPicAdapter(PhotoSelectActivity context, PhotoSelectFragment fragment, OnItemClickListener<LocalMedia> onItemClickListener, List<LocalMedia> list) {
         this.mContext = context;
         this.mFragment = fragment;
         this.mOnItemClickListener = onItemClickListener;
@@ -65,5 +66,14 @@ public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 获取当前相册集合
+     *
+     * @return List<LocalMedia>
+     */
+    public List<LocalMedia> getCurrentMedia() {
+        return mList;
     }
 }

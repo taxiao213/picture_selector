@@ -111,4 +111,20 @@ public class PicUtils {
                 .error(R.drawable.image_placeholder)
                 .into(imageView);
     }
+
+    /**
+     * 加载图片
+     *
+     * @param context   Context
+     * @param imageView ImageView
+     * @param file      文件路径
+     */
+    public void loadPreviewPhoto(Context context, ImageView imageView, String file) {
+        GlideApp.with(context)
+                .load(file)
+                .centerCrop()
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.image_placeholder)
+                .into(imageView);
+    }
 }

@@ -27,12 +27,17 @@ public class Constant {
     public static int PIC_ANIMATION_DURATION = 450;//设置执行动画的时间
 
 
+    public static final int TYPE1 = 1;//参数区分
+    public static final int TYPE2 = 2;//参数区分
+    public static final int TYPE3 = 3;//参数区分
+    public static final int TYPE4 = 4;//参数区分
+    public static final int TYPE5 = 5;//参数区分
 
-    public static int TYPE1 = 1;//参数区分
-    public static int TYPE2 = 2;//参数区分
-    public static int TYPE3 = 3;//参数区分
-    public static int TYPE4 = 4;//参数区分
-    public static int TYPE5 = 5;//参数区分
+    public static String ACTION_TYPE1 = "actoin_type1";//参数区分
+    public static String ACTION_TYPE2 = "actoin_type2";//参数区分
+    public static String ACTION_TYPE3 = "actoin_type3";//参数区分
+    public static String ACTION_TYPE4 = "actoin_type4";//参数区分
+    public static String ACTION_TYPE5 = "actoin_type5";//参数区分
 
     public static long PIC_UNITS_SECONDS = 1000L;//从数据库查询的秒值*1000 转换为毫秒值
 

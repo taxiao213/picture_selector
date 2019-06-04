@@ -1,7 +1,10 @@
 package com.selector.picture.fragment;
 
+import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
 import com.selector.picture.base.BaseFragment;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
@@ -17,6 +21,7 @@ import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.view.DialogUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,6 +40,9 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
 
     private ArrayList<LocalMedia> sendMedia;//发送和预览的集合
     private TextView tvTopSendText;
+    private ViewPager vp;
+    private PhotoPreviewFragmentAdapter adapter;
+    private ArrayList<LocalMedia> list;
 
 
     @Override
@@ -44,6 +52,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void initData() {
+        activity = getActivity();
         View view = getView();
         RelativeLayout rlTopRoot = view.findViewById(R.id.rl_top_root);//顶部根布局
         ImageView ivTopLeftBack = view.findViewById(R.id.iv_top_left_back);//顶部左侧后退按钮
@@ -56,7 +65,11 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         tvBottomLeftTextPreviews = view.findViewById(R.id.tv_bottom_lef_text_previews);//底部左侧编辑
         tvBottomCenterTextPreviews = view.findViewById(R.id.tv_bottom_center_text_previews);//底部中间原图标题
         tvBottomSelectTextPreviews = view.findViewById(R.id.tv_bottom_select_text_previews);//底部右侧选择按钮
-
+        vp = view.findViewById(R.id.vp);  //viewpager
+        list = new ArrayList<>();
+        adapter = new PhotoPreviewFragmentAdapter(getChildFragmentManager(), list);
+        vp.setAdapter(adapter);
+        //  vp.setCurrentItem();
     }
 
     @Override
@@ -70,7 +83,10 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     break;
                 case R.id.tv_top_send_text:
                     //顶部右侧发送按钮
-                    //setResult();
+                    if (activity != null) {
+                        activity.setResult(Activity.RESULT_OK);
+                        activity.finish();
+                    }
                     break;
                 case R.id.tv_bottom_lef_text_previews:
                     //编辑
@@ -87,6 +103,36 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     break;
 
             }
+        }
+    }
+
+    public void setData(ArrayList<LocalMedia> listLocalMedia, LocalMedia currentMedia) {
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        list.clear();
+        if (listLocalMedia != null) {
+            list.addAll(listLocalMedia);
+        }
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        int position = 0;
+        if (currentMedia != null) {
+            if (listLocalMedia != null && listLocalMedia.size() > 0) {
+                for (int i = 0; i < listLocalMedia.size(); i++) {
+                    LocalMedia media = listLocalMedia.get(i);
+                    if (media != null) {
+                        if (TextUtils.equals(media.getId(), currentMedia.getId())) {
+                            position = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (vp != null) {
+            vp.setCurrentItem(position);
         }
     }
 }

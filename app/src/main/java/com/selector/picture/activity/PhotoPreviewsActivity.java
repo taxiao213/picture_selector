@@ -1,6 +1,8 @@
 package com.selector.picture.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -9,7 +11,10 @@ import com.selector.picture.base.BaseActivity;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.fragment.PhotoPreviewsFragment;
 import com.selector.picture.fragment.PhotoSelectFragment;
+import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.PicConfig;
+
+import java.util.ArrayList;
 
 /**
  * 图片预览
@@ -39,6 +44,13 @@ public class PhotoPreviewsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        Intent intent = getIntent();
+        if (intent != null) {
+            ArrayList<LocalMedia> list = intent.getParcelableArrayListExtra(Constant.ACTION_TYPE1);
+            LocalMedia currentMedia = intent.getParcelableExtra(Constant.ACTION_TYPE2);
+            if (previewsFragment != null) {
+                previewsFragment.setData(list, currentMedia);
+            }
+        }
     }
 }
