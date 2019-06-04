@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -244,12 +245,11 @@ public class UIUtils {
     /**
      * 跳转预览界面
      */
-    public static void startActivityForResult(PhotoSelectActivity context, List<LocalMedia> list, LocalMedia model) {
+    public static void startActivityForResult(PhotoSelectActivity context, LocalMedia model) {
         if (context == null) return;
-        Intent intent = new Intent(context, PhotoPreviewsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putParcelableArrayListExtra(Constant.ACTION_TYPE1, (ArrayList<? extends Parcelable>) list);
+        Intent intent = new Intent(context, PhotoPreviewsActivity.class);
         if (model != null) {
-            intent.putExtra(Constant.ACTION_TYPE2, model);
+            intent.putExtra(Constant.ACTION_TYPE1, model);
         }
         context.startActivityForResult(intent, Constant.TYPE1);
     }

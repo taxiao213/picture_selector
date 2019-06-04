@@ -38,7 +38,7 @@ public class PhotoPreviewsActivity extends BaseActivity {
         if (manager != null) {
             FragmentTransaction transaction = manager.beginTransaction();
             previewsFragment = new PhotoPreviewsFragment();
-            transaction.add(R.id.fl, previewsFragment).commit();
+            transaction.add(R.id.fl, previewsFragment, Constant.FRAGMENT_TAG2).commit();
         }
     }
 
@@ -46,10 +46,9 @@ public class PhotoPreviewsActivity extends BaseActivity {
     protected void initData() {
         Intent intent = getIntent();
         if (intent != null) {
-            ArrayList<LocalMedia> list = intent.getParcelableArrayListExtra(Constant.ACTION_TYPE1);
-            LocalMedia currentMedia = intent.getParcelableExtra(Constant.ACTION_TYPE2);
+            LocalMedia currentMedia = intent.getParcelableExtra(Constant.ACTION_TYPE1);
             if (previewsFragment != null) {
-                previewsFragment.setData(list, currentMedia);
+                previewsFragment.setData(currentMedia);
             }
         }
     }

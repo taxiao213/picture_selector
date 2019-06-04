@@ -87,7 +87,7 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 //跳转预览
-                UIUtils.startActivityForResult(context, adapter.getCurrentMedia(), model);
+                UIUtils.startActivityForResult(context, model);
             }
         });
         ll_check.setOnClickListener(new View.OnClickListener() {

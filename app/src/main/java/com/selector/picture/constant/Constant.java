@@ -11,7 +11,8 @@ import com.selector.picture.model.MimeType;
  * Github:https://github.com/yin13753884368
  */
 public class Constant {
-    public static String FRAGMENT_TAG = "fragment_tag";//Fragment tag
+    public static String FRAGMENT_TAG1 = "fragment_tag1";//Fragment tag
+    public static String FRAGMENT_TAG2 = "fragment_tag2";//Fragment tag
 
     public static int PIC_DEFAULT_THEME = R.style.pictrue_white_Theme;//相册选择主题
     public static int PIC_MIN_SELECT_NUM = 1;//设置图片可选择最小数量 默认最小1个

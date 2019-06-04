@@ -1,6 +1,7 @@
 package com.selector.picture.fragment;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.selector.picture.R;
 import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
 import com.selector.picture.base.BaseFragment;
+import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.PicConfig;
@@ -106,33 +108,44 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    public void setData(ArrayList<LocalMedia> listLocalMedia, LocalMedia currentMedia) {
-        if (list == null) {
-            list = new ArrayList<>();
-        }
-        list.clear();
-        if (listLocalMedia != null) {
-            list.addAll(listLocalMedia);
-        }
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
-        int position = 0;
-        if (currentMedia != null) {
-            if (listLocalMedia != null && listLocalMedia.size() > 0) {
-                for (int i = 0; i < listLocalMedia.size(); i++) {
-                    LocalMedia media = listLocalMedia.get(i);
-                    if (media != null) {
-                        if (TextUtils.equals(media.getId(), currentMedia.getId())) {
-                            position = i;
-                            break;
+    public void setData(LocalMedia currentMedia) {
+        if (activity != null) {
+            List<LocalMedia> listLocalMedia = new ArrayList<>();
+            PhotoSelectFragment fragmentPhotoSelect = (PhotoSelectFragment) activity.getSupportFragmentManager().findFragmentByTag(Constant.FRAGMENT_TAG1);
+            if (fragmentPhotoSelect != null) {
+                if (currentMedia != null) {
+                    listLocalMedia = fragmentPhotoSelect.getCurrentMedia();
+                } else {
+                    listLocalMedia = fragmentPhotoSelect.getSendMedia();
+                }
+            }
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+            list.clear();
+            if (listLocalMedia != null) {
+                list.addAll(listLocalMedia);
+            }
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+            int position = 0;
+            if (currentMedia != null) {
+                if (listLocalMedia != null && listLocalMedia.size() > 0) {
+                    for (int i = 0; i < listLocalMedia.size(); i++) {
+                        LocalMedia media = listLocalMedia.get(i);
+                        if (media != null) {
+                            if (TextUtils.equals(media.getId(), currentMedia.getId())) {
+                                position = i;
+                                break;
+                            }
                         }
                     }
                 }
             }
-        }
-        if (vp != null) {
-            vp.setCurrentItem(position);
+            if (vp != null) {
+                vp.setCurrentItem(position);
+            }
         }
     }
 }

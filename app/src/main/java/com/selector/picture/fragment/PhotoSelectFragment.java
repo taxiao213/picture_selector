@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class PhotoSelectFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener<LocalMedia> {
 
-    private List<LocalMedia> list;
+    private List<LocalMedia> list;//当前选择相册数据的集合
     private GridPicAdapter adapter;
     private FragmentActivity activity;
     private TextView tvBottomLeftText;
@@ -205,9 +205,11 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                     break;
                 case R.id.tv_bottom_preview_text:
                     //底部右侧预览按钮3
-                    if (activity != null) {
-                       // UIUtils.startActivityForResult((PhotoSelectActivity) activity, getSendMedia(), null);
-                        ((PhotoSelectActivity)activity).startActivity();
+                    List<LocalMedia> sendMedia = getSendMedia();
+                    if (sendMedia != null && sendMedia.size() > 0) {
+                        if (activity != null) {
+                            UIUtils.startActivityForResult((PhotoSelectActivity) activity, null);
+                        }
                     }
                     break;
 
@@ -292,6 +294,17 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         return sendMedia;
     }
 
+
+    /**
+     * 获取当前选择相册数据的集合
+     *
+     * @return List<LocalMedia>
+     */
+    public List<LocalMedia> getCurrentMedia() {
+        return list;
+    }
+
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -303,11 +316,5 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         super.onViewStateRestored(savedInstanceState);
         Log.e("fragment----", "onRestoreInstanceState");
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
 
 }

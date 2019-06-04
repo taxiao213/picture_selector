@@ -50,11 +50,11 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
             if (manager != null) {
                 FragmentTransaction transaction = manager.beginTransaction();
                 pictureSelectorFragment = new PhotoSelectFragment();
-                transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG).show(pictureSelectorFragment).commit();
+                transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG1).show(pictureSelectorFragment).commit();
             }
         } else {
             if (manager != null) {
-                pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG);
+                pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG1);
             }
         }
     }
