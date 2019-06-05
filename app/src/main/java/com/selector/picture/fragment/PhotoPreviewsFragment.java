@@ -1,6 +1,8 @@
 package com.selector.picture.fragment;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -13,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.activity.PhotoPreviewsActivity;
 import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
 import com.selector.picture.base.BaseFragment;
 import com.selector.picture.constant.Constant;
@@ -22,6 +25,8 @@ import com.selector.picture.model.PicConfig;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.view.DialogUtils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -67,11 +72,22 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         tvBottomLeftTextPreviews = view.findViewById(R.id.tv_bottom_lef_text_previews);//底部左侧编辑
         tvBottomCenterTextPreviews = view.findViewById(R.id.tv_bottom_center_text_previews);//底部中间原图标题
         tvBottomSelectTextPreviews = view.findViewById(R.id.tv_bottom_select_text_previews);//底部右侧选择按钮
+        tvTopSendText.setOnClickListener(this);
+        ivTopLeftBack.setOnClickListener(this);
+        tvBottomCenterTextPreviews.setOnClickListener(this);
+        tvBottomSelectTextPreviews.setOnClickListener(this);
         vp = view.findViewById(R.id.vp);  //viewpager
         list = new ArrayList<>();
         adapter = new PhotoPreviewFragmentAdapter(getChildFragmentManager(), list);
         vp.setAdapter(adapter);
         //  vp.setCurrentItem();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            LocalMedia loaclMedia = bundle.getParcelable(Constant.ACTION_TYPE1);
+            if (loaclMedia != null) {
+                setData(loaclMedia);
+            }
+        }
     }
 
     @Override
@@ -86,8 +102,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                 case R.id.tv_top_send_text:
                     //顶部右侧发送按钮
                     if (activity != null) {
-                        activity.setResult(Activity.RESULT_OK);
-                        activity.finish();
+                        ((PhotoPreviewsActivity) activity).setResult();
                     }
                     break;
                 case R.id.tv_bottom_lef_text_previews:

@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -45,17 +46,14 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        FragmentManager manager = getSupportFragmentManager();
-        if (savedInstanceState == null) {
-            if (manager != null) {
-                FragmentTransaction transaction = manager.beginTransaction();
+        FragmentManager manager = mActivity.getSupportFragmentManager();
+        if (manager != null) {
+            pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG1);
+            if (pictureSelectorFragment == null) {
                 pictureSelectorFragment = new PhotoSelectFragment();
-                transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG1).show(pictureSelectorFragment).commit();
             }
-        } else {
-            if (manager != null) {
-                pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG1);
-            }
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG1).commit();
         }
     }
 
@@ -85,11 +83,12 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
         finish();
     }
 
-    public void startActivity(){
+    public void startActivity() {
         Intent intent = new Intent(mActivity, PhotoPreviewsActivity.class);
         intent.putParcelableArrayListExtra(Constant.ACTION_TYPE1, new ArrayList<LocalMedia>());
         mActivity.startActivityForResult(intent, Constant.TYPE1);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -3,6 +3,7 @@ package com.selector.picture.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 public class PhotoPreviewsActivity extends BaseActivity {
 
     private PhotoPreviewsFragment previewsFragment;
+    private LocalMedia currentMedia;
 
     @Override
     protected void setThem() {
@@ -34,22 +36,35 @@ public class PhotoPreviewsActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        FragmentManager manager = getSupportFragmentManager();
+        FragmentManager manager = mActivity.getSupportFragmentManager();
+        Intent intent = getIntent();
+        if (intent != null) {
+            currentMedia = intent.getParcelableExtra(Constant.ACTION_TYPE1);
+        }
         if (manager != null) {
+            previewsFragment = (PhotoPreviewsFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG2);
+            if (previewsFragment == null) {
+                previewsFragment = new PhotoPreviewsFragment();
+                if (currentMedia != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(Constant.ACTION_TYPE1, currentMedia);
+                    previewsFragment.setArguments(bundle);
+                }
+            } else {
+                previewsFragment.setData(currentMedia);
+            }
             FragmentTransaction transaction = manager.beginTransaction();
-            previewsFragment = new PhotoPreviewsFragment();
             transaction.add(R.id.fl, previewsFragment, Constant.FRAGMENT_TAG2).commit();
         }
     }
 
     @Override
     protected void initData() {
-        Intent intent = getIntent();
-        if (intent != null) {
-            LocalMedia currentMedia = intent.getParcelableExtra(Constant.ACTION_TYPE1);
-            if (previewsFragment != null) {
-                previewsFragment.setData(currentMedia);
-            }
-        }
+
+    }
+
+    public void setResult() {
+        setResult(RESULT_OK);
+        finish();
     }
 }
