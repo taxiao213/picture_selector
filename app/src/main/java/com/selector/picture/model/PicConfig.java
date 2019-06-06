@@ -5,6 +5,8 @@ import android.support.annotation.IntRange;
 
 import com.selector.picture.constant.Constant;
 
+import java.util.List;
+
 /**
  * 相册选择配置
  * Create by Han on 2019/5/20
@@ -26,6 +28,8 @@ public class PicConfig {
     private boolean loadAnimation;//设置是否加载动画，默认false
     private boolean loadOriginalImage;//是否选择原图，默认false
     private boolean loadVoice;//是否有点击声音，默认false
+    private List<LocalMedia> list;//当前选择相册数据的集合
+    private List<LocalMedia> sendMedia;//发送和预览的集合
 
     private PicConfig() {
         this.mTheme = Constant.PIC_DEFAULT_THEME;
@@ -260,5 +264,43 @@ public class PicConfig {
      */
     public boolean isloadVoice() {
         return loadVoice;
+    }
+
+
+    /**
+     * 设置当前选择相册数据的集合
+     *
+     * @param localMedia List<LocalMedia>
+     */
+    public void setCurrentList(List<LocalMedia> localMedia) {
+        this.list = localMedia;
+    }
+
+    /**
+     * 获取当前选择相册数据的集合
+     *
+     * @return List<LocalMedia>
+     */
+    public List<LocalMedia> getCurrentList() {
+        return list;
+    }
+
+
+    /**
+     * 设置发送和预览的集合
+     *
+     * @param localMedia List<LocalMedia>
+     */
+    public void setSendList(List<LocalMedia> localMedia) {
+        this.sendMedia = localMedia;
+    }
+
+    /**
+     * 获取发送和预览的集合
+     *
+     * @return List<LocalMedia>
+     */
+    public List<LocalMedia> getSendList() {
+        return sendMedia;
     }
 }

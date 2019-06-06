@@ -22,6 +22,7 @@ import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.PicConfig;
+import com.selector.picture.model.PicSelector;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.view.DialogUtils;
 
@@ -45,7 +46,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     private TextView tvBottomCenterTextPreviews;
     private TextView tvBottomSelectTextPreviews;
 
-    private ArrayList<LocalMedia> sendMedia;//发送和预览的集合
+    private List<LocalMedia> sendMedia;//发送和预览的集合
     private TextView tvTopSendText;
     private ViewPager vp;
     private PhotoPreviewFragmentAdapter adapter;
@@ -80,14 +81,29 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         list = new ArrayList<>();
         adapter = new PhotoPreviewFragmentAdapter(getChildFragmentManager(), list);
         vp.setAdapter(adapter);
-        //  vp.setCurrentItem();
+        vp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                LocalMedia media = list.get(position);
+                if (media != null) {
+                    tvBottomSelectTextPreviews.setSelected(media.isChecked());
+                } else {
+                    tvBottomSelectTextPreviews.setSelected(false);
+                }
+            }
+        });
         Bundle bundle = getArguments();
         if (bundle != null) {
             LocalMedia loaclMedia = bundle.getParcelable(Constant.ACTION_TYPE1);
             if (loaclMedia != null) {
                 setData(loaclMedia);
             }
+        } else {
+            setData(null);
         }
+        sendMedia = PicConfig.getInstances().getSendList();
+        setText();
+        initBottomCenterText();
     }
 
     @Override
@@ -102,38 +118,43 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                 case R.id.tv_top_send_text:
                     //顶部右侧发送按钮
                     if (activity != null) {
-                        ((PhotoPreviewsActivity) activity).setResult();
+                        if (sendMedia != null && sendMedia.size() > 0) {
+                            ((PhotoPreviewsActivity) activity).setResult();
+                        }
                     }
                     break;
                 case R.id.tv_bottom_lef_text_previews:
                     //编辑
 
                     break;
-                case R.id.tv_bottom_center_text:
+                case R.id.tv_bottom_center_text_previews:
                     //是否选择原图
                     PicConfig.getInstances().setLoadOriginalImage(!PicConfig.getInstances().isLoadOriginalImage());
-//                    initBottomCenterText();
+                    initBottomCenterText();
                     break;
-                case R.id.tv_bottom_preview_text:
+                case R.id.tv_bottom_select_text_previews:
                     //底部右侧选择
-
+//                    tvBottomSelectTextPreviews.setSelected(true);
                     break;
 
             }
         }
     }
 
+    /**
+     * 设置预览的图片
+     *
+     * @param currentMedia LocalMedia 选择预览跳转 为null 选择图片跳转不为null
+     */
     public void setData(LocalMedia currentMedia) {
         if (activity != null) {
-            List<LocalMedia> listLocalMedia = new ArrayList<>();
-            PhotoSelectFragment fragmentPhotoSelect = (PhotoSelectFragment) activity.getSupportFragmentManager().findFragmentByTag(Constant.FRAGMENT_TAG1);
-            if (fragmentPhotoSelect != null) {
-                if (currentMedia != null) {
-                    listLocalMedia = fragmentPhotoSelect.getCurrentMedia();
-                } else {
-                    listLocalMedia = fragmentPhotoSelect.getSendMedia();
-                }
+            List<LocalMedia> listLocalMedia;
+            if (currentMedia != null) {
+                listLocalMedia = PicConfig.getInstances().getCurrentList();
+            } else {
+                listLocalMedia = PicConfig.getInstances().getSendList();
             }
+
             if (list == null) {
                 list = new ArrayList<>();
             }
@@ -162,5 +183,37 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                 vp.setCurrentItem(position);
             }
         }
+    }
+
+    /**
+     * 设置发送和预览按钮状态
+     */
+    private void setText() {
+        if (sendMedia != null && sendMedia.size() > 0) {
+            setSelected(true);
+            tvTopSendText.setText(getString(R.string.picture_selector_top_send_text_select, String.valueOf(sendMedia.size()), String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+//            tvBottomPreviewText.setText(getString(R.string.picture_selector_bottom_preview_text, String.valueOf(sendMedia.size())));
+        } else {
+            setSelected(false);
+            tvTopSendText.setText(R.string.picture_selector_top_send_text_default);
+//            tvBottomPreviewText.setText(R.string.picture_selector_bottom_preview_default);
+        }
+    }
+
+    /**
+     * 设置view 选中
+     *
+     * @param isSelected true选中  false未选中
+     */
+    public void setSelected(boolean isSelected) {
+        tvTopSendText.setSelected(isSelected);
+//        tvBottomPreviewText.setSelected(isSelected);
+    }
+
+    /**
+     * 设置原图  默认false
+     */
+    private void initBottomCenterText() {
+        tvBottomCenterTextPreviews.setSelected(PicConfig.getInstances().isLoadOriginalImage());
     }
 }

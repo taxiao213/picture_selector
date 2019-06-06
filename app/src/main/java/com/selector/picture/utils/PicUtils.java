@@ -120,6 +120,7 @@ public class PicUtils {
      * @param file      文件路径
      */
     public void loadPreviewPhoto(Context context, ImageView imageView, String file) {
+        if (context == null) return;
         GlideApp.with(context)
                 .load(file)
                 .centerCrop()

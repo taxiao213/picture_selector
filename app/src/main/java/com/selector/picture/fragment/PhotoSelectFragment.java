@@ -52,7 +52,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
     private TextView tvBottomLeftText;
     private TextView tvBottomCenterText;
     private List<LocalMediaFolder> localMediaFolders;//本地所有数据的集合
-    private ArrayList<LocalMedia> sendMedia;//发送和预览的集合
+    private List<LocalMedia> sendMedia;//发送和预览的集合
     private TextView tvTopSendText;
     private TextView tvBottomPreviewText;
     private TextView tvTopSlideLeftText;
@@ -171,6 +171,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
             mediaFolders.setChecked(true);
             list.addAll(mediaFolders.getImages());
         }
+        PicConfig.getInstances().setCurrentList(list);
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -235,6 +236,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
             if (checked) {
                 sendMedia.add(localMedia);
             }
+            PicConfig.getInstances().setSendList(sendMedia);
         }
         setText();
     }

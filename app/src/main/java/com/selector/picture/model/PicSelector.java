@@ -28,7 +28,6 @@ public class PicSelector {
 
     private WeakReference<Activity> mActivity;
     private WeakReference<Fragment> mFragment;
-
     private int mRequestCode;//设置返回的请求code
     private PicConfig mConfig;
 
