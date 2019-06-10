@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.selector.picture.view.photoview.PhotoView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/iv_photo"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:layout_height="match_parent">
 
+    <com.selector.picture.view.photoview.PhotoView
+        android:id="@+id/iv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside" />
 
-</com.selector.picture.view.photoview.PhotoView>
+    <RelativeLayout
+        android:id="@+id/rl_play"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/preview_video_player" />
+    </RelativeLayout>
+
+</RelativeLayout>
+

@@ -32,9 +32,18 @@ public class LocalMedia implements Parcelable {
     private boolean isChecked;
     private boolean isCut;
     private boolean compressed;
+    private boolean isSelect;//是否选择用于预览界面RecyclerView
 
     public LocalMedia() {
 
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
     }
 
     public String getAddedTime() {

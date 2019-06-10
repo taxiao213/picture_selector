@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 
 import com.selector.picture.fragment.PhotoFragment;
 import com.selector.picture.model.LocalMedia;
+import com.selector.picture.utils.OnItemClickListener;
 
 import java.util.ArrayList;
 
@@ -27,11 +28,13 @@ public class PhotoPreviewFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        return PhotoFragment.newInstances(mList.get(i).getPath());
+        return PhotoFragment.newInstances(mList.get(i));
     }
 
     @Override
     public int getCount() {
         return mList.size();
     }
+
+
 }

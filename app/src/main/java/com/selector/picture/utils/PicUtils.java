@@ -113,6 +113,24 @@ public class PicUtils {
     }
 
     /**
+     * 加载预览底部图片
+     *
+     * @param context   Context
+     * @param imageView ImageView
+     * @param file      文件路径
+     */
+    public void loadPreviewImage(Context context, ImageView imageView, String file) {
+        if (context == null) return;
+        GlideApp.with(context)
+                .asBitmap()
+                .load(file)
+                .centerCrop()
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.image_placeholder)
+                .into(imageView);
+    }
+
+    /**
      * 加载图片
      *
      * @param context   Context

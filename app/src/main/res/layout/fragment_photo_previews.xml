@@ -21,16 +21,13 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ry_previews"
             android:layout_width="match_parent"
-            android:layout_height="?attr/picture_selector_previews_ry_height"
-            android:layout_marginBottom="@dimen/picture_selector_previews_margin_top"
-            android:layout_marginStart="@dimen/picture_selector_previews_margin_start"
-            android:layout_marginTop="@dimen/picture_selector_previews_margin_top"
+            android:layout_height="80dp"
             android:orientation="horizontal" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/grey_ef" />
+            android:background="@color/grey_db" />
 
         <include layout="@layout/picture_selector_previews_bottom" />
     </LinearLayout>

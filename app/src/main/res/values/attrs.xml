@@ -36,7 +36,7 @@
 
     <!--预览界面底部布局-->
     <attr name="picture_selector_previews_ll_bg" format="reference|color" />             <!--预览界面底部背景色-->
-    <attr name="picture_selector_previews_ry_height" format="dimension" />               <!--预览界面底部recyclerview高度-->
+
 
 
 

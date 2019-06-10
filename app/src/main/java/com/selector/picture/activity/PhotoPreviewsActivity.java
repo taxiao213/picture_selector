@@ -14,6 +14,7 @@ import com.selector.picture.fragment.PhotoPreviewsFragment;
 import com.selector.picture.fragment.PhotoSelectFragment;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.PicConfig;
+import com.selector.picture.utils.UIUtils;
 
 import java.util.ArrayList;
 
@@ -56,6 +57,7 @@ public class PhotoPreviewsActivity extends BaseActivity {
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.fl, previewsFragment, Constant.FRAGMENT_TAG2).commit();
         }
+//        UIUtils.setSystemUIVisible(this, false);
     }
 
     @Override

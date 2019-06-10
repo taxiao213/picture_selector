@@ -43,8 +43,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AlbumViewHolder viewHolder, int position) {
-        AlbumViewHolder picViewHolder = (AlbumViewHolder) viewHolder;
-        picViewHolder.bindViewHolder(mContext, mList.get(position));
+        viewHolder.bindViewHolder(mContext, mList.get(position));
     }
 
     @Override

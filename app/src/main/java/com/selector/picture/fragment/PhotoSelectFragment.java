@@ -209,7 +209,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                     List<LocalMedia> sendMedia = getSendMedia();
                     if (sendMedia != null && sendMedia.size() > 0) {
                         if (activity != null) {
-                            UIUtils.startActivityForResult((PhotoSelectActivity) activity, null);
+                            UIUtils.startActivityForResult((PhotoSelectActivity) activity,null);
                         }
                     }
                     break;

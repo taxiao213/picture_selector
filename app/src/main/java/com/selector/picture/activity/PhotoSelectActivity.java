@@ -149,4 +149,11 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
         super.onRestoreInstanceState(savedInstanceState);
         Log.e("----", "onRestoreInstanceState");
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PicConfig.getInstances().setCurrentList(null);
+        PicConfig.getInstances().setSendList(null);
+    }
 }

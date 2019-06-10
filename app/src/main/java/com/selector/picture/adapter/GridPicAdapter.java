@@ -46,8 +46,7 @@ public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull GridPicViewHolder viewHolder, int position) {
-        GridPicViewHolder picViewHolder = (GridPicViewHolder) viewHolder;
-        picViewHolder.bindViewHolder(mContext, mList.get(position));
+        viewHolder.bindViewHolder(mContext, mList.get(position));
     }
 
     @Override

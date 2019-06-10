@@ -1,14 +1,26 @@
 package com.selector.picture.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,14 +28,18 @@ import android.widget.TextView;
 
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoPreviewsActivity;
+import com.selector.picture.adapter.PhotoPreviewAdapter;
 import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
 import com.selector.picture.base.BaseFragment;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
+import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicConfig;
 import com.selector.picture.model.PicSelector;
 import com.selector.picture.utils.OnItemClickListener;
+import com.selector.picture.utils.StringUtils;
+import com.selector.picture.utils.UIUtils;
 import com.selector.picture.view.DialogUtils;
 
 import java.security.MessageDigest;
@@ -39,18 +55,25 @@ import java.util.List;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickListener {
+public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener<LocalMedia> {
 
-    private FragmentActivity activity;
-    private TextView tvBottomLeftTextPreviews;
+    private PhotoPreviewsActivity activity;
+    private TextView tvTopLeftText;
+    private TextView tvTopSendText;
     private TextView tvBottomCenterTextPreviews;
     private TextView tvBottomSelectTextPreviews;
-
-    private List<LocalMedia> sendMedia;//发送和预览的集合
-    private TextView tvTopSendText;
     private ViewPager vp;
     private PhotoPreviewFragmentAdapter adapter;
-    private ArrayList<LocalMedia> list;
+    private PhotoPreviewAdapter adapterPreview;
+    private ArrayList<LocalMedia> list;//viewpager数据集合
+    private ArrayList<LocalMedia> listPreview;//底部recyclerview数据集合
+    private List<LocalMedia> sendMedia;//发送和预览的集合
+    private int position = 0;
+    private TextView tvBottomLeftTextPreviews;
+    private RecyclerView ryPreviews;
+    private boolean isHide = false;//显示隐藏top 和 bottom view
+    private RelativeLayout rlTopRoot;
+    private LinearLayout llBottomRootPreviews;
 
 
     @Override
@@ -60,38 +83,38 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void initData() {
-        activity = getActivity();
+        activity = (PhotoPreviewsActivity) getActivity();
+        list = new ArrayList<>();
+        listPreview = new ArrayList<>();
         View view = getView();
-        RelativeLayout rlTopRoot = view.findViewById(R.id.rl_top_root);//顶部根布局
+        rlTopRoot = view.findViewById(R.id.rl_top_root);//顶部根布局
         ImageView ivTopLeftBack = view.findViewById(R.id.iv_top_left_back);//顶部左侧后退按钮
-        TextView tvTopLeftText = view.findViewById(R.id.tv_top_lef_text);//顶部左侧标题
+        tvTopLeftText = view.findViewById(R.id.tv_top_lef_text); //顶部左侧标题
         tvTopSendText = view.findViewById(R.id.tv_top_send_text); //顶部右侧发送按钮
-
-        LinearLayout llBottomRootPreviews = view.findViewById(R.id.ll_bottom_root_previews); //底部根布局
-        RecyclerView ryPreviews = view.findViewById(R.id.ry_previews);//recyclerview
-
-        tvBottomLeftTextPreviews = view.findViewById(R.id.tv_bottom_lef_text_previews);//底部左侧编辑
+        llBottomRootPreviews = view.findViewById(R.id.ll_bottom_root_previews); //底部根布局
+        ryPreviews = view.findViewById(R.id.ry_previews);//recyclerview
+        tvBottomLeftTextPreviews = view.findViewById(R.id.tv_bottom_lef_text_previews); //底部左侧编辑
         tvBottomCenterTextPreviews = view.findViewById(R.id.tv_bottom_center_text_previews);//底部中间原图标题
         tvBottomSelectTextPreviews = view.findViewById(R.id.tv_bottom_select_text_previews);//底部右侧选择按钮
+        vp = view.findViewById(R.id.vp);  //viewpager
         tvTopSendText.setOnClickListener(this);
         ivTopLeftBack.setOnClickListener(this);
         tvBottomCenterTextPreviews.setOnClickListener(this);
         tvBottomSelectTextPreviews.setOnClickListener(this);
-        vp = view.findViewById(R.id.vp);  //viewpager
-        list = new ArrayList<>();
+
         adapter = new PhotoPreviewFragmentAdapter(getChildFragmentManager(), list);
         vp.setAdapter(adapter);
         vp.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                LocalMedia media = list.get(position);
-                if (media != null) {
-                    tvBottomSelectTextPreviews.setSelected(media.isChecked());
-                } else {
-                    tvBottomSelectTextPreviews.setSelected(false);
-                }
+                super.onPageSelected(position);
+                setVPCurrent(position);
             }
         });
+        ryPreviews.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        adapterPreview = new PhotoPreviewAdapter(activity, this, this, listPreview);
+        ryPreviews.setAdapter(adapterPreview);
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             LocalMedia loaclMedia = bundle.getParcelable(Constant.ACTION_TYPE1);
@@ -101,9 +124,26 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         } else {
             setData(null);
         }
+
         sendMedia = PicConfig.getInstances().getSendList();
         setText();
         initBottomCenterText();
+        listPreview.clear();
+        if (sendMedia != null) {
+            listPreview.addAll(sendMedia);
+        }
+        if (listPreview != null && listPreview.size() > 0) {
+            ryPreviews.setVisibility(View.VISIBLE);
+            adapterPreview.notifyDataSetChanged();
+        } else {
+            ryPreviews.setVisibility(View.GONE);
+        }
+
+        if (position == 0) {
+            setVPCurrent(position);
+        } else {
+            vp.setCurrentItem(position);
+        }
     }
 
     @Override
@@ -119,7 +159,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     //顶部右侧发送按钮
                     if (activity != null) {
                         if (sendMedia != null && sendMedia.size() > 0) {
-                            ((PhotoPreviewsActivity) activity).setResult();
+                            activity.setResult();
                         }
                     }
                     break;
@@ -165,7 +205,6 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
             }
-            int position = 0;
             if (currentMedia != null) {
                 if (listLocalMedia != null && listLocalMedia.size() > 0) {
                     for (int i = 0; i < listLocalMedia.size(); i++) {
@@ -179,10 +218,46 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     }
                 }
             }
-            if (vp != null) {
-                vp.setCurrentItem(position);
-            }
         }
+    }
+
+    /**
+     * 设置当前的vp 信息
+     *
+     * @param position 0时没有onPageSelected 回调
+     */
+    private void setVPCurrent(int position) {
+        LocalMedia media = list.get(position);
+        if (media != null) {
+            String mimeType = StringUtils.nullToString(media.getPictureType());
+            int pictureType = MimeType.isPictureType(mimeType);
+            if (pictureType == MimeType.TYPE_IMAGE) {
+                tvBottomLeftTextPreviews.setVisibility(View.VISIBLE);
+                tvBottomCenterTextPreviews.setVisibility(View.VISIBLE);
+            } else {
+                tvBottomLeftTextPreviews.setVisibility(View.GONE);
+                tvBottomCenterTextPreviews.setVisibility(View.GONE);
+            }
+            tvBottomSelectTextPreviews.setSelected(media.isChecked());
+            if (listPreview != null && listPreview.size() > 0) {
+                String id = media.getId();
+                for (int i = 0; i < listPreview.size(); i++) {
+                    LocalMedia localMedia = listPreview.get(i);
+                    if (localMedia != null) {
+                        if (TextUtils.equals(id, localMedia.getId())) {
+                            localMedia.setSelect(true);
+                            ryPreviews.scrollToPosition(i);
+                        } else {
+                            localMedia.setSelect(false);
+                        }
+                    }
+                }
+                adapterPreview.notifyDataSetChanged();
+            }
+        } else {
+            tvBottomSelectTextPreviews.setSelected(false);
+        }
+        tvTopLeftText.setText(getString(R.string.picture_previews_top_left_text, String.valueOf(position + 1), String.valueOf(list.size())));
     }
 
     /**
@@ -215,5 +290,41 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
      */
     private void initBottomCenterText() {
         tvBottomCenterTextPreviews.setSelected(PicConfig.getInstances().isLoadOriginalImage());
+    }
+
+    /**
+     * 显示隐藏top 和 bottom view    true 隐藏  false 显示
+     */
+    public void hideView() {
+        this.isHide = !isHide;
+        if (isHide) {
+            rlTopRoot.setVisibility(View.GONE);
+            llBottomRootPreviews.setVisibility(View.GONE);
+//            UIUtils.setSystemUIVisible(activity, false);
+//            adapter.notifyDataSetChanged();
+        } else {
+            rlTopRoot.setVisibility(View.VISIBLE);
+            llBottomRootPreviews.setVisibility(View.VISIBLE);
+//            UIUtils.setSystemUIVisible(activity, true);
+//            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onItemClick(LocalMedia currentMedia) {
+        if (currentMedia != null) {
+            if (list != null && list.size() > 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    LocalMedia media = list.get(i);
+                    if (media != null) {
+                        if (TextUtils.equals(media.getId(), currentMedia.getId())) {
+                            position = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        vp.setCurrentItem(position);
     }
 }

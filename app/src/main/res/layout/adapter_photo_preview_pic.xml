@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/root_rl"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/preview_pic_selector"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/iv_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_placeholder" />
+
+        <TextView
+            android:id="@+id/tv_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/image_gif"
+            android:text="@string/picture_selector_pic_gif_tag"
+            android:textColor="@color/white_trans"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_long_chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/image_gif"
+            android:text="@string/picture_selector_pic_long"
+            android:textColor="@color/white_trans"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bottom_video_bg"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/bottom_video_icon"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="8dp"
+            android:textColor="@color/white_trans"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:ignore="RtlSymmetry" />
+    </RelativeLayout>
+</RelativeLayout>

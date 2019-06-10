@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+
+    <external-files-path
+        name="Pictures"
+        path="/" />
+
+    <files-path
+        name="Pictures"
+        path="/" />
+
+    <external-path
+        name="files_root"
+        path="Android/data/${applicationId}/" />
+
+    <root-path
+        name="root"
+        path="/" />
+</paths>
