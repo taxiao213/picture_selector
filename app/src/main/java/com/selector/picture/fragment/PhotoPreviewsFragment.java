@@ -298,14 +298,14 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     public void hideView() {
         this.isHide = !isHide;
         if (isHide) {
+            UIUtils.setSystemUIVisible(activity, false);
             rlTopRoot.setVisibility(View.GONE);
             llBottomRootPreviews.setVisibility(View.GONE);
-//            UIUtils.setSystemUIVisible(activity, false);
 //            adapter.notifyDataSetChanged();
         } else {
+            UIUtils.setSystemUIVisible(activity, true);
             rlTopRoot.setVisibility(View.VISIBLE);
             llBottomRootPreviews.setVisibility(View.VISIBLE);
-//            UIUtils.setSystemUIVisible(activity, true);
 //            adapter.notifyDataSetChanged();
         }
     }

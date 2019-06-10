@@ -141,7 +141,7 @@ public class PicUtils {
         if (context == null) return;
         GlideApp.with(context)
                 .load(file)
-                .centerCrop()
+                .centerInside()
                 .placeholder(R.drawable.image_placeholder)
                 .error(R.drawable.image_placeholder)
                 .into(imageView);
