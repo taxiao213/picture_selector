@@ -29,20 +29,20 @@ public class PhotoPreviewAdapter extends RecyclerView.Adapter<PhotoPreviewViewHo
     private PhotoPreviewsActivity mContext;
     private List<LocalMedia> mList;
     private OnItemClickListener<LocalMedia> mOnItemClickListener;
-    private PhotoPreviewsFragment mFragment;
+    private int mType;//1 加载的全部数据(删除增加) 2 预览数据(不选择 显示遮罩)
 
-    public PhotoPreviewAdapter(PhotoPreviewsActivity context, PhotoPreviewsFragment fragment, OnItemClickListener<LocalMedia> onItemClickListener, List<LocalMedia> list) {
+    public PhotoPreviewAdapter(PhotoPreviewsActivity context, OnItemClickListener<LocalMedia> onItemClickListener, List<LocalMedia> list, int type) {
         this.mContext = context;
-        this.mFragment = fragment;
         this.mOnItemClickListener = onItemClickListener;
         this.mList = list;
+        this.mType = type;
     }
 
     @NonNull
     @Override
     public PhotoPreviewViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_photo_preview_pic, viewGroup, false);
-        return new PhotoPreviewViewHolder(view, PhotoPreviewAdapter.this, mOnItemClickListener);
+        return new PhotoPreviewViewHolder(view, PhotoPreviewAdapter.this, mOnItemClickListener, mType);
     }
 
     @Override
@@ -54,6 +54,5 @@ public class PhotoPreviewAdapter extends RecyclerView.Adapter<PhotoPreviewViewHo
     public int getItemCount() {
         return mList.size();
     }
-
 
 }

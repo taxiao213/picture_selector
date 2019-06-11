@@ -63,17 +63,18 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     private TextView tvBottomCenterTextPreviews;
     private TextView tvBottomSelectTextPreviews;
     private ViewPager vp;
+    private TextView tvBottomLeftTextPreviews;
+    private RecyclerView ryPreviews;
+    private RelativeLayout rlTopRoot;
+    private LinearLayout llBottomRootPreviews;
     private PhotoPreviewFragmentAdapter adapter;
     private PhotoPreviewAdapter adapterPreview;
     private ArrayList<LocalMedia> list;//viewpager数据集合
     private ArrayList<LocalMedia> listPreview;//底部recyclerview数据集合
     private List<LocalMedia> sendMedia;//发送和预览的集合
-    private int position = 0;
-    private TextView tvBottomLeftTextPreviews;
-    private RecyclerView ryPreviews;
+    private int currentPosition = 0;
+    private int type;//1 加载的全部数据 2 预览数据
     private boolean isHide = false;//显示隐藏top 和 bottom view
-    private RelativeLayout rlTopRoot;
-    private LinearLayout llBottomRootPreviews;
 
 
     @Override
@@ -108,22 +109,22 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                setVPCurrent(position);
+                currentPosition = position;
+                setVPCurrent();
             }
         });
-        ryPreviews.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-        adapterPreview = new PhotoPreviewAdapter(activity, this, this, listPreview);
-        ryPreviews.setAdapter(adapterPreview);
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             LocalMedia loaclMedia = bundle.getParcelable(Constant.ACTION_TYPE1);
             if (loaclMedia != null) {
-                setData(loaclMedia);
+                setData(loaclMedia, Constant.TYPE1);
             }
         } else {
-            setData(null);
+            setData(null, Constant.TYPE2);
         }
+        ryPreviews.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        adapterPreview = new PhotoPreviewAdapter(activity, this, listPreview, type);
+        ryPreviews.setAdapter(adapterPreview);
 
         sendMedia = PicConfig.getInstances().getSendList();
         setText();
@@ -132,17 +133,10 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         if (sendMedia != null) {
             listPreview.addAll(sendMedia);
         }
-        if (listPreview != null && listPreview.size() > 0) {
-            ryPreviews.setVisibility(View.VISIBLE);
-            adapterPreview.notifyDataSetChanged();
+        if (currentPosition == 0) {
+            setVPCurrent();
         } else {
-            ryPreviews.setVisibility(View.GONE);
-        }
-
-        if (position == 0) {
-            setVPCurrent(position);
-        } else {
-            vp.setCurrentItem(position);
+            vp.setCurrentItem(currentPosition);
         }
     }
 
@@ -174,9 +168,92 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     break;
                 case R.id.tv_bottom_select_text_previews:
                     //底部右侧选择
-//                    tvBottomSelectTextPreviews.setSelected(true);
+                    setBottomAndTopText();
                     break;
 
+            }
+        }
+    }
+
+    /**
+     * 设置底部和顶部数据
+     */
+    private void setBottomAndTopText() {
+        LocalMedia media = list.get(currentPosition);
+        if (media != null) {
+            boolean checked = media.isChecked();
+            if (!checked) {
+                if (UIUtils.selectNumNotice(sendMedia, activity)) return;
+            }
+            media.setChecked(!checked);
+            selectModel(media, sendMedia, Constant.TYPE1);
+            selectModel(media, listPreview, Constant.TYPE2);
+        }
+        setVPCurrent();
+        setText();
+    }
+
+    /**
+     * 选择model 添加和删除状态
+     *
+     * @param media    LocalMedia
+     * @param list     List<LocalMedia>
+     * @param listType int   1发送集合 2底部预览集合
+     */
+    private void selectModel(LocalMedia media, List<LocalMedia> list, int listType) {
+        boolean presence = false;
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                LocalMedia localMedia = list.get(i);
+                if (localMedia != null) {
+                    if (TextUtils.equals(media.getId(), localMedia.getId())) {
+                        presence = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (listType == Constant.TYPE1) {
+            setSelectStatus(media, list, presence);
+        } else if (listType == Constant.TYPE2) {
+            if (type == Constant.TYPE1) {
+                setSelectStatus(media, list, presence);
+            } else if (type == Constant.TYPE2) {
+                if (presence) {
+                    if (list.size() > 0) {
+                        for (int i = 0; i < list.size(); i++) {
+                            LocalMedia localMedia = list.get(i);
+                            if (localMedia != null) {
+                                if (TextUtils.equals(media.getId(), localMedia.getId())) {
+                                    localMedia.setDelete(!media.isChecked());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * 选择model 添加和删除状态
+     *
+     * @param media    LocalMedia
+     * @param list     List<LocalMedia>
+     * @param presence true 存在该model  false 不存在
+     */
+    private void setSelectStatus(LocalMedia media, List<LocalMedia> list, boolean presence) {
+        if (presence) {
+            if (!media.isChecked()) {
+                list.remove(media);
+            }
+        } else {
+            if (media.isChecked()) {
+                if (list != null) {
+                    list.add(media);
+                }
             }
         }
     }
@@ -185,9 +262,11 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
      * 设置预览的图片
      *
      * @param currentMedia LocalMedia 选择预览跳转 为null 选择图片跳转不为null
+     * @param type         1 Constant.TYPE1(全部数据)  2 Constant.TYPE2(预览数据)
      */
-    public void setData(LocalMedia currentMedia) {
+    public void setData(LocalMedia currentMedia, int type) {
         if (activity != null) {
+            this.type = type;
             List<LocalMedia> listLocalMedia;
             if (currentMedia != null) {
                 listLocalMedia = PicConfig.getInstances().getCurrentList();
@@ -211,7 +290,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                         LocalMedia media = listLocalMedia.get(i);
                         if (media != null) {
                             if (TextUtils.equals(media.getId(), currentMedia.getId())) {
-                                position = i;
+                                currentPosition = i;
                                 break;
                             }
                         }
@@ -222,12 +301,10 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     }
 
     /**
-     * 设置当前的vp 信息
-     *
-     * @param position 0时没有onPageSelected 回调
+     * 设置当前的vp 信息   0时没有onPageSelected 回调
      */
-    private void setVPCurrent(int position) {
-        LocalMedia media = list.get(position);
+    private void setVPCurrent() {
+        LocalMedia media = list.get(currentPosition);
         if (media != null) {
             String mimeType = StringUtils.nullToString(media.getPictureType());
             int pictureType = MimeType.isPictureType(mimeType);
@@ -252,12 +329,15 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                         }
                     }
                 }
+                ryPreviews.setVisibility(View.VISIBLE);
                 adapterPreview.notifyDataSetChanged();
+            } else {
+                ryPreviews.setVisibility(View.GONE);
             }
         } else {
             tvBottomSelectTextPreviews.setSelected(false);
         }
-        tvTopLeftText.setText(getString(R.string.picture_previews_top_left_text, String.valueOf(position + 1), String.valueOf(list.size())));
+        tvTopLeftText.setText(getString(R.string.picture_previews_top_left_text, String.valueOf(currentPosition + 1), String.valueOf(list.size())));
     }
 
     /**
@@ -267,11 +347,9 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         if (sendMedia != null && sendMedia.size() > 0) {
             setSelected(true);
             tvTopSendText.setText(getString(R.string.picture_selector_top_send_text_select, String.valueOf(sendMedia.size()), String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
-//            tvBottomPreviewText.setText(getString(R.string.picture_selector_bottom_preview_text, String.valueOf(sendMedia.size())));
         } else {
             setSelected(false);
             tvTopSendText.setText(R.string.picture_selector_top_send_text_default);
-//            tvBottomPreviewText.setText(R.string.picture_selector_bottom_preview_default);
         }
     }
 
@@ -282,7 +360,6 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
      */
     public void setSelected(boolean isSelected) {
         tvTopSendText.setSelected(isSelected);
-//        tvBottomPreviewText.setSelected(isSelected);
     }
 
     /**
@@ -298,15 +375,15 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     public void hideView() {
         this.isHide = !isHide;
         if (isHide) {
-            UIUtils.setSystemUIVisible(activity, false);
+//            UIUtils.setSystemUIVisible(activity, false);
             rlTopRoot.setVisibility(View.GONE);
             llBottomRootPreviews.setVisibility(View.GONE);
-//            adapter.notifyDataSetChanged();
+
         } else {
-            UIUtils.setSystemUIVisible(activity, true);
+//            UIUtils.setSystemUIVisible(activity, true);
             rlTopRoot.setVisibility(View.VISIBLE);
             llBottomRootPreviews.setVisibility(View.VISIBLE);
-//            adapter.notifyDataSetChanged();
+
         }
     }
 
@@ -318,13 +395,28 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     LocalMedia media = list.get(i);
                     if (media != null) {
                         if (TextUtils.equals(media.getId(), currentMedia.getId())) {
-                            position = i;
+                            currentPosition = i;
                             break;
                         }
                     }
                 }
             }
         }
-        vp.setCurrentItem(position);
+        vp.setCurrentItem(currentPosition);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (type == Constant.TYPE2) {
+            if (listPreview != null && listPreview.size() > 0) {
+                for (int i = 0; i < listPreview.size(); i++) {
+                    LocalMedia media = listPreview.get(i);
+                    if (media != null) {
+                        media.setDelete(false);
+                    }
+                }
+            }
+        }
     }
 }

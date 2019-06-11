@@ -68,4 +68,7 @@
     <color name="image_overlay_true">@color/black_trans_80</color>
     <color name="image_overlay_false">@color/black_trans_20</color>
 
+    <color name="image_preview_overlay_true">#70ffffff</color>
+    <color name="image_preview_overlay_false">#30ffffff</color>
+
 </resources>

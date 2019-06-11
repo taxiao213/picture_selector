@@ -52,12 +52,17 @@ public class PhotoPreviewsActivity extends BaseActivity {
                     previewsFragment.setArguments(bundle);
                 }
             } else {
-                previewsFragment.setData(currentMedia);
+                if (currentMedia != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(Constant.ACTION_TYPE1, currentMedia);
+                    previewsFragment.setArguments(bundle);
+                } else {
+                    previewsFragment.setData(null, Constant.TYPE2);
+                }
             }
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.fl, previewsFragment, Constant.FRAGMENT_TAG2).commit();
         }
-//        UIUtils.setSystemUIVisible(this, false);
     }
 
     @Override

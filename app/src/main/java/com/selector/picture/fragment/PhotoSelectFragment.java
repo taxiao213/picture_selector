@@ -46,16 +46,16 @@ import java.util.List;
  */
 public class PhotoSelectFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener<LocalMedia> {
 
-    private List<LocalMedia> list;//当前选择相册数据的集合
     private GridPicAdapter adapter;
     private FragmentActivity activity;
     private TextView tvBottomLeftText;
     private TextView tvBottomCenterText;
-    private List<LocalMediaFolder> localMediaFolders;//本地所有数据的集合
-    private List<LocalMedia> sendMedia;//发送和预览的集合
     private TextView tvTopSendText;
     private TextView tvBottomPreviewText;
     private TextView tvTopSlideLeftText;
+    private List<LocalMedia> list;//当前选择相册数据的集合
+    private List<LocalMediaFolder> localMediaFolders;//本地所有数据的集合
+    private List<LocalMedia> sendMedia;//发送和预览的集合
 
     @Override
     protected int initView() {
@@ -209,7 +209,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                     List<LocalMedia> sendMedia = getSendMedia();
                     if (sendMedia != null && sendMedia.size() > 0) {
                         if (activity != null) {
-                            UIUtils.startActivityForResult((PhotoSelectActivity) activity,null);
+                            UIUtils.startActivityForResult((PhotoSelectActivity) activity, null);
                         }
                     }
                     break;
@@ -306,6 +306,15 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         return list;
     }
 
+    /**
+     * 刷新界面数据
+     */
+    public void notifyDataSetChanged() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        setText();
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

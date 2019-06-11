@@ -97,20 +97,7 @@ public class GridPicViewHolder extends RecyclerView.ViewHolder {
                 if (selected) {
                     if (adapter != null) {
                         List<LocalMedia> sendMedia = adapter.getSendMedia();
-                        if (sendMedia != null && (sendMedia.size() >= PicConfig.getInstances().getMaxSelectNum())) {
-                            if (PicConfig.getInstances().getImageType() == MimeType.TYPE_ALL) {
-                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_all_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
-                            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_IMAGE) {
-                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_pic_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
-                            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_VIDEO) {
-                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_video_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
-                            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_AUDIO) {
-                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_audio_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
-                            } else {
-                                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_all_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
-                            }
-                            return;
-                        }
+                        if (UIUtils.selectNumNotice(sendMedia, context)) return;
                     }
                 }
                 model.setChecked(selected);

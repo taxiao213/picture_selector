@@ -28,6 +28,7 @@ import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.base.BaseActivity;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
+import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicConfig;
 
 import java.io.File;
@@ -159,6 +160,23 @@ public class UIUtils {
     }
 
     /**
+     * 设置选中文件的状态 选中有阴影
+     *
+     * @param imageView 图片
+     * @param selected  true 选中 false 不选择
+     * @param type      1 加载的全部数据(删除增加) 2 预览数据(不选择 显示遮罩)
+     */
+    public static void setPreviewSelectStatus(  ImageView imageView, boolean selected, int type) {
+        if (type == Constant.TYPE2) {
+            if (selected) {
+                imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), R.color.image_preview_overlay_true), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), R.color.image_preview_overlay_false), PorterDuff.Mode.SRC_ATOP);
+            }
+        }
+    }
+
+    /**
      * 设置选中执行的动画
      *
      * @param imageView 执行动画的view
@@ -221,6 +239,31 @@ public class UIUtils {
      */
     public static void toastShow(Context context, String str) {
         Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 设置选择数量上限的提示
+     *
+     * @param sendMedia List<LocalMedia>
+     * @param context   Context
+     * @return boolean
+     */
+    public static boolean selectNumNotice(List<LocalMedia> sendMedia, Context context) {
+        if (sendMedia != null && (sendMedia.size() >= PicConfig.getInstances().getMaxSelectNum())) {
+            if (PicConfig.getInstances().getImageType() == MimeType.TYPE_ALL) {
+                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_all_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_IMAGE) {
+                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_pic_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_VIDEO) {
+                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_video_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+            } else if (PicConfig.getInstances().getImageType() == MimeType.TYPE_AUDIO) {
+                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_audio_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+            } else {
+                UIUtils.toastShow(context, context.getString(R.string.picture_selector_notice_all_count, String.valueOf(PicConfig.getInstances().getMaxSelectNum())));
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

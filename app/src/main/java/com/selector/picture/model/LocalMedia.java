@@ -33,9 +33,18 @@ public class LocalMedia implements Parcelable {
     private boolean isCut;
     private boolean compressed;
     private boolean isSelect;//是否选择用于预览界面RecyclerView
+    private boolean isDelete;//是否删除用于预览界面RecyclerView true 删除显示遮罩 false不删除不显示
 
     public LocalMedia() {
 
+    }
+
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
     }
 
     public boolean isSelect() {

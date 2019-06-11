@@ -39,12 +39,14 @@ public class PhotoPreviewViewHolder extends RecyclerView.ViewHolder {
     private View currentView;
     private PhotoPreviewAdapter adapter;
     private OnItemClickListener<LocalMedia> mOnItemClickListener;
+    private int mType;//1 加载的全部数据(删除增加) 2 预览数据(不选择 显示遮罩)
 
-    PhotoPreviewViewHolder(@NonNull View itemView, PhotoPreviewAdapter adapter, OnItemClickListener<LocalMedia> onItemClickListener) {
+    PhotoPreviewViewHolder(@NonNull View itemView, PhotoPreviewAdapter adapter, OnItemClickListener<LocalMedia> onItemClickListener, int type) {
         super(itemView);
         this.currentView = itemView;
         this.adapter = adapter;
         this.mOnItemClickListener = onItemClickListener;
+        this.mType = type;
         root_rl = itemView.findViewById(R.id.root_rl);
         iv_picture = itemView.findViewById(R.id.iv_picture);
         tv_gif = itemView.findViewById(R.id.tv_gif);
@@ -71,6 +73,7 @@ public class PhotoPreviewViewHolder extends RecyclerView.ViewHolder {
         tv_gif.setVisibility(MimeType.isGif(mimeType) ? View.VISIBLE : View.GONE);
         tv_long_chart.setVisibility(UIUtils.isLongImg(model) ? View.VISIBLE : View.GONE);
         root_rl.setSelected(model.isSelect());
+        UIUtils.setPreviewSelectStatus(iv_picture, model.isDelete(), mType);
         currentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,4 +84,5 @@ public class PhotoPreviewViewHolder extends RecyclerView.ViewHolder {
         });
 
     }
+
 }

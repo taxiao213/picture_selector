@@ -100,6 +100,10 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
                     }
                     break;
             }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            if (pictureSelectorFragment != null) {
+                pictureSelectorFragment.notifyDataSetChanged();
+            }
         }
     }
 
