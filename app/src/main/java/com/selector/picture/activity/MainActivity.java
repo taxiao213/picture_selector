@@ -1,6 +1,7 @@
 package com.selector.picture.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -80,8 +81,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case 10:
-                    ArrayList<String> strings = PicSelector.obtainResult(data);
+                    ArrayList<String> strings = PicSelector.obtainResultFile(data);
                     Log.e("--- ", "list == " + strings.toString());
+                    ArrayList<Uri> uris = PicSelector.obtainResultUri(mActivity, data);
+                    Log.e("--- ", "uris == " + uris.toString());
                     break;
             }
         }

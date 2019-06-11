@@ -277,12 +277,7 @@ public class UIUtils {
                 intent.setAction(android.content.Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 File file = new File(filePath);
-                Uri uri = null;
-                if (Build.VERSION.SDK_INT >= 24) {
-                    uri = FileProvider.getUriForFile(mActivity, "com.selector.picture.provider", file);
-                } else {
-                    uri = Uri.fromFile(file);
-                }
+                Uri uri = getUri(mActivity, file);
                 intent.setDataAndType(uri, mime);
                 mActivity.startActivity(intent);
             } catch (Exception e) {
@@ -291,6 +286,23 @@ public class UIUtils {
         } else {
             toastShow(mActivity, mActivity.getString(R.string.picture_previews_not_open_file));
         }
+    }
+
+    /**
+     * 返回Uri格式
+     *
+     * @param mActivity Context
+     * @param file      File 文件路径
+     * @return Uri
+     */
+    public static Uri getUri(Context mActivity, File file) {
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= 24) {
+            uri = FileProvider.getUriForFile(mActivity, "com.selector.picture.provider", file);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        return uri;
     }
 
     /**

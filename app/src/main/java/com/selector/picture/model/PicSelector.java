@@ -1,6 +1,7 @@
 package com.selector.picture.model;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
@@ -8,11 +9,14 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.constant.Constant;
+import com.selector.picture.utils.UIUtils;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -237,20 +241,37 @@ public class PicSelector {
     }
 
     /**
-     * 返回选择后的结果
+     * 返回选择后的结果 ArrayList<String>
      *
      * @param data Intent
      * @return ArrayList<String>
      */
-    public static ArrayList<String> obtainResult(Intent data) {
+    public static ArrayList<String> obtainResultFile(Intent data) {
         if (data == null) return null;
         return data.getStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY);
     }
 
-//    public static List<Uri> obtainResult(Intent data) {
-//        if (data == null) return null;
-//        return data.getParcelableArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY);
-//    }
+    /**
+     * 返回选择后的结果 List<Uri>
+     *
+     * @param context Context
+     * @param data    Intent
+     * @return List<Uri>
+     */
+    public static ArrayList<Uri> obtainResultUri(Context context, Intent data) {
+        if (data == null) return null;
+        ArrayList<Uri> uriList = new ArrayList<>();
+        ArrayList<String> list = data.getStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY);
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                String path = list.get(i);
+                if (!TextUtils.isEmpty(path)) {
+                    uriList.add(UIUtils.getUri(context, new File(path)));
+                }
+            }
+        }
+        return uriList;
+    }
 
 
     /**
