@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import com.selector.picture.R;
 import com.selector.picture.utils.UIUtils;
+import com.selector.picture.view.StatusBarUtil;
 
 /**
  * Create by Han on 2019/5/10
@@ -35,16 +36,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setTheme(R.style.pictrue_white_Theme);
         setThem();
         mActivity = BaseActivity.this;
         setContentView(R.layout.activity_base);
         initView(savedInstanceState);
         initData();
         dialog = new ProgressDialog(mActivity);
-
-        UIUtils.changeStatusBar(this, false);
-
+        StatusBarUtil.changeStatusBar(this, false);
     }
 
     /**

@@ -1,25 +1,19 @@
 package com.selector.picture.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,19 +27,14 @@ import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
 import com.selector.picture.base.BaseFragment;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
-import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicConfig;
-import com.selector.picture.model.PicSelector;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.StringUtils;
 import com.selector.picture.utils.UIUtils;
-import com.selector.picture.view.DialogUtils;
+import com.selector.picture.view.StatusBarUtil;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -75,6 +64,10 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     private int currentPosition = 0;
     private int type;//1 加载的全部数据 2 预览数据
     private boolean isHide = false;//显示隐藏top 和 bottom view
+    private float heightTop;//顶部布局高度
+    private float heightBottom;//底部布局高度
+    private float heightBottomRy;//底部布局ry高度
+    private float heightBottomLine;//底部布局line高度
 
 
     @Override
@@ -98,6 +91,12 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         tvBottomCenterTextPreviews = view.findViewById(R.id.tv_bottom_center_text_previews);//底部中间原图标题
         tvBottomSelectTextPreviews = view.findViewById(R.id.tv_bottom_select_text_previews);//底部右侧选择按钮
         vp = view.findViewById(R.id.vp);  //viewpager
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rlTopRoot.getLayoutParams();
+        layoutParams.topMargin = StatusBarUtil.getStatusBarHeight(activity);
+        heightTop = activity.getResources().getDimension(R.dimen.picture_selector_top_height);
+        heightBottom = activity.getResources().getDimension(R.dimen.picture_selector_bottom_height);
+        heightBottomRy = activity.getResources().getDimension(R.dimen.picture_selector_previews_ry_height);
+        heightBottomLine = activity.getResources().getDimension(R.dimen.picture_selector_previews_ry_line_height);
         tvTopSendText.setOnClickListener(this);
         ivTopLeftBack.setOnClickListener(this);
         tvBottomCenterTextPreviews.setOnClickListener(this);
@@ -330,8 +329,14 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     }
                 }
                 ryPreviews.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
+                params.height = (int) heightBottom + (int) heightBottomRy + (int) heightBottomLine;
+                llBottomRootPreviews.requestLayout();
                 adapterPreview.notifyDataSetChanged();
             } else {
+                ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
+                params.height = (int) heightBottom;
+                llBottomRootPreviews.requestLayout();
                 ryPreviews.setVisibility(View.GONE);
             }
         } else {
@@ -375,15 +380,25 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     public void hideView() {
         this.isHide = !isHide;
         if (isHide) {
-//            UIUtils.setSystemUIVisible(activity, false);
-            rlTopRoot.setVisibility(View.GONE);
-            llBottomRootPreviews.setVisibility(View.GONE);
-
+            if (activity != null) {
+                activity.immersiveHide();
+            }
+            UIUtils.startAnimation(rlTopRoot, heightTop, 0);
+            if (sendMedia != null && sendMedia.size() > 0) {
+                UIUtils.startAnimation(llBottomRootPreviews, heightBottom + heightBottomRy + heightBottomLine, 0);
+            } else {
+                UIUtils.startAnimation(llBottomRootPreviews, heightBottom, 0);
+            }
         } else {
-//            UIUtils.setSystemUIVisible(activity, true);
-            rlTopRoot.setVisibility(View.VISIBLE);
-            llBottomRootPreviews.setVisibility(View.VISIBLE);
-
+            if (activity != null) {
+                activity.immersiveShow();
+            }
+            UIUtils.startAnimation(rlTopRoot, 0, heightTop);
+            if (sendMedia != null && sendMedia.size() > 0) {
+                UIUtils.startAnimation(llBottomRootPreviews, 0, heightBottom + heightBottomRy + heightBottomLine);
+            } else {
+                UIUtils.startAnimation(llBottomRootPreviews, 0, heightBottom);
+            }
         }
     }
 

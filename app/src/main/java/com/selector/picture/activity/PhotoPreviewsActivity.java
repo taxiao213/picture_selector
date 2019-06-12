@@ -2,21 +2,17 @@ package com.selector.picture.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.fragment.PhotoPreviewsFragment;
-import com.selector.picture.fragment.PhotoSelectFragment;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.PicConfig;
-import com.selector.picture.utils.UIUtils;
-
-import java.util.ArrayList;
+import com.selector.picture.view.StatusBarUtil;
 
 /**
  * 图片预览
@@ -63,6 +59,22 @@ public class PhotoPreviewsActivity extends BaseActivity {
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.add(R.id.fl, previewsFragment, Constant.FRAGMENT_TAG2).commit();
         }
+        immersiveShow();
+    }
+
+    /**
+     * 状态栏显示
+     */
+    public void immersiveShow() {
+        StatusBarUtil.setStatusBar(mActivity, true);
+        StatusBarUtil.immersive(mActivity, ContextCompat.getColor(mActivity, R.color.white_trans), 1.0f);
+    }
+
+    /**
+     * 状态栏隐藏
+     */
+    public void immersiveHide() {
+        StatusBarUtil.setStatusBar(mActivity, false);
     }
 
     @Override

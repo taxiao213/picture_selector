@@ -1,11 +1,14 @@
 package com.selector.picture.view;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.FloatRange;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -86,7 +89,9 @@ public class StatusBarUtil {
         }
     }
 
-    /** 设置状态栏darkMode,字体颜色及icon变黑(目前支持MIUI6以上,Flyme4以上,Android M以上) */
+    /**
+     * 设置状态栏darkMode,字体颜色及icon变黑(目前支持MIUI6以上,Flyme4以上,Android M以上)
+     */
     public static void darkMode(Activity activity) {
         darkMode(activity.getWindow(), DEFAULT_COLOR, DEFAULT_ALPHA);
     }
@@ -95,14 +100,16 @@ public class StatusBarUtil {
         darkMode(activity.getWindow(), color, alpha);
     }
 
-    /** 设置状态栏darkMode,字体颜色及icon变黑(目前支持MIUI6以上,Flyme4以上,Android M以上) */
+    /**
+     * 设置状态栏darkMode,字体颜色及icon变黑(目前支持MIUI6以上,Flyme4以上,Android M以上)
+     */
     public static void darkMode(Window window, int color, @FloatRange(from = 0.0, to = 1.0) float alpha) {
         if (isFlyme4Later()) {
             darkModeForFlyme4(window, true);
-            immersive(window,color,alpha);
+            immersive(window, color, alpha);
         } else if (isMIUI6Later()) {
             darkModeForMIUI6(window, true);
-            immersive(window,color,alpha);
+            immersive(window, color, alpha);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             darkModeForM(window, true);
             immersive(window, color, alpha);
@@ -125,7 +132,9 @@ public class StatusBarUtil {
 
     //------------------------->
 
-    /** android 6.0设置字体颜色 */
+    /**
+     * android 6.0设置字体颜色
+     */
     @RequiresApi(Build.VERSION_CODES.M)
     private static void darkModeForM(Window window, boolean dark) {
 //        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -193,14 +202,18 @@ public class StatusBarUtil {
         }
     }
 
-    /** 判断是否Flyme4以上 */
+    /**
+     * 判断是否Flyme4以上
+     */
     public static boolean isFlyme4Later() {
         return Build.FINGERPRINT.contains("Flyme_OS_4")
                 || Build.VERSION.INCREMENTAL.contains("Flyme_OS_4")
                 || Pattern.compile("Flyme OS [4|5]", Pattern.CASE_INSENSITIVE).matcher(Build.DISPLAY).find();
     }
 
-    /** 判断是否为MIUI6以上 */
+    /**
+     * 判断是否为MIUI6以上
+     */
     public static boolean isMIUI6Later() {
         try {
             Class<?> clz = Class.forName("android.os.SystemProperties");
@@ -216,14 +229,19 @@ public class StatusBarUtil {
     //</editor-fold>
 
 
-    /** 增加View的paddingTop,增加的值为状态栏高度 */
+    /**
+     * 增加View的paddingTop,增加的值为状态栏高度
+     */
     public static void setPadding(Context context, View view) {
         if (Build.VERSION.SDK_INT >= MIN_API) {
             view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + getStatusBarHeight(context),
                     view.getPaddingRight(), view.getPaddingBottom());
         }
     }
-    /** 增加View的paddingTop,增加的值为状态栏高度 (智能判断，并设置高度)*/
+
+    /**
+     * 增加View的paddingTop,增加的值为状态栏高度 (智能判断，并设置高度)
+     */
     public static void setPaddingSmart(Context context, View view) {
         if (Build.VERSION.SDK_INT >= MIN_API) {
             ViewGroup.LayoutParams lp = view.getLayoutParams();
@@ -235,7 +253,9 @@ public class StatusBarUtil {
         }
     }
 
-    /** 增加View的高度以及paddingTop,增加的值为状态栏高度.一般是在沉浸式全屏给ToolBar用的 */
+    /**
+     * 增加View的高度以及paddingTop,增加的值为状态栏高度.一般是在沉浸式全屏给ToolBar用的
+     */
     public static void setHeightAndPadding(Context context, View view) {
         if (Build.VERSION.SDK_INT >= MIN_API) {
             ViewGroup.LayoutParams lp = view.getLayoutParams();
@@ -244,7 +264,10 @@ public class StatusBarUtil {
                     view.getPaddingRight(), view.getPaddingBottom());
         }
     }
-    /** 增加View上边距（MarginTop）一般是给高度为 WARP_CONTENT 的小控件用的*/
+
+    /**
+     * 增加View上边距（MarginTop）一般是给高度为 WARP_CONTENT 的小控件用的
+     */
     public static void setMargin(Context context, View view) {
         if (Build.VERSION.SDK_INT >= MIN_API) {
             ViewGroup.LayoutParams lp = view.getLayoutParams();
@@ -254,6 +277,7 @@ public class StatusBarUtil {
             view.setLayoutParams(lp);
         }
     }
+
     /**
      * 创建假的透明栏
      */
@@ -279,7 +303,9 @@ public class StatusBarUtil {
         return (color & 0x00ffffff) | (((int) (a * alpha)) << 24);
     }
 
-    /** 获取状态栏高度 */
+    /**
+     * 获取状态栏高度
+     */
     public static int getStatusBarHeight(Context context) {
         int result = 24;
         int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -291,4 +317,66 @@ public class StatusBarUtil {
         }
         return result;
     }
+
+    /**
+     * 导航栏，状态栏隐藏 播放器 游戏模式 在顶部下滑显示状态栏，默认隐藏
+     *
+     * @param activity Activity
+     * @param hasFocus true 有焦点 hasWindowFocus
+     */
+    public static void NavigationBarStatusBar(Activity activity, boolean hasFocus) {
+        if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+            View decorView = activity.getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
+    /**
+     * 设置状态栏背景颜色，字体颜色
+     *
+     * @param activity AppCompatActivity
+     * @param isLight  true 白色  false黑色
+     */
+    public static void changeStatusBar(Activity activity, boolean isLight) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            //设置状态栏背景颜色
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(getResources().getColor(R.color.grey_33));
+            View decorView = window.getDecorView();
+            if (decorView != null) {
+                int systemUiVisibility = decorView.getSystemUiVisibility();
+                if (isLight) {
+                    systemUiVisibility &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体颜色为白色
+                } else {
+                    systemUiVisibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体的颜色为黑色
+                }
+                decorView.setSystemUiVisibility(systemUiVisibility);
+            }
+        }
+    }
+
+    /**
+     * 状态栏是否隐藏 搭配{@link StatusBarUtil#immersive(Activity)}使用
+     *
+     * @param activity Activity
+     * @param isShow   true 显示  false 隐藏
+     */
+    public static void setStatusBar(Activity activity, boolean isShow) {
+        Window window = activity.getWindow();
+        if (window != null) {
+            if (isShow) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else {
+                window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
+        }
+    }
+
 }

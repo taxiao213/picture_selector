@@ -6,8 +6,7 @@
     <com.selector.picture.view.photoview.PhotoView
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerInside" />
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/rl_play"
@@ -17,8 +16,7 @@
         <ImageView
             android:id="@+id/iv_play"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside" />
+            android:layout_height="match_parent" />
 
         <ImageView
             android:layout_width="80dp"

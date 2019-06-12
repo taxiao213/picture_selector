@@ -1,9 +1,14 @@
 package com.selector.picture.utils;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +19,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -166,7 +172,7 @@ public class UIUtils {
      * @param selected  true 选中 false 不选择
      * @param type      1 加载的全部数据(删除增加) 2 预览数据(不选择 显示遮罩)
      */
-    public static void setPreviewSelectStatus(  ImageView imageView, boolean selected, int type) {
+    public static void setPreviewSelectStatus(ImageView imageView, boolean selected, int type) {
         if (type == Constant.TYPE2) {
             if (selected) {
                 imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), R.color.image_preview_overlay_true), PorterDuff.Mode.SRC_ATOP);
@@ -233,6 +239,28 @@ public class UIUtils {
     }
 
     /**
+     * 预览界面view展开收缩动画
+     *
+     * @param view ViewGroup
+     * @param from float
+     * @param to   float
+     */
+    public static void startAnimation(final ViewGroup view, float from, float to) {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(from, to);
+        valueAnimator.setDuration(Constant.PIC_ANIMATION_DURATION);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                ViewGroup.LayoutParams params = view.getLayoutParams();
+                params.height = (int) value;
+                view.requestLayout();
+            }
+        });
+        valueAnimator.start();
+    }
+
+    /**
      * 提示语
      *
      * @param context context
@@ -266,30 +294,6 @@ public class UIUtils {
         return false;
     }
 
-    /**
-     * 设置状态栏背景颜色，字体颜色
-     *
-     * @param activity AppCompatActivity
-     * @param isLight  true 白色  false黑色
-     */
-    public static void changeStatusBar(AppCompatActivity activity, boolean isLight) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
-            //设置状态栏背景颜色
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(getResources().getColor(R.color.grey_33));
-            View decorView = window.getDecorView();
-            if (decorView != null) {
-                int systemUiVisibility = decorView.getSystemUiVisibility();
-                if (isLight) {
-                    systemUiVisibility &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体颜色为白色
-                } else {
-                    systemUiVisibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体的颜色为黑色
-                }
-                decorView.setSystemUiVisibility(systemUiVisibility);
-            }
-        }
-    }
 
     /**
      * 跳转预览界面
@@ -348,51 +352,4 @@ public class UIUtils {
         return uri;
     }
 
-    /**
-     * 导航栏隐藏
-     *
-     * @param mActivity BaseActivity
-     */
-    public static void hideNavigationBar(BaseActivity mActivity) {
-        if (mActivity == null) return;
-        View decorView = mActivity.getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-    }
-
-    /**
-     * 导航栏显示
-     *
-     * @param mActivity BaseActivity
-     */
-    public static void showNavigationBar(BaseActivity mActivity) {
-        if (mActivity == null) return;
-        View decorView = mActivity.getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-        decorView.setSystemUiVisibility(uiOptions);
-    }
-
-    /**
-     * 导航栏和状态栏显示和隐藏
-     *
-     * @param mActivity BaseActivity
-     * @param show      true 显示，false隐藏
-     */
-    public static void setSystemUIVisible(BaseActivity mActivity, boolean show) {
-        if (show) {
-            int uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            uiFlags |= 0x00001000;
-            mActivity.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
-        } else {
-            int uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            uiFlags |= 0x00001000;
-            mActivity.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
-        }
-    }
 }
