@@ -384,7 +384,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                 activity.immersiveHide();
             }
             UIUtils.startAnimation(rlTopRoot, heightTop, 0);
-            if (sendMedia != null && sendMedia.size() > 0) {
+            if (listPreview != null && listPreview.size() > 0) {
                 UIUtils.startAnimation(llBottomRootPreviews, heightBottom + heightBottomRy + heightBottomLine, 0);
             } else {
                 UIUtils.startAnimation(llBottomRootPreviews, heightBottom, 0);
@@ -394,7 +394,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                 activity.immersiveShow();
             }
             UIUtils.startAnimation(rlTopRoot, 0, heightTop);
-            if (sendMedia != null && sendMedia.size() > 0) {
+            if (listPreview != null && listPreview.size() > 0) {
                 UIUtils.startAnimation(llBottomRootPreviews, 0, heightBottom + heightBottomRy + heightBottomLine);
             } else {
                 UIUtils.startAnimation(llBottomRootPreviews, 0, heightBottom);
