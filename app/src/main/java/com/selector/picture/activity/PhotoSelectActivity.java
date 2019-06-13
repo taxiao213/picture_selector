@@ -83,12 +83,6 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
         finish();
     }
 
-    public void startActivity() {
-        Intent intent = new Intent(mActivity, PhotoPreviewsActivity.class);
-        intent.putParcelableArrayListExtra(Constant.ACTION_TYPE1, new ArrayList<LocalMedia>());
-        mActivity.startActivityForResult(intent, Constant.TYPE1);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -157,7 +151,6 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PicConfig.getInstances().setCurrentList(null);
-        PicConfig.getInstances().setSendList(null);
+        PicConfig.getInstances().restoreConfig();
     }
 }

@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoPreviewsActivity;
+import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.adapter.PhotoPreviewAdapter;
 import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
 import com.selector.picture.base.BaseFragment;
@@ -69,6 +71,11 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     private float heightBottomRy;//底部布局ry高度
     private float heightBottomLine;//底部布局line高度
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (PhotoPreviewsActivity) context;
+    }
 
     @Override
     protected int initView() {
@@ -77,7 +84,6 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void initData() {
-        activity = (PhotoPreviewsActivity) getActivity();
         list = new ArrayList<>();
         listPreview = new ArrayList<>();
         View view = getView();
@@ -126,6 +132,10 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         ryPreviews.setAdapter(adapterPreview);
 
         sendMedia = PicConfig.getInstances().getSendList();
+        if (sendMedia == null) {
+            sendMedia = new ArrayList<>();
+            PicConfig.getInstances().setSendList(sendMedia);
+        }
         setText();
         initBottomCenterText();
         listPreview.clear();
@@ -308,8 +318,13 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
             String mimeType = StringUtils.nullToString(media.getPictureType());
             int pictureType = MimeType.isPictureType(mimeType);
             if (pictureType == MimeType.TYPE_IMAGE) {
-                tvBottomLeftTextPreviews.setVisibility(View.VISIBLE);
-                tvBottomCenterTextPreviews.setVisibility(View.VISIBLE);
+                if (MimeType.isGif(mimeType)) {
+                    tvBottomLeftTextPreviews.setVisibility(View.GONE);
+                    tvBottomCenterTextPreviews.setVisibility(View.GONE);
+                } else {
+                    tvBottomLeftTextPreviews.setVisibility(View.VISIBLE);
+                    tvBottomCenterTextPreviews.setVisibility(View.VISIBLE);
+                }
             } else {
                 tvBottomLeftTextPreviews.setVisibility(View.GONE);
                 tvBottomCenterTextPreviews.setVisibility(View.GONE);

@@ -1,7 +1,11 @@
 package com.selector.picture.constant;
 
+import android.os.Environment;
+
 import com.selector.picture.R;
 import com.selector.picture.model.MimeType;
+
+import java.io.File;
 
 /**
  * 常量类
@@ -27,7 +31,6 @@ public class Constant {
     public static boolean PIC_LOAD_VOICE = false;//是否有点击声音，默认false
     public static int PIC_ANIMATION_DURATION = 450;//设置执行动画的时间
 
-
     public static final int TYPE1 = 1;//参数区分
     public static final int TYPE2 = 2;//参数区分
     public static final int TYPE3 = 3;//参数区分
@@ -44,4 +47,8 @@ public class Constant {
 
     public static String PIC_INTENT_BUNDLE_KEY = "pic_intent_bundle_key";//bundle 意图
     public static String PIC_INTENT_ACTIVITY_KEY = "pic_intent_activity_key";//intent 意图
+
+    private static final File FILE_SD_ROOT = Environment.getExternalStorageDirectory().getAbsoluteFile();//SD卡目录
+    private static final String FILE_ROOT_NAME = "compress/";//根目录名称
+    public static final String FILE_COMPRESS_NAME = FILE_SD_ROOT + "/" + FILE_ROOT_NAME;//需要压缩图片的文件路径
 }

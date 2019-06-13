@@ -31,7 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected BaseActivity mActivity;//初始化数据
 
-    protected ProgressDialog dialog;//加载框
+    public ProgressDialog dialog;//加载框
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 打开加载框
      */
-    protected void loadingProgressDialog() {
+    public void loadingProgressDialog() {
         if (dialog != null && mActivity != null && !mActivity.isDestroyed()) {
             if (!dialog.isShowing()) {
                 dialog.show();
@@ -59,7 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 关闭加载框
      */
-    protected void cancelProgressDialog() {
+    public void cancelProgressDialog() {
         if (dialog != null && mActivity != null && !mActivity.isDestroyed()) {
             if (dialog.isShowing()) {
                 dialog.cancel();

@@ -110,7 +110,7 @@ public class UIUtils {
     }
 
     /**
-     * 是否是长图 高大于宽度的三倍时显示长图
+     * 是否是长图 高大于宽度的三倍时显示长图 宽大于高度的三倍时显示长图
      *
      * @param media LocalMedia
      * @return true 是   false 不是
@@ -119,8 +119,7 @@ public class UIUtils {
         if (null != media) {
             int width = media.getWidth();
             int height = media.getHeight();
-            int h = width * 3;
-            return height > h;
+            return height > width * 3 || width > height * 3;
         }
         return false;
     }

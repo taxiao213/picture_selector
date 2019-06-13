@@ -23,7 +23,6 @@ import com.selector.picture.view.StatusBarUtil;
  */
 public class PhotoPreviewsActivity extends BaseActivity {
 
-    private PhotoPreviewsFragment previewsFragment;
     private LocalMedia currentMedia;
 
     @Override
@@ -39,25 +38,14 @@ public class PhotoPreviewsActivity extends BaseActivity {
             currentMedia = intent.getParcelableExtra(Constant.ACTION_TYPE1);
         }
         if (manager != null) {
-            previewsFragment = (PhotoPreviewsFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG2);
-            if (previewsFragment == null) {
-                previewsFragment = new PhotoPreviewsFragment();
-                if (currentMedia != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(Constant.ACTION_TYPE1, currentMedia);
-                    previewsFragment.setArguments(bundle);
-                }
-            } else {
-                if (currentMedia != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(Constant.ACTION_TYPE1, currentMedia);
-                    previewsFragment.setArguments(bundle);
-                } else {
-                    previewsFragment.setData(null, Constant.TYPE2);
-                }
+            PhotoPreviewsFragment previewsFragment = new PhotoPreviewsFragment();
+            if (currentMedia != null) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Constant.ACTION_TYPE1, currentMedia);
+                previewsFragment.setArguments(bundle);
             }
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.fl, previewsFragment, Constant.FRAGMENT_TAG2).commit();
+            transaction.add(R.id.fl, previewsFragment).commit();
         }
         immersiveShow();
     }

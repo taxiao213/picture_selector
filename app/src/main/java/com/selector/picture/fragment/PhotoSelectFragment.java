@@ -1,5 +1,7 @@
 package com.selector.picture.fragment;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -21,12 +23,15 @@ import com.selector.picture.activity.PhotoPreviewsActivity;
 import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.adapter.GridItemDecoration;
 import com.selector.picture.adapter.GridPicAdapter;
+import com.selector.picture.base.BaseActivity;
 import com.selector.picture.base.BaseFragment;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
+import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicConfig;
 import com.selector.picture.model.PicSelector;
+import com.selector.picture.utils.CompressPicUtil;
 import com.selector.picture.utils.DateUtils;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.StringUtils;
@@ -36,6 +41,7 @@ import com.selector.picture.view.DialogUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 /**
  * 图片选择的fragment
@@ -47,7 +53,7 @@ import java.util.List;
 public class PhotoSelectFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener<LocalMedia> {
 
     private GridPicAdapter adapter;
-    private FragmentActivity activity;
+    private PhotoSelectActivity activity;
     private TextView tvBottomLeftText;
     private TextView tvBottomCenterText;
     private TextView tvTopSendText;
@@ -56,6 +62,12 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
     private List<LocalMedia> list;//当前选择相册数据的集合
     private List<LocalMediaFolder> localMediaFolders;//本地所有数据的集合
     private List<LocalMedia> sendMedia;//发送和预览的集合
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = (PhotoSelectActivity) context;
+    }
 
     @Override
     protected int initView() {
@@ -77,7 +89,6 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         tvBottomCenterText = view.findViewById(R.id.tv_bottom_center_text);//底部中间原图标题
         tvBottomPreviewText = view.findViewById(R.id.tv_bottom_preview_text);//底部右侧预览按钮
 
-        activity = getActivity();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, PicConfig.getInstances().getGridSize(), GridLayoutManager.VERTICAL, false);
         ry.setPadding(UIUtils.dp2px(activity, Constant.PIC_GRID_SPACE), 0, 0, 0);
         ry.setLayoutManager(gridLayoutManager);
@@ -274,16 +285,42 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
     public void setResult() {
         if (sendMedia != null && sendMedia.size() > 0) {
             if (activity != null) {
-                ArrayList<String> arrayList = new ArrayList<>();
-                for (LocalMedia media : sendMedia) {
-                    if (media != null) {
-                        arrayList.add(StringUtils.nullToString(media.getPath()));
+                activity.loadingProgressDialog();
+            }
+            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (activity != null) {
+                        ArrayList<String> arrayList = new ArrayList<>();
+                        if (PicConfig.getInstances().isLoadOriginalImage()) {
+                            for (LocalMedia media : sendMedia) {
+                                if (media != null) {
+                                    arrayList.add(StringUtils.nullToString(media.getPath()));
+                                }
+                            }
+                        } else {
+                            for (LocalMedia media : sendMedia) {
+                                if (media != null) {
+                                    String mimeType = StringUtils.nullToString(media.getPictureType());
+                                    int pictureType = MimeType.isPictureType(mimeType);
+                                    String path = media.getPath();
+                                    if (pictureType == MimeType.TYPE_IMAGE && !MimeType.isGif(mimeType)) {
+                                        arrayList.add(StringUtils.nullToString(CompressPicUtil.getCompToRealPath(path)));
+                                    } else {
+                                        arrayList.add(StringUtils.nullToString(path));
+                                    }
+                                }
+                            }
+                        }
+                        Intent intent = new Intent();
+                        intent.putStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY, arrayList);
+                        activity.setResult(intent);
+                        if (activity != null) {
+                            activity.cancelProgressDialog();
+                        }
                     }
                 }
-                Intent intent = new Intent();
-                intent.putStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY, arrayList);
-                ((PhotoSelectActivity) activity).setResult(intent);
-            }
+            });
         }
     }
 

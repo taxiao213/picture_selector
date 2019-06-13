@@ -303,4 +303,15 @@ public class PicConfig {
     public List<LocalMedia> getSendList() {
         return sendMedia;
     }
+
+    /**
+     * 还原配置
+     */
+    public void restoreConfig() {
+        loadAnimation = false;//设置是否加载动画，默认false
+        loadOriginalImage = false;//是否选择原图，默认false
+        loadVoice = false;//是否有点击声音，默认false
+        list = null;//当前选择相册数据的集合
+        sendMedia = null;//发送和预览的集合
+    }
 }
