@@ -314,6 +314,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
             adapter.notifyDataSetChanged();
         }
         setText();
+        initBottomCenterText();
     }
 
     @Override
