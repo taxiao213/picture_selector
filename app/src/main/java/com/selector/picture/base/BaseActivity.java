@@ -31,7 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected BaseActivity mActivity;//初始化数据
 
-    public ProgressDialog dialog;//加载框
+    protected ProgressDialog dialog;//加载框
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
