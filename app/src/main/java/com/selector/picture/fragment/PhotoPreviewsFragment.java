@@ -7,6 +7,7 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -450,6 +451,12 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                         media.setDelete(false);
                     }
                 }
+            }
+        }
+        if (adapter != null) {
+            Fragment item = adapter.getItem(currentPosition);
+            if (item != null) {
+                item.onDestroyView();
             }
         }
     }

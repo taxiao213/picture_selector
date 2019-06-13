@@ -1,6 +1,7 @@
 package com.selector.picture.activity;
 
 import android.app.Activity;
+import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -47,13 +48,29 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
     @Override
     protected void initView(Bundle savedInstanceState) {
         FragmentManager manager = mActivity.getSupportFragmentManager();
+//        if (manager != null) {
+//            pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG1);
+//            if (pictureSelectorFragment == null) {
+//                pictureSelectorFragment = new PhotoSelectFragment();
+//            }
+//            FragmentTransaction transaction = manager.beginTransaction();
+//            transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG1).commit();
+//        }
+
         if (manager != null) {
-            pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG1);
-            if (pictureSelectorFragment == null) {
-                pictureSelectorFragment = new PhotoSelectFragment();
-            }
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG1).commit();
+            if (pictureSelectorFragment != null) {
+                if (pictureSelectorFragment.isAdded()) {
+                    transaction.show(pictureSelectorFragment).commit();
+                } else {
+                    transaction.remove(pictureSelectorFragment);
+                    pictureSelectorFragment = new PhotoSelectFragment();
+                    transaction.add(R.id.fl, pictureSelectorFragment).commit();
+                }
+            } else {
+                pictureSelectorFragment = new PhotoSelectFragment();
+                transaction.add(R.id.fl, pictureSelectorFragment).commit();
+            }
         }
     }
 

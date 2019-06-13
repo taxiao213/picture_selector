@@ -91,7 +91,7 @@ public class PicUtils {
      * @param file      文件路径
      */
     public void loadImage(Context context, ImageView imageView, String file) {
-
+        if (context == null || imageView == null) return;
         PicConfig instances = PicConfig.getInstances();
         int overrideWidth = instances.getOverrideWidth();//获取压缩宽度
         int overrideHeight = instances.getOverrideHeight();//获取压缩高度
@@ -120,7 +120,7 @@ public class PicUtils {
      * @param file      文件路径
      */
     public void loadPreviewImage(Context context, ImageView imageView, String file) {
-        if (context == null) return;
+        if (context == null || imageView == null) return;
         GlideApp.with(context)
                 .asBitmap()
                 .load(file)
@@ -138,7 +138,7 @@ public class PicUtils {
      * @param file      文件路径
      */
     public void loadPreviewPhoto(Context context, ImageView imageView, String file) {
-        if (context == null) return;
+        if (context == null || imageView == null) return;
         GlideApp.with(context)
                 .load(file)
                 .placeholder(R.drawable.image_placeholder)
