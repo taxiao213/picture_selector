@@ -35,6 +35,7 @@ import com.selector.picture.model.PicConfig;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.StringUtils;
 import com.selector.picture.utils.UIUtils;
+import com.selector.picture.view.MyViewPager;
 import com.selector.picture.view.StatusBarUtil;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     private TextView tvTopSendText;
     private TextView tvBottomCenterTextPreviews;
     private TextView tvBottomSelectTextPreviews;
-    private ViewPager vp;
+    private MyViewPager vp;
     private TextView tvBottomLeftTextPreviews;
     private RecyclerView ryPreviews;
     private RelativeLayout rlTopRoot;
