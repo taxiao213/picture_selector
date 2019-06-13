@@ -343,16 +343,20 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                         }
                     }
                 }
-                ryPreviews.setVisibility(View.VISIBLE);
-                ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
-                params.height = (int) heightBottom + (int) heightBottomRy + (int) heightBottomLine;
-                llBottomRootPreviews.requestLayout();
+                if (!isHide) {
+                    ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
+                    params.height = (int) heightBottom + (int) heightBottomRy + (int) heightBottomLine;
+                    llBottomRootPreviews.requestLayout();
+                    ryPreviews.setVisibility(View.VISIBLE);
+                }
                 adapterPreview.notifyDataSetChanged();
             } else {
-                ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
-                params.height = (int) heightBottom;
-                llBottomRootPreviews.requestLayout();
-                ryPreviews.setVisibility(View.GONE);
+                if (!isHide) {
+                    ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
+                    params.height = (int) heightBottom;
+                    llBottomRootPreviews.requestLayout();
+                    ryPreviews.setVisibility(View.GONE);
+                }
             }
         } else {
             tvBottomSelectTextPreviews.setSelected(false);

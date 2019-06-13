@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.selector.picture.R;
 import com.selector.picture.utils.UIUtils;
 import com.selector.picture.view.StatusBarUtil;
+import com.tencent.bugly.crashreport.CrashReport;
 
 /**
  * Create by Han on 2019/5/10
@@ -43,6 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
         dialog = new ProgressDialog(mActivity);
         StatusBarUtil.changeStatusBar(this, false);
+        CrashReport.initCrashReport(getApplicationContext(), "e3ef5afa9a", false);
     }
 
     /**
