@@ -13,6 +13,7 @@ import android.view.WindowManager;
 
 import com.selector.picture.R;
 import com.selector.picture.utils.UIUtils;
+import com.selector.picture.view.DialogLoading;
 import com.selector.picture.view.StatusBarUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -33,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected BaseActivity mActivity;//初始化数据
 
-    protected ProgressDialog dialog;//加载框
+    protected DialogLoading dialog;//加载框
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
         initView(savedInstanceState);
         initData();
-        dialog = new ProgressDialog(mActivity);
+        dialog = new DialogLoading(mActivity);
         StatusBarUtil.changeStatusBar(this, false);
         CrashReport.initCrashReport(getApplicationContext(), "e3ef5afa9a", false);
     }
@@ -65,7 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void cancelProgressDialog() {
         if (dialog != null && mActivity != null && !mActivity.isDestroyed()) {
             if (dialog.isShowing()) {
-                dialog.cancel();
+                dialog.dissMiss();
             }
         }
     }
