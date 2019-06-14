@@ -37,8 +37,6 @@ import java.util.List;
 public class PhotoSelectActivity extends BaseActivity implements ImageLoadListener<List<LocalMediaFolder>> {
 
     private PhotoSelectFragment pictureSelectorFragment;
-    private String[] permissionArray = new String[]{android.Manifest.permission_group.STORAGE};
-    private int permissionRequestCode = 100;
 
     @Override
     protected void setThem() {
@@ -47,16 +45,13 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            PicConfig config = savedInstanceState.getParcelable(Constant.ACTION_TYPE1);
+            if (config != null) {
+                PicConfig.getInstances().setConfig(config);
+            }
+        }
         FragmentManager manager = mActivity.getSupportFragmentManager();
-//        if (manager != null) {
-//            pictureSelectorFragment = (PhotoSelectFragment) manager.findFragmentByTag(Constant.FRAGMENT_TAG1);
-//            if (pictureSelectorFragment == null) {
-//                pictureSelectorFragment = new PhotoSelectFragment();
-//            }
-//            FragmentTransaction transaction = manager.beginTransaction();
-//            transaction.add(R.id.fl, pictureSelectorFragment, Constant.FRAGMENT_TAG1).commit();
-//        }
-
         if (manager != null) {
             FragmentTransaction transaction = manager.beginTransaction();
             if (pictureSelectorFragment != null) {
@@ -77,7 +72,6 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
     @Override
     protected void initData() {
         initPhotoData();
-//        checkPermission();
     }
 
     /**
@@ -119,50 +113,12 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == permissionRequestCode) {
-            if (grantResults.length > 0) {
-                int grantResult = grantResults[0];
-                if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                    initPhotoData();
-                } else {
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
-                        //跳转到允许安装未知来源设置页面
-//                        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + getPackageName()));
-//                        startActivityForResult(intent, requestCode);
-                    } else {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, requestCode);
-                    }
-                }
-            }
-        }
-    }
-
-    public void checkPermission() {
-        if (permissionArray != null && permissionArray.length > 0) {
-            for (String per : permissionArray) {
-                if (!TextUtils.isEmpty(per)) {
-                    int permission = ContextCompat.checkSelfPermission(PhotoSelectActivity.this, per);
-                    if (permission != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(PhotoSelectActivity.this, permissionArray, permissionRequestCode);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.e("----", "onSaveInstanceState");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.e("----", "onRestoreInstanceState");
+        PicConfig config = PicConfig.getInstances();
+        if (outState != null) {
+            outState.putParcelable(Constant.ACTION_TYPE1, config);
+        }
     }
 
     @Override

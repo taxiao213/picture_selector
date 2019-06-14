@@ -30,6 +30,7 @@ import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicConfig;
+import com.selector.picture.model.PicList;
 import com.selector.picture.model.PicSelector;
 import com.selector.picture.utils.CompressPicUtil;
 import com.selector.picture.utils.DateUtils;
@@ -182,7 +183,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
             mediaFolders.setChecked(true);
             list.addAll(mediaFolders.getImages());
         }
-        PicConfig.getInstances().setCurrentList(list);
+        PicList.getInstances().setCurrentList(list);
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -220,7 +221,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                     List<LocalMedia> sendMedia = getSendMedia();
                     if (sendMedia != null && sendMedia.size() > 0) {
                         if (activity != null) {
-                            UIUtils.startActivityForResult((PhotoSelectActivity) activity, null);
+                            UIUtils.startActivityForResult(activity, null);
                         }
                     }
                     break;
@@ -247,7 +248,7 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
             if (checked) {
                 sendMedia.add(localMedia);
             }
-            PicConfig.getInstances().setSendList(sendMedia);
+            PicList.getInstances().setSendList(sendMedia);
         }
         setText();
     }
@@ -352,18 +353,6 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         }
         setText();
         initBottomCenterText();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.e("fragment----", "onSaveInstanceState");
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.e("fragment----", "onRestoreInstanceState");
     }
 
 }

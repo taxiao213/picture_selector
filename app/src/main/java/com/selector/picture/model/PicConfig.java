@@ -1,5 +1,7 @@
 package com.selector.picture.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PicConfig {
+public class PicConfig implements Parcelable {
     private static PicConfig mPicConfig;
     private int mTheme;//相册选择主题
     private int mMinSelectNum;//设置图片可选择最小数量 默认最小1个
@@ -28,8 +30,6 @@ public class PicConfig {
     private boolean loadAnimation;//设置是否加载动画，默认false
     private boolean loadOriginalImage;//是否选择原图，默认false
     private boolean loadVoice;//是否有点击声音，默认false
-    private List<LocalMedia> list;//当前选择相册数据的集合
-    private List<LocalMedia> sendMedia;//发送和预览的集合
 
     private PicConfig() {
         this.mTheme = Constant.PIC_DEFAULT_THEME;
@@ -45,6 +45,33 @@ public class PicConfig {
         this.loadOriginalImage = Constant.PIC_LOAD_ORIGINAL_IMAGE;
         this.loadVoice = Constant.PIC_LOAD_VOICE;
     }
+
+    protected PicConfig(Parcel in) {
+        mTheme = in.readInt();
+        mMinSelectNum = in.readInt();
+        mMaxSelectNum = in.readInt();
+        mGridSize = in.readInt();
+        mimeType = in.readInt();
+        mIsGif = in.readByte() != 0;
+        overrideWidth = in.readInt();
+        overrideHeight = in.readInt();
+        sizeMultiplier = in.readFloat();
+        loadAnimation = in.readByte() != 0;
+        loadOriginalImage = in.readByte() != 0;
+        loadVoice = in.readByte() != 0;
+    }
+
+    public static final Creator<PicConfig> CREATOR = new Creator<PicConfig>() {
+        @Override
+        public PicConfig createFromParcel(Parcel in) {
+            return new PicConfig(in);
+        }
+
+        @Override
+        public PicConfig[] newArray(int size) {
+            return new PicConfig[size];
+        }
+    };
 
     public static PicConfig getInstances() {
         if (mPicConfig == null) {
@@ -266,44 +293,6 @@ public class PicConfig {
         return loadVoice;
     }
 
-
-    /**
-     * 设置当前选择相册数据的集合
-     *
-     * @param localMedia List<LocalMedia>
-     */
-    public void setCurrentList(List<LocalMedia> localMedia) {
-        this.list = localMedia;
-    }
-
-    /**
-     * 获取当前选择相册数据的集合
-     *
-     * @return List<LocalMedia>
-     */
-    public List<LocalMedia> getCurrentList() {
-        return list;
-    }
-
-
-    /**
-     * 设置发送和预览的集合
-     *
-     * @param localMedia List<LocalMedia>
-     */
-    public void setSendList(List<LocalMedia> localMedia) {
-        this.sendMedia = localMedia;
-    }
-
-    /**
-     * 获取发送和预览的集合
-     *
-     * @return List<LocalMedia>
-     */
-    public List<LocalMedia> getSendList() {
-        return sendMedia;
-    }
-
     /**
      * 还原配置
      */
@@ -311,7 +300,45 @@ public class PicConfig {
         loadAnimation = false;//设置是否加载动画，默认false
         loadOriginalImage = false;//是否选择原图，默认false
         loadVoice = false;//是否有点击声音，默认false
-        list = null;//当前选择相册数据的集合
-        sendMedia = null;//发送和预览的集合
+        PicList.getInstances().restoreConfig();
+    }
+
+    /**
+     * 奔溃时还原设置状态
+     */
+    public void setConfig(PicConfig config) {
+        this.mTheme = config.mTheme;
+        this.mMinSelectNum = config.mMinSelectNum;
+        this.mMaxSelectNum = config.mMaxSelectNum;
+        this.mGridSize = config.mGridSize;
+        this.mimeType = config.mimeType;
+        this.mIsGif = config.mIsGif;
+        this.overrideWidth = config.overrideWidth;
+        this.overrideHeight = config.overrideHeight;
+        this.sizeMultiplier = config.sizeMultiplier;
+        this.loadAnimation = config.loadAnimation;
+        this.loadOriginalImage = config.loadOriginalImage;
+        this.loadVoice = config.loadVoice;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mTheme);
+        dest.writeInt(mMinSelectNum);
+        dest.writeInt(mMaxSelectNum);
+        dest.writeInt(mGridSize);
+        dest.writeInt(mimeType);
+        dest.writeByte((byte) (mIsGif ? 1 : 0));
+        dest.writeInt(overrideWidth);
+        dest.writeInt(overrideHeight);
+        dest.writeFloat(sizeMultiplier);
+        dest.writeByte((byte) (loadAnimation ? 1 : 0));
+        dest.writeByte((byte) (loadOriginalImage ? 1 : 0));
+        dest.writeByte((byte) (loadVoice ? 1 : 0));
     }
 }

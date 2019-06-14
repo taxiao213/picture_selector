@@ -32,6 +32,7 @@ import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicConfig;
+import com.selector.picture.model.PicList;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.StringUtils;
 import com.selector.picture.utils.UIUtils;
@@ -107,8 +108,11 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         heightBottomLine = activity.getResources().getDimension(R.dimen.picture_selector_previews_ry_line_height);
         tvTopSendText.setOnClickListener(this);
         ivTopLeftBack.setOnClickListener(this);
+        tvBottomLeftTextPreviews.setOnClickListener(this);
         tvBottomCenterTextPreviews.setOnClickListener(this);
         tvBottomSelectTextPreviews.setOnClickListener(this);
+        llBottomRootPreviews.setOnClickListener(this);
+        rlTopRoot.setOnClickListener(this);
 
         adapter = new PhotoPreviewFragmentAdapter(getChildFragmentManager(), list);
         vp.setAdapter(adapter);
@@ -133,10 +137,10 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         adapterPreview = new PhotoPreviewAdapter(activity, this, listPreview, type);
         ryPreviews.setAdapter(adapterPreview);
 
-        sendMedia = PicConfig.getInstances().getSendList();
+        sendMedia = PicList.getInstances().getSendList();
         if (sendMedia == null) {
             sendMedia = new ArrayList<>();
-            PicConfig.getInstances().setSendList(sendMedia);
+            PicList.getInstances().setSendList(sendMedia);
         }
         setText();
         initBottomCenterText();
@@ -280,9 +284,9 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
             this.type = type;
             List<LocalMedia> listLocalMedia;
             if (currentMedia != null) {
-                listLocalMedia = PicConfig.getInstances().getCurrentList();
+                listLocalMedia = PicList.getInstances().getCurrentList();
             } else {
-                listLocalMedia = PicConfig.getInstances().getSendList();
+                listLocalMedia = PicList.getInstances().getSendList();
             }
 
             if (list == null) {
