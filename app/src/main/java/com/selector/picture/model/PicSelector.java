@@ -213,6 +213,26 @@ public class PicSelector {
     }
 
     /**
+     * 是否有原图，默认false
+     *
+     * @param optionOriginalImage true 有原图 false 没有原图
+     */
+    public PicSelector optionOriginalImage(boolean optionOriginalImage) {
+        mConfig.optionOriginalImage(optionOriginalImage);
+        return this;
+    }
+
+    /**
+     * 是否可编辑，默认false
+     *
+     * @param editable true 有编辑 false 不可编辑
+     */
+    public PicSelector editable(boolean editable) {
+        mConfig.editable(editable);
+        return this;
+    }
+
+    /**
      * 设置返回的请求code
      *
      * @param requestCode int

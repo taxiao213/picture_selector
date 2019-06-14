@@ -75,4 +75,13 @@ public class GridPicAdapter extends RecyclerView.Adapter<GridPicViewHolder> {
     public List<LocalMedia> getCurrentMedia() {
         return mList;
     }
+
+    /**
+     * 添加需要发送的集合数据
+     */
+    public void setSendList() {
+        if (mFragment != null) {
+            mFragment.setSendList();
+        }
+    }
 }

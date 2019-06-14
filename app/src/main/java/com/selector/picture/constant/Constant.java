@@ -29,6 +29,8 @@ public class Constant {
     public static boolean PIC_LOAD_ANIMATION = false;//设置是否加载动画，默认false
     public static boolean PIC_LOAD_ORIGINAL_IMAGE = false;//设置是否加载原图，默认false
     public static boolean PIC_LOAD_VOICE = false;//是否有点击声音，默认false
+    public static boolean PIC_OPTION_ORIGINAL_IMAGE = false;//是否有原图，默认false
+    public static boolean PIC_EDITABLE = false;//是否可编辑，默认false
     public static int PIC_ANIMATION_DURATION = 450;//设置执行动画的时间
 
     public static final int TYPE1 = 1;//参数区分

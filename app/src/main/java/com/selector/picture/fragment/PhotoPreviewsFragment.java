@@ -69,6 +69,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
     private int currentPosition = 0;
     private int type;//1 加载的全部数据 2 预览数据
     private boolean isHide = false;//显示隐藏top 和 bottom view
+    private int barHeight;//状态栏高度
     private float heightTop;//顶部布局高度
     private float heightBottom;//底部布局高度
     private float heightBottomRy;//底部布局ry高度
@@ -100,12 +101,16 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
         tvBottomCenterTextPreviews = view.findViewById(R.id.tv_bottom_center_text_previews);//底部中间原图标题
         tvBottomSelectTextPreviews = view.findViewById(R.id.tv_bottom_select_text_previews);//底部右侧选择按钮
         vp = view.findViewById(R.id.vp);  //viewpager
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) rlTopRoot.getLayoutParams();
-        layoutParams.topMargin = StatusBarUtil.getStatusBarHeight(activity);
+        tvBottomLeftTextPreviews.setVisibility(PicConfig.getInstances().isEditable() ? View.VISIBLE : View.GONE);
+        tvBottomCenterTextPreviews.setVisibility(PicConfig.getInstances().isOptionOriginalImage() ? View.VISIBLE : View.GONE);
+        barHeight = StatusBarUtil.getStatusBarHeight(activity);
         heightTop = activity.getResources().getDimension(R.dimen.picture_selector_top_height);
         heightBottom = activity.getResources().getDimension(R.dimen.picture_selector_bottom_height);
         heightBottomRy = activity.getResources().getDimension(R.dimen.picture_selector_previews_ry_height);
         heightBottomLine = activity.getResources().getDimension(R.dimen.picture_selector_previews_ry_line_height);
+        ViewGroup.LayoutParams params = rlTopRoot.getLayoutParams();
+        params.height = barHeight + (int) heightTop;
+        rlTopRoot.requestLayout();
         tvTopSendText.setOnClickListener(this);
         ivTopLeftBack.setOnClickListener(this);
         tvBottomLeftTextPreviews.setOnClickListener(this);
@@ -173,13 +178,16 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     }
                     break;
                 case R.id.tv_bottom_lef_text_previews:
-                    //编辑
-
+                    if (PicConfig.getInstances().isEditable()) {
+                        //编辑
+                    }
                     break;
                 case R.id.tv_bottom_center_text_previews:
-                    //是否选择原图
-                    PicConfig.getInstances().setLoadOriginalImage(!PicConfig.getInstances().isLoadOriginalImage());
-                    initBottomCenterText();
+                    if (PicConfig.getInstances().isOptionOriginalImage()) {
+                        //是否选择原图
+                        PicConfig.getInstances().setLoadOriginalImage(!PicConfig.getInstances().isLoadOriginalImage());
+                        initBottomCenterText();
+                    }
                     break;
                 case R.id.tv_bottom_select_text_previews:
                     //底部右侧选择
@@ -328,8 +336,8 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                     tvBottomLeftTextPreviews.setVisibility(View.GONE);
                     tvBottomCenterTextPreviews.setVisibility(View.GONE);
                 } else {
-                    tvBottomLeftTextPreviews.setVisibility(View.VISIBLE);
-                    tvBottomCenterTextPreviews.setVisibility(View.VISIBLE);
+                    tvBottomLeftTextPreviews.setVisibility(PicConfig.getInstances().isEditable() ? View.VISIBLE : View.GONE);
+                    tvBottomCenterTextPreviews.setVisibility(PicConfig.getInstances().isOptionOriginalImage() ? View.VISIBLE : View.GONE);
                 }
             } else {
                 tvBottomLeftTextPreviews.setVisibility(View.GONE);
@@ -408,7 +416,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
             if (activity != null) {
                 activity.immersiveHide();
             }
-            UIUtils.startAnimation(rlTopRoot, heightTop, 0);
+            UIUtils.startAnimation(rlTopRoot, barHeight + heightTop, 0);
             if (listPreview != null && listPreview.size() > 0) {
                 UIUtils.startAnimation(llBottomRootPreviews, heightBottom + heightBottomRy + heightBottomLine, 0);
             } else {
@@ -418,7 +426,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
             if (activity != null) {
                 activity.immersiveShow();
             }
-            UIUtils.startAnimation(rlTopRoot, 0, heightTop);
+            UIUtils.startAnimation(rlTopRoot, 0, barHeight + heightTop);
             if (listPreview != null && listPreview.size() > 0) {
                 UIUtils.startAnimation(llBottomRootPreviews, 0, heightBottom + heightBottomRy + heightBottomLine);
             } else {

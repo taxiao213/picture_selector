@@ -7,8 +7,6 @@ import android.support.annotation.IntRange;
 
 import com.selector.picture.constant.Constant;
 
-import java.util.List;
-
 /**
  * 相册选择配置
  * Create by Han on 2019/5/20
@@ -30,6 +28,8 @@ public class PicConfig implements Parcelable {
     private boolean loadAnimation;//设置是否加载动画，默认false
     private boolean loadOriginalImage;//是否选择原图，默认false
     private boolean loadVoice;//是否有点击声音，默认false
+    private boolean optionOriginalImage;//是否有原图，默认false
+    private boolean editable;//是否可编辑，默认false
 
     private PicConfig() {
         this.mTheme = Constant.PIC_DEFAULT_THEME;
@@ -44,6 +44,8 @@ public class PicConfig implements Parcelable {
         this.loadAnimation = Constant.PIC_LOAD_ANIMATION;
         this.loadOriginalImage = Constant.PIC_LOAD_ORIGINAL_IMAGE;
         this.loadVoice = Constant.PIC_LOAD_VOICE;
+        this.optionOriginalImage = Constant.PIC_OPTION_ORIGINAL_IMAGE;
+        this.editable = Constant.PIC_EDITABLE;
     }
 
     protected PicConfig(Parcel in) {
@@ -59,6 +61,8 @@ public class PicConfig implements Parcelable {
         loadAnimation = in.readByte() != 0;
         loadOriginalImage = in.readByte() != 0;
         loadVoice = in.readByte() != 0;
+        optionOriginalImage = in.readByte() != 0;
+        editable = in.readByte() != 0;
     }
 
     public static final Creator<PicConfig> CREATOR = new Creator<PicConfig>() {
@@ -294,6 +298,42 @@ public class PicConfig implements Parcelable {
     }
 
     /**
+     * 是否有原图，默认false
+     *
+     * @param optionOriginalImage true 有原图 false 没有原图
+     */
+    public void optionOriginalImage(boolean optionOriginalImage) {
+        this.optionOriginalImage = optionOriginalImage;
+    }
+
+    /**
+     * 是否有原图，默认false
+     *
+     * @return boolean true 有原图 false 没有原图
+     */
+    public boolean isOptionOriginalImage() {
+        return optionOriginalImage;
+    }
+
+    /**
+     * 是否可编辑，默认false
+     *
+     * @param editable true 有编辑 false 不可编辑
+     */
+    public void editable(boolean editable) {
+        this.editable = editable;
+    }
+
+    /**
+     * 是否可编辑，默认false
+     *
+     * @return boolean true 有编辑 false 不可编辑
+     */
+    public boolean isEditable() {
+        return editable;
+    }
+
+    /**
      * 还原配置
      */
     public void restoreConfig() {
@@ -319,6 +359,8 @@ public class PicConfig implements Parcelable {
         this.loadAnimation = config.loadAnimation;
         this.loadOriginalImage = config.loadOriginalImage;
         this.loadVoice = config.loadVoice;
+        this.optionOriginalImage = config.optionOriginalImage;
+        this.editable = config.editable;
     }
 
     @Override
@@ -340,5 +382,7 @@ public class PicConfig implements Parcelable {
         dest.writeByte((byte) (loadAnimation ? 1 : 0));
         dest.writeByte((byte) (loadOriginalImage ? 1 : 0));
         dest.writeByte((byte) (loadVoice ? 1 : 0));
+        dest.writeByte((byte) (optionOriginalImage ? 1 : 0));
+        dest.writeByte((byte) (editable ? 1 : 0));
     }
 }

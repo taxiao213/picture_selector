@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -89,7 +90,10 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
         tvBottomLeftText = view.findViewById(R.id.tv_bottom_lef_text);//底部左侧标题
         tvBottomCenterText = view.findViewById(R.id.tv_bottom_center_text);//底部中间原图标题
         tvBottomPreviewText = view.findViewById(R.id.tv_bottom_preview_text);//底部右侧预览按钮
-
+        ViewGroup.LayoutParams params = rlTopRoot.getLayoutParams();
+        params.height = (int) activity.getResources().getDimension(R.dimen.picture_selector_top_height);
+        rlTopRoot.requestLayout();
+        tvBottomCenterText.setVisibility(PicConfig.getInstances().isOptionOriginalImage() ? View.VISIBLE : View.GONE);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, PicConfig.getInstances().getGridSize(), GridLayoutManager.VERTICAL, false);
         ry.setPadding(UIUtils.dp2px(activity, Constant.PIC_GRID_SPACE), 0, 0, 0);
         ry.setLayoutManager(gridLayoutManager);
@@ -212,9 +216,11 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                     });
                     break;
                 case R.id.tv_bottom_center_text:
-                    //是否选择原图
-                    PicConfig.getInstances().setLoadOriginalImage(!PicConfig.getInstances().isLoadOriginalImage());
-                    initBottomCenterText();
+                    if (PicConfig.getInstances().isOptionOriginalImage()) {
+                        //是否选择原图
+                        PicConfig.getInstances().setLoadOriginalImage(!PicConfig.getInstances().isLoadOriginalImage());
+                        initBottomCenterText();
+                    }
                     break;
                 case R.id.tv_bottom_preview_text:
                     //底部右侧预览按钮3
@@ -248,11 +254,17 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
             if (checked) {
                 sendMedia.add(localMedia);
             }
-            PicList.getInstances().setSendList(sendMedia);
+            setSendList();
         }
         setText();
     }
 
+    /**
+     * 添加需要发送的集合数据
+     */
+    public void setSendList() {
+        PicList.getInstances().setSendList(sendMedia);
+    }
 
     /**
      * 设置发送和预览按钮状态
@@ -293,23 +305,31 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                 public void run() {
                     if (activity != null) {
                         ArrayList<String> arrayList = new ArrayList<>();
-                        if (PicConfig.getInstances().isLoadOriginalImage()) {
-                            for (LocalMedia media : sendMedia) {
-                                if (media != null) {
-                                    arrayList.add(StringUtils.nullToString(media.getPath()));
+                        if (PicConfig.getInstances().isOptionOriginalImage()) {
+                            if (PicConfig.getInstances().isLoadOriginalImage()) {
+                                for (LocalMedia media : sendMedia) {
+                                    if (media != null) {
+                                        arrayList.add(StringUtils.nullToString(media.getPath()));
+                                    }
+                                }
+                            } else {
+                                for (LocalMedia media : sendMedia) {
+                                    if (media != null) {
+                                        String mimeType = StringUtils.nullToString(media.getPictureType());
+                                        int pictureType = MimeType.isPictureType(mimeType);
+                                        String path = media.getPath();
+                                        if (pictureType == MimeType.TYPE_IMAGE && !MimeType.isGif(mimeType)) {
+                                            arrayList.add(StringUtils.nullToString(CompressPicUtil.getCompToRealPath(path)));
+                                        } else {
+                                            arrayList.add(StringUtils.nullToString(path));
+                                        }
+                                    }
                                 }
                             }
                         } else {
                             for (LocalMedia media : sendMedia) {
                                 if (media != null) {
-                                    String mimeType = StringUtils.nullToString(media.getPictureType());
-                                    int pictureType = MimeType.isPictureType(mimeType);
-                                    String path = media.getPath();
-                                    if (pictureType == MimeType.TYPE_IMAGE && !MimeType.isGif(mimeType)) {
-                                        arrayList.add(StringUtils.nullToString(CompressPicUtil.getCompToRealPath(path)));
-                                    } else {
-                                        arrayList.add(StringUtils.nullToString(path));
-                                    }
+                                    arrayList.add(StringUtils.nullToString(media.getPath()));
                                 }
                             }
                         }

@@ -70,6 +70,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .theme(R.style.pictrue_white_Theme)
                 .loadAnimation(true)
                 .loadVoice(true)
+                .optionOriginalImage(false)
+                .editable(true)
 //                .glideOverride(100,100)
 //                .sizeMultiplier(0.5F)
                 .setResult(10);

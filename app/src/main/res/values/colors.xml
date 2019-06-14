@@ -69,6 +69,6 @@
     <color name="image_overlay_false">@color/black_trans_20</color>
 
     <color name="image_preview_overlay_true">#70ffffff</color>
-    <color name="image_preview_overlay_false">#30ffffff</color>
+    <color name="image_preview_overlay_false">#00000000</color>
 
 </resources>
