@@ -1,8 +1,12 @@
 package com.selector.picture.activity;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -10,11 +14,17 @@ import android.widget.ImageView;
 
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
+import com.selector.picture.model.LocalMediaFolder;
 import com.selector.picture.model.MimeType;
 import com.selector.picture.model.PicSelector;
+import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.UIUtils;
+import com.selector.picture.view.DialogLoading;
+import com.selector.picture.view.DialogLoadingUtils;
+import com.selector.picture.view.DialogUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -53,7 +63,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 UIUtils.setAnimation(ivPicture, true);
                 break;
             case R.id.tv_dis_zoom:
-                UIUtils.setAnimation(ivPicture, false);
+//                UIUtils.setAnimation(ivPicture, false);
+                new DialogLoading(mActivity).show();
                 break;
             default:
                 break;
@@ -91,4 +102,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
     }
+
+
 }

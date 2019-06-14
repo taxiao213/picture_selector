@@ -3,8 +3,10 @@ package com.selector.picture.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -297,15 +299,15 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
      */
     public void setResult() {
         if (sendMedia != null && sendMedia.size() > 0) {
-            if (activity != null) {
-                activity.loadingProgressDialog();
-            }
-            Executors.newSingleThreadExecutor().execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (activity != null) {
-                        ArrayList<String> arrayList = new ArrayList<>();
-                        if (PicConfig.getInstances().isOptionOriginalImage()) {
+            final ArrayList<String> arrayList = new ArrayList<>();
+            if (PicConfig.getInstances().isOptionOriginalImage()) {
+                if (activity != null) {
+                    activity.loadingProgressDialog();
+                }
+                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (activity != null) {
                             if (PicConfig.getInstances().isLoadOriginalImage()) {
                                 for (LocalMedia media : sendMedia) {
                                     if (media != null) {
@@ -326,23 +328,31 @@ public class PhotoSelectFragment extends BaseFragment implements View.OnClickLis
                                     }
                                 }
                             }
-                        } else {
-                            for (LocalMedia media : sendMedia) {
-                                if (media != null) {
-                                    arrayList.add(StringUtils.nullToString(media.getPath()));
-                                }
+                            setResultOk(arrayList);
+                            if (activity != null) {
+                                activity.cancelProgressDialog();
                             }
                         }
-                        Intent intent = new Intent();
-                        intent.putStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY, arrayList);
-                        activity.setResult(intent);
-                        if (activity != null) {
-                            activity.cancelProgressDialog();
-                        }
+                    }
+                });
+            } else {
+                for (LocalMedia media : sendMedia) {
+                    if (media != null) {
+                        arrayList.add(StringUtils.nullToString(media.getPath()));
                     }
                 }
-            });
+                setResultOk(arrayList);
+            }
         }
+    }
+
+    /**
+     * 选择后返回数据
+     */
+    private void setResultOk(ArrayList<String> arrayList) {
+        Intent intent = new Intent();
+        intent.putStringArrayListExtra(Constant.PIC_INTENT_ACTIVITY_KEY, arrayList);
+        activity.setResult(intent);
     }
 
     /**

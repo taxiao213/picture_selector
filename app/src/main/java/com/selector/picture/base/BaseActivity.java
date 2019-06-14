@@ -1,5 +1,6 @@
 package com.selector.picture.base;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;

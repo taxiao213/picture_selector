@@ -1,9 +1,14 @@
 package com.selector.picture.utils;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.selector.picture.constant.Constant;
@@ -13,6 +18,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashMap;
 
 /**
  * 图片压缩工具类
@@ -85,9 +91,9 @@ public class CompressPicUtil {
         int be = 1;// be=1表示不缩放
         if (isNotLongPic(width, height)) {
             if (width > height && width > ww) {// 如果宽度大的话根据宽度固定大小缩放
-                be = (int) (options.outWidth / ww);
+                be = (int) (width / ww);
             } else if (width < height && height > hh) {// 如果高度高的话根据宽度固定大小缩放
-                be = (int) (options.outHeight / hh);
+                be = (int) (height / hh);
             }
         }
         if (be <= 0)
@@ -231,5 +237,36 @@ public class CompressPicUtil {
             bitmap.recycle();
         }
         return returnBm;
+    }
+
+    /**
+     * 根据指定的图像路径和大小来获取缩略图
+     * 此方法有两点好处：
+     * 1. 使用较小的内存空间，第一次获取的bitmap实际上为null，只是为了读取宽度和高度，
+     * 第二次读取的bitmap是根据比例压缩过的图像，第三次读取的bitmap是所要的缩略图。
+     * 2. 缩略图对于原图像来讲没有拉伸，这里使用了2.2版本的新工具ThumbnailUtils，使
+     * 用这个工具生成的图像不会被拉伸。
+     *
+     * @param id      图像的路径thumbnails表  image_id
+     * @param context Context 上下文
+     * @return 查找的的缩略图路径
+     */
+    public static String getImageThumbnail(Context context, String id) {
+        String path = null;
+        ContentResolver cr = context.getContentResolver();
+        //先得到缩略图的URL和对应的图片id
+        Cursor cursor = cr.query(
+                MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Thumbnails.IMAGE_ID, MediaStore.Images.Thumbnails.DATA},
+                MediaStore.Images.Thumbnails.IMAGE_ID + "=" + id,
+                null,
+                null);
+        if (cursor.moveToFirst()) {
+            do {
+                path = cursor.getString(1);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return path;
     }
 }
