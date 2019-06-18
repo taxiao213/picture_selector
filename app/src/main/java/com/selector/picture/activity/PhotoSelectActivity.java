@@ -59,14 +59,17 @@ public class PhotoSelectActivity extends BaseActivity implements ImageLoadListen
                     transaction.show(pictureSelectorFragment).commit();
                 } else {
                     transaction.remove(pictureSelectorFragment);
-                    pictureSelectorFragment = new PhotoSelectFragment();
-                    transaction.add(R.id.fl, pictureSelectorFragment).commit();
+                    newFragment(transaction);
                 }
             } else {
-                pictureSelectorFragment = new PhotoSelectFragment();
-                transaction.add(R.id.fl, pictureSelectorFragment).commit();
+                newFragment(transaction);
             }
         }
+    }
+
+    private void newFragment(FragmentTransaction transaction) {
+        pictureSelectorFragment = new PhotoSelectFragment();
+        transaction.add(R.id.fl, pictureSelectorFragment).commit();
     }
 
     @Override

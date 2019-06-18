@@ -71,4 +71,5 @@
     <color name="image_preview_overlay_true">#70ffffff</color>
     <color name="image_preview_overlay_false">#00000000</color>
 
+    <color name="picture_edit_top_complete">#97dd9d</color>
 </resources>

@@ -25,4 +25,8 @@
     <string name="picture_previews_bottom_select_default">选择</string>
     <string name="picture_previews_top_left_text">%1$s/%2$s</string>
     <string name="picture_previews_not_open_file">无法打开文件</string>
+
+    <string name="picture_edit_top_cancel">取消</string>
+    <string name="picture_edit_top_complete">完成</string>
+
 </resources>

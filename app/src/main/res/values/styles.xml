@@ -78,6 +78,24 @@
         <!--预览界面底部布局-->
         <item name="picture_selector_previews_ll_bg">@drawable/picture_preview_bg</item>
 
+        <!--编辑界面-->
+        <!--编辑界面顶部取消字体内容-->
+        <item name="picture_edit_top_cancel_text_content">@string/picture_edit_top_cancel</item>
+        <!--编辑界面顶部取消字体颜色-->
+        <item name="picture_edit_top_cancel_text_color">@android:color/transparent</item>
+
+        <!--编辑界面顶部完成字体内容-->
+        <item name="picture_edit_top_complete_text_content">@string/picture_edit_top_complete</item>
+        <!--编辑界面顶部完成字体颜色-->
+        <item name="picture_edit_top_complete_color">@color/picture_edit_top_complete</item>
+
+        <!--编辑界面顶部文字大小-->
+        <item name="picture_edit_top_text_size">@dimen/picture_selector_top_text_size</item>
+
+
+
+
+
     </style>
 
     <!--底部选择相册弹框-->

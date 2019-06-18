@@ -37,8 +37,14 @@
     <!--预览界面底部布局-->
     <attr name="picture_selector_previews_ll_bg" format="reference|color" />             <!--预览界面底部背景色-->
 
+    <!--编辑界面顶部-->
+    <attr name="picture_edit_top_cancel_text_content" format="string" />                 <!--编辑界面顶部取消文字内容-->
+    <attr name="picture_edit_top_cancel_text_color" format="reference|color" />          <!--编辑界面顶部取消文字颜色-->
 
+    <attr name="picture_edit_top_complete_text_content" format="string" />               <!--编辑界面顶部完成文字内容-->
+    <attr name="picture_edit_top_complete_text_color" format="reference|color" />        <!--编辑界面顶部完成字体颜色-->
 
+    <attr name="picture_edit_top_text_size" format="dimension" />                        <!--编辑界面顶部文字大小-->
 
 
 </resources>
