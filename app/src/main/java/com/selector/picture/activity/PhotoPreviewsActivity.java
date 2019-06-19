@@ -1,7 +1,9 @@
 package com.selector.picture.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -68,6 +70,17 @@ public class PhotoPreviewsActivity extends BaseActivity {
     @Override
     protected void initData() {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case Constant.TYPE1:
+
+                    break;
+            }
+        }
     }
 
     public void setResult() {

@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -23,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
+import com.selector.picture.activity.PhotoEditActivity;
 import com.selector.picture.activity.PhotoPreviewsActivity;
 import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.adapter.PhotoPreviewAdapter;
@@ -180,6 +182,13 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                 case R.id.tv_bottom_lef_text_previews:
                     if (PicConfig.getInstances().isEditable()) {
                         //编辑
+                        if (activity != null && !activity.isDestroyed()) {
+                            Intent intent = new Intent(activity, PhotoEditActivity.class);
+                            if (list != null && currentPosition != -1) {
+                                intent.putExtra(Constant.ACTION_TYPE1, list.get(currentPosition));
+                            }
+                            activity.startActivityForResult(intent, Constant.TYPE1);
+                        }
                     }
                     break;
                 case R.id.tv_bottom_center_text_previews:

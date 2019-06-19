@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_top_root"
+    android:id="@+id/rl_edit_top_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:paddingTop="5dp">
 
     <TextView
-        android:id="@+id/tv_top_edit_cancel"
+        android:id="@+id/tv_edit_top_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -17,7 +17,7 @@
         android:textSize="?attr/picture_edit_top_text_size" />
 
     <TextView
-        android:id="@+id/tv_top_edit_complete"
+        android:id="@+id/tv_edit_top_complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

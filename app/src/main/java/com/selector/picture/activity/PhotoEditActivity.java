@@ -9,6 +9,7 @@ import com.selector.picture.base.BaseActivity;
 import com.selector.picture.fragment.PhotoEditFragment;
 import com.selector.picture.fragment.PhotoSelectFragment;
 import com.selector.picture.model.PicConfig;
+import com.selector.picture.view.StatusBarUtil;
 
 /**
  * 图片剪切
@@ -41,6 +42,7 @@ public class PhotoEditActivity extends BaseActivity {
                 newFragment(transaction);
             }
         }
+        StatusBarUtil.setStatusBar(mActivity, false);
     }
 
     private void newFragment(FragmentTransaction transaction) {

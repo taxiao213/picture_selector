@@ -33,11 +33,11 @@ public class Constant {
     public static boolean PIC_EDITABLE = false;//是否可编辑，默认false
     public static int PIC_ANIMATION_DURATION = 450;//设置执行动画的时间
 
-    public static final int TYPE1 = 1;//参数区分
-    public static final int TYPE2 = 2;//参数区分
-    public static final int TYPE3 = 3;//参数区分
-    public static final int TYPE4 = 4;//参数区分
-    public static final int TYPE5 = 5;//参数区分
+    public static final int TYPE1 = 0X101;//参数区分
+    public static final int TYPE2 = 0X102;//参数区分
+    public static final int TYPE3 = 0X103;//参数区分
+    public static final int TYPE4 = 0X104;//参数区分
+    public static final int TYPE5 = 0X105;//参数区分
 
     public static String ACTION_TYPE1 = "actoin_type1";//参数区分
     public static String ACTION_TYPE2 = "actoin_type2";//参数区分

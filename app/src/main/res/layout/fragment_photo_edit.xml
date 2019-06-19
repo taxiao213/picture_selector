@@ -11,6 +11,50 @@
 
     <include layout="@layout/picture_photo_edit_top" />
 
+    <LinearLayout
+        android:id="@+id/ll_edit_bottom_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/ry_edit_pencile_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include layout="@layout/fragment_photo_edit_mosaic" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_edit_bottom_withdraw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_vertical"
+                android:layout_marginStart="10dp"
+                android:drawableTop="?attr/picture_edit_bottom_withdraw"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp" />
+        </LinearLayout>
+
+        <include
+            layout="@layout/picture_photo_edit_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </FrameLayout>
 
