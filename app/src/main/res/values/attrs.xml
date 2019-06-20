@@ -43,11 +43,21 @@
     <attr name="picture_edit_top_complete_text_content" format="string" />               <!--编辑界面顶部完成文字内容-->
     <attr name="picture_edit_top_complete_text_color" format="reference|color" />        <!--编辑界面顶部完成字体颜色-->
     <attr name="picture_edit_top_text_size" format="dimension" />                        <!--编辑界面顶部文字大小-->
-    <attr name="picture_edit_bottom_pencile" format="reference" />                        <!--编辑界面底部pencile图标-->
-    <attr name="picture_edit_bottom_text" format="reference" />                           <!--编辑界面底部text图标-->
-    <attr name="picture_edit_bottom_mosaic" format="reference" />                         <!--编辑界面底部mosaic图标-->
-    <attr name="picture_edit_bottom_cut" format="reference" />                            <!--编辑界面底部cut图标-->
-    <attr name="picture_edit_bottom_mosaic_grid" format="reference" />                    <!--编辑界面底部mosaic_grid图标-->
-    <attr name="picture_edit_bottom_mosaic_sand" format="reference" />                    <!--编辑界面底部mosaic_sand图标-->
-    <attr name="picture_edit_bottom_withdraw" format="reference" />                       <!--编辑界面底部withdraw图标-->
+    <attr name="picture_edit_bottom_pencile" format="reference" />                       <!--编辑界面底部pencile图标-->
+    <attr name="picture_edit_bottom_text" format="reference" />                          <!--编辑界面底部text图标-->
+    <attr name="picture_edit_bottom_mosaic" format="reference" />                        <!--编辑界面底部mosaic图标-->
+    <attr name="picture_edit_bottom_cut" format="reference" />                           <!--编辑界面底部cut图标-->
+    <attr name="picture_edit_bottom_mosaic_grid" format="reference" />                   <!--编辑界面底部mosaic_grid图标-->
+    <attr name="picture_edit_bottom_mosaic_sand" format="reference" />                   <!--编辑界面底部mosaic_sand图标-->
+    <attr name="picture_edit_bottom_withdraw" format="reference" />                      <!--编辑界面底部withdraw图标-->
+
+    <!--圆形view-->
+    <declare-styleable name="RoundView">
+        <attr name="round_radius" format="float"/>                                       <!--半径-->
+        <attr name="round_spacing" format="float"/>                                      <!--间距-->
+        <attr name="round_scale_coefficient" format="float"/>                            <!--缩放系数-->
+        <attr name="round_back_color" format="color"/>                                   <!--后背景色-->
+        <attr name="round_front_color" format="color"/>                                  <!--前背景色-->
+    </declare-styleable>
+
 </resources>

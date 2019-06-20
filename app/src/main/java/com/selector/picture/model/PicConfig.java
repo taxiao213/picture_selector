@@ -30,6 +30,7 @@ public class PicConfig implements Parcelable {
     private boolean loadVoice;//是否有点击声音，默认false
     private boolean optionOriginalImage;//是否有原图，默认false
     private boolean editable;//是否可编辑，默认false
+    private int[] editPaintColor;//编辑界面画笔的颜色
 
     private PicConfig() {
         this.mTheme = Constant.PIC_DEFAULT_THEME;
@@ -46,7 +47,9 @@ public class PicConfig implements Parcelable {
         this.loadVoice = Constant.PIC_LOAD_VOICE;
         this.optionOriginalImage = Constant.PIC_OPTION_ORIGINAL_IMAGE;
         this.editable = Constant.PIC_EDITABLE;
+        this.editPaintColor = Constant.PIC_EDIT_PAINT_COLOR;
     }
+
 
     protected PicConfig(Parcel in) {
         mTheme = in.readInt();
@@ -63,6 +66,31 @@ public class PicConfig implements Parcelable {
         loadVoice = in.readByte() != 0;
         optionOriginalImage = in.readByte() != 0;
         editable = in.readByte() != 0;
+        editPaintColor = in.createIntArray();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mTheme);
+        dest.writeInt(mMinSelectNum);
+        dest.writeInt(mMaxSelectNum);
+        dest.writeInt(mGridSize);
+        dest.writeInt(mimeType);
+        dest.writeByte((byte) (mIsGif ? 1 : 0));
+        dest.writeInt(overrideWidth);
+        dest.writeInt(overrideHeight);
+        dest.writeFloat(sizeMultiplier);
+        dest.writeByte((byte) (loadAnimation ? 1 : 0));
+        dest.writeByte((byte) (loadOriginalImage ? 1 : 0));
+        dest.writeByte((byte) (loadVoice ? 1 : 0));
+        dest.writeByte((byte) (optionOriginalImage ? 1 : 0));
+        dest.writeByte((byte) (editable ? 1 : 0));
+        dest.writeIntArray(editPaintColor);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<PicConfig> CREATOR = new Creator<PicConfig>() {
@@ -334,12 +362,31 @@ public class PicConfig implements Parcelable {
     }
 
     /**
+     * 设置编辑界面画笔的颜色
+     *
+     * @param colorArray int[]
+     */
+    public void setEditPaintColor(int[] colorArray) {
+        this.editPaintColor = colorArray;
+    }
+
+    /**
+     * 获取编辑界面画笔的颜色
+     *
+     * @return boolean true 有编辑 false 不可编辑
+     */
+    public int[] getEditPaintColor() {
+        return editPaintColor;
+    }
+
+    /**
      * 还原配置
      */
     public void restoreConfig() {
         loadAnimation = false;//设置是否加载动画，默认false
         loadOriginalImage = false;//是否选择原图，默认false
         loadVoice = false;//是否有点击声音，默认false
+        editPaintColor = null;//编辑界面画笔的颜色
         PicList.getInstances().restoreConfig();
     }
 
@@ -361,28 +408,7 @@ public class PicConfig implements Parcelable {
         this.loadVoice = config.loadVoice;
         this.optionOriginalImage = config.optionOriginalImage;
         this.editable = config.editable;
+        this.editPaintColor = config.editPaintColor;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mTheme);
-        dest.writeInt(mMinSelectNum);
-        dest.writeInt(mMaxSelectNum);
-        dest.writeInt(mGridSize);
-        dest.writeInt(mimeType);
-        dest.writeByte((byte) (mIsGif ? 1 : 0));
-        dest.writeInt(overrideWidth);
-        dest.writeInt(overrideHeight);
-        dest.writeFloat(sizeMultiplier);
-        dest.writeByte((byte) (loadAnimation ? 1 : 0));
-        dest.writeByte((byte) (loadOriginalImage ? 1 : 0));
-        dest.writeByte((byte) (loadVoice ? 1 : 0));
-        dest.writeByte((byte) (optionOriginalImage ? 1 : 0));
-        dest.writeByte((byte) (editable ? 1 : 0));
-    }
 }

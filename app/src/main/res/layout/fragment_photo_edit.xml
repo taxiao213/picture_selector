@@ -28,26 +28,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
                 android:layout_weight="1">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/ry_edit_pencile_bottom"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_height="wrap_content" />
 
                 <include layout="@layout/fragment_photo_edit_mosaic" />
             </FrameLayout>
 
-            <TextView
+            <ImageView
                 android:id="@+id/tv_edit_bottom_withdraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|center_vertical"
-                android:layout_marginStart="10dp"
-                android:drawableTop="?attr/picture_edit_bottom_withdraw"
+                android:layout_gravity="top"
                 android:paddingEnd="10dp"
-                android:paddingStart="10dp" />
+                android:paddingStart="10dp"
+                android:src="?attr/picture_edit_bottom_withdraw" />
         </LinearLayout>
 
         <include

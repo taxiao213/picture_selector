@@ -32,6 +32,9 @@ public class Constant {
     public static boolean PIC_OPTION_ORIGINAL_IMAGE = false;//是否有原图，默认false
     public static boolean PIC_EDITABLE = false;//是否可编辑，默认false
     public static int PIC_ANIMATION_DURATION = 450;//设置执行动画的时间
+    public static int[] PIC_EDIT_PAINT_COLOR = new int[]{
+            R.color.picture_edit_round_color1, R.color.picture_edit_round_color2, R.color.picture_edit_round_color3, R.color.picture_edit_round_color4,
+            R.color.picture_edit_round_color5, R.color.picture_edit_round_color6, R.color.picture_edit_round_color7, R.color.picture_edit_round_color8};//编辑界面画笔的颜色
 
     public static final int TYPE1 = 0X101;//参数区分
     public static final int TYPE2 = 0X102;//参数区分

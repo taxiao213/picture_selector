@@ -72,4 +72,13 @@
     <color name="image_preview_overlay_false">#00000000</color>
 
     <color name="picture_edit_top_complete">#0BB658</color>
+
+    <color name="picture_edit_round_color1">#F7F8F6</color>
+    <color name="picture_edit_round_color2">#000100</color>
+    <color name="picture_edit_round_color3">#EB3008</color>
+    <color name="picture_edit_round_color4">#F8B946</color>
+    <color name="picture_edit_round_color5">#00AB03</color>
+    <color name="picture_edit_round_color6">#1276F4</color>
+    <color name="picture_edit_round_color7">#8D56F1</color>
+    <color name="picture_edit_round_color8">#EF22B2</color>
 </resources>

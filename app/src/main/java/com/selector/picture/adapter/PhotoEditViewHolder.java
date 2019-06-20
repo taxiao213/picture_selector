@@ -10,12 +10,14 @@ import android.widget.TextView;
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoEditActivity;
 import com.selector.picture.activity.PhotoPreviewsActivity;
+import com.selector.picture.model.ColorModel;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.MimeType;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.PicUtils;
 import com.selector.picture.utils.StringUtils;
 import com.selector.picture.utils.UIUtils;
+import com.selector.picture.view.RoundView;
 
 /**
  * 图片剪切颜色ViewHolder
@@ -26,22 +28,23 @@ import com.selector.picture.utils.UIUtils;
  */
 public class PhotoEditViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView tv_duration;
+    private RoundView tv_round_view;
     private View currentView;
-    private PhotoEditAdapter adapter;
-    private OnItemClickListener<LocalMedia> mOnItemClickListener;
+    private OnItemClickListener<ColorModel> mOnItemClickListener;
 
-    PhotoEditViewHolder(@NonNull View itemView, PhotoEditAdapter adapter, OnItemClickListener<LocalMedia> onItemClickListener) {
+    PhotoEditViewHolder(@NonNull View itemView,  OnItemClickListener<ColorModel> onItemClickListener) {
         super(itemView);
         this.currentView = itemView;
-        this.adapter = adapter;
         this.mOnItemClickListener = onItemClickListener;
-        tv_duration = itemView.findViewById(R.id.tv_duration);
+        tv_round_view = itemView.findViewById(R.id.tv_round_view);
     }
 
-    public void bindViewHolder(final PhotoEditActivity context, final LocalMedia model) {
+    public void bindViewHolder(final PhotoEditActivity context, final ColorModel model) {
         if (context == null || model == null) return;
-
+        int frontColor = model.getFrontColor();
+        float scaleCoefficient = model.getScaleCoefficient();
+        tv_round_view.setFrontColor(frontColor);
+        tv_round_view.setScaleCoefficient(scaleCoefficient);
         currentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +53,6 @@ public class PhotoEditViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
-
     }
 
 }
