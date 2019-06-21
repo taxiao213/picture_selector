@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -94,6 +95,35 @@ public class UIUtils {
     public static int getScreenHeight(Context context) {
         if (context == null) return 0;
         return context.getResources().getDisplayMetrics().heightPixels;
+    }
+
+    /**
+     * 开启键盘
+     *
+     * @param view
+     */
+    public static void openBroad(Context context, View view) {
+        if (context == null) return;
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            inputMethodManager.showSoftInput(view, 0);
+        }
+    }
+
+    /**
+     * 关闭键盘
+     *
+     * @param view
+     */
+    public static void closeBroad(Context context, View view) {
+        if (context == null) return;
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     /**

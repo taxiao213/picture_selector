@@ -104,7 +104,8 @@
         <item name="picture_edit_bottom_mosaic_sand">@drawable/picture_edit_bottom_mosaic_sand_selector</item>
         <!--编辑界面底部withdraw图标-->
         <item name="picture_edit_bottom_withdraw">@drawable/picture_edit_bottom_withdraw_selector</item>
-
+        <!--编辑界面text文字加粗图标-->
+        <item name="picture_edit_text_bold">@drawable/picture_edit_bottom_bold_selector</item>
 
 
     </style>

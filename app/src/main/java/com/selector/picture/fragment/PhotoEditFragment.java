@@ -23,7 +23,9 @@ import com.selector.picture.base.BaseFragment;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.ColorModel;
 import com.selector.picture.model.PicConfig;
+import com.selector.picture.utils.Function;
 import com.selector.picture.utils.OnItemClickListener;
+import com.selector.picture.view.DialogEditTextUtils;
 
 import java.util.ArrayList;
 
@@ -147,8 +149,13 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                     break;
                 case R.id.tv_edit_bottom_text:
                     //文本
-//                    topAndBottomVisible(false);
-                    //弹框显示
+                    topAndBottomVisible(false);
+                    new DialogEditTextUtils(activity, new Function<Boolean>() {
+                        @Override
+                        public void action(Boolean var) {
+                            topAndBottomVisible(true);
+                        }
+                    });
                     break;
                 case R.id.tv_edit_bottom_cut:
                     //剪切

@@ -369,12 +369,14 @@ public class StatusBarUtil {
      * @param isShow   true 显示  false 隐藏
      */
     public static void setStatusBar(Activity activity, boolean isShow) {
-        Window window = activity.getWindow();
-        if (window != null) {
-            if (isShow) {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            } else {
-                window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (activity != null) {
+            Window window = activity.getWindow();
+            if (window != null) {
+                if (isShow) {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                } else {
+                    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                }
             }
         }
     }

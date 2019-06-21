@@ -50,6 +50,7 @@
     <attr name="picture_edit_bottom_mosaic_grid" format="reference" />                   <!--编辑界面底部mosaic_grid图标-->
     <attr name="picture_edit_bottom_mosaic_sand" format="reference" />                   <!--编辑界面底部mosaic_sand图标-->
     <attr name="picture_edit_bottom_withdraw" format="reference" />                      <!--编辑界面底部withdraw图标-->
+    <attr name="picture_edit_text_bold" format="reference" />                            <!--编辑界面text文字加粗图标-->
 
     <!--圆形view-->
     <declare-styleable name="RoundView">
