@@ -34,4 +34,13 @@
         android:layout_marginTop="50dp"
         android:src="@mipmap/ic_launcher" />
 
+    <com.selector.picture.view.EditTextBackGroundView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:textSize="24sp" />
+
 </LinearLayout>
