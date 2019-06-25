@@ -2,18 +2,12 @@ package com.selector.picture.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-
 import android.util.Log;
-import android.widget.EditText;
 
 import com.selector.picture.R;
 
@@ -94,15 +88,28 @@ public class EditTextBackGroundView extends android.support.v7.widget.AppCompatE
                         + paddingTop + " paddingBottom==" + paddingBottom + " lineSpacingExtra==" + lineSpacingExtra
                         + " lineSpacingMultiplier==" + lineSpacingMultiplier + " measuredWidth==" + measuredWidth
                         + " measuredHeight==" + measuredHeight + " lineCount==" + lineCount + " lineHeight==" + lineHeight);
-                for (int i = 0; i < length; i++) {
-                    String substring = textString.substring(i, i + 1);
-                    RectF rectF = new RectF(0, paddingTop + measuredHeight+lineHeight*0, width + DEFAULT_CORNER + paddingStart + paddingEnd, paddingTop  + paddingBottom+measuredHeight+lineHeight*0 );
-                    mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
-                    canvas.drawRoundRect(rectF, 10, 10, mPaint);
+                int lines = (measuredHeight - paddingTop - paddingBottom) / lineHeight;
+                Log.e("padding ", " lines== " + lines);
+                for (int i = 0; i < lines; i++) {
+                    if (i == 0) {
+                        Rect rect = new Rect();
+                        getLineBounds(i, rect);
+                        Log.e("padding", " right== " + rect.right + " bottom== " + rect.bottom);
+//                        RectF rectF = new RectF(0, 0, 200 + paddingStart + paddingEnd, paddingTop + +paddingBottom + lineHeight);
+                        RectF rectF = new RectF(0, 0, rect.right, rect.bottom);
+                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
+                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
+                    } else {
+                        Rect rect = new Rect();
+                        getLineBounds(i, rect);
+//                        RectF rectF = new RectF(0, paddingTop + paddingBottom + lineHeight * i - DEFAULT_CORNER * 2, 270 + paddingStart + paddingEnd, paddingBottom + lineHeight * (i + 1));
+                        RectF rectF = new RectF(0, paddingTop + paddingBottom + lineHeight * i - DEFAULT_CORNER * 2,  rect.right, paddingBottom + lineHeight * (i + 1));
+                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
+                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
+                    }
+                }
 
-
-
-                    /*if (i > 50) {
+                /*if (i > 50) {
                         RectF rectF = new RectF(0, paddingTop + getTextHeight(substring) * 2, width + DEFAULT_CORNER + paddingStart + paddingEnd, paddingTop + getTextHeight(substring) * 3 + paddingBottom + lineSpacingExtra * lineSpacingMultiplier);
                         mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
                         canvas.drawRoundRect(rectF, 10, 10, mPaint);
@@ -118,8 +125,16 @@ public class EditTextBackGroundView extends android.support.v7.widget.AppCompatE
                         canvas.drawRoundRect(rectF, 10, 10, mPaint);
 //                        canvas.drawText(substring, getTextWidth(substring) + width, 50, mPaintText);
                     }*/
-                    width += getTextWidth(substring);
-                }
+
+//                for (int i = 0; i < length; i++) {
+//                    String substring = textString.substring(i, i + 1);
+//                    RectF rectF = new RectF(0, paddingTop + measuredHeight + lineHeight * 0, width + DEFAULT_CORNER + paddingStart + paddingEnd, paddingTop + paddingBottom + measuredHeight + lineHeight * 0);
+//                    mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
+//                    canvas.drawRoundRect(rectF, 10, 10, mPaint);
+//
+//
+//                    width += getTextWidth(substring);
+//                }
             }
         }
         super.onDraw(canvas);
