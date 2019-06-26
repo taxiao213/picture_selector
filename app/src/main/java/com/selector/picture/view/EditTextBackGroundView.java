@@ -3,9 +3,11 @@ package com.selector.picture.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.Editable;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -23,6 +25,10 @@ public class EditTextBackGroundView extends android.support.v7.widget.AppCompatE
     private Paint mPaintText;
     private int DEFAULT_HEIGHT = 10;
     private int DEFAULT_CORNER = 10;
+    private float[] CORNER_TOP = {DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, 0, 0, 0, 0};
+    private float[] CORNER_BOTTOM = {0, 0, 0, 0, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER};
+    private float[] CORNER_ALL = {DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER, DEFAULT_CORNER};
+    private float[] CORNER_NONE = {0, 0, 0, 0, 0, 0, 0, 0};
 
     public EditTextBackGroundView(Context context) {
         this(context, null);
@@ -37,12 +43,12 @@ public class EditTextBackGroundView extends android.support.v7.widget.AppCompatE
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(context.getResources().getColor(R.color.colorAccent));
-        mPaint.setAlpha(200);
 
         mPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintText.setAntiAlias(true);
         mPaintText.setTextSize(getTextSize());
         mPaintText.setColor(context.getResources().getColor(R.color.colorPrimary));
+
     }
 
 
@@ -84,57 +90,66 @@ public class EditTextBackGroundView extends android.support.v7.widget.AppCompatE
                 int measuredHeight = getMeasuredHeight();
                 int lineCount = getLineCount();
                 int lineHeight = getLineHeight();
+
+                final int offset = getSelectionStart();
+                Layout layout = getLayout();
+                final int line = layout.getLineForOffset(offset);
+                int lineTop = layout.getLineTop(line);
+                int lineBottom = layout.getLineBottom(line);
+                final int bottom = layout.getLineTop(line + 1); // 算出第 line+1 行的顶部坐标
+                int cursorHeight = lineBottom - lineTop;//光标高度
                 Log.e("padding", " paddingStart== " + paddingStart + " paddingEnd==" + paddingEnd + " paddingTop=="
                         + paddingTop + " paddingBottom==" + paddingBottom + " lineSpacingExtra==" + lineSpacingExtra
                         + " lineSpacingMultiplier==" + lineSpacingMultiplier + " measuredWidth==" + measuredWidth
-                        + " measuredHeight==" + measuredHeight + " lineCount==" + lineCount + " lineHeight==" + lineHeight);
+                        + " measuredHeight==" + measuredHeight + " lineCount==" + lineCount + " lineHeight==" + lineHeight
+                        + " offset==" + offset + " lineTop==" + lineTop + " lineBottom==" + lineBottom
+                        + " bottom==" + bottom);
                 int lines = (measuredHeight - paddingTop - paddingBottom) / lineHeight;
                 Log.e("padding ", " lines== " + lines);
-                for (int i = 0; i < lines; i++) {
+                RectF rectF = null;
+                for (int i = 0; i < lineCount; i++) {
                     if (i == 0) {
                         Rect rect = new Rect();
                         getLineBounds(i, rect);
-                        Log.e("padding", " right== " + rect.right + " bottom== " + rect.bottom);
-//                        RectF rectF = new RectF(0, 0, 200 + paddingStart + paddingEnd, paddingTop + +paddingBottom + lineHeight);
-                        RectF rectF = new RectF(0, 0, rect.right, rect.bottom);
-                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
-                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
+                        Log.e("padding 0 ", " right== " + rect.right + " bottom== " + rect.bottom);
+//                        RectF rectF = new RectF(0, 0, 200 + paddingStart + paddingEnd, paddingTop   +paddingBottom + lineHeight);
+//                        RectF rectF = new RectF(0, 0, rect.right + paddingEnd, rect.bottom);
+
+//                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color5));
+//                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
+//                        mPaint.setStyle(Paint.Style.FILL);
+                        Path path = new Path();
+                        if (i == (lineCount - 1)) {
+//                            rectF = new RectF(0, 0, rect.right + paddingEnd, paddingTop + paddingBottom + lineHeight);
+                            rectF = new RectF(0, 0, rect.right + paddingEnd, paddingTop + paddingBottom + cursorHeight);
+                            path.addRoundRect(rectF, CORNER_ALL, Path.Direction.CW);
+                        } else {
+//                            rectF = new RectF(0, 0, rect.right + paddingEnd, paddingTop + lineHeight + paddingBottom);
+                            rectF = new RectF(0, 0, rect.right + paddingEnd, paddingTop + paddingBottom + cursorHeight);
+                            path.addRoundRect(rectF, CORNER_TOP, Path.Direction.CW);
+                        }
+                        canvas.drawPath(path, mPaint);
                     } else {
                         Rect rect = new Rect();
                         getLineBounds(i, rect);
+                        Log.e("padding " + i + " ", " right== " + rect.right + " bottom== " + rect.bottom);
 //                        RectF rectF = new RectF(0, paddingTop + paddingBottom + lineHeight * i - DEFAULT_CORNER * 2, 270 + paddingStart + paddingEnd, paddingBottom + lineHeight * (i + 1));
-                        RectF rectF = new RectF(0, paddingTop + paddingBottom + lineHeight * i - DEFAULT_CORNER * 2,  rect.right, paddingBottom + lineHeight * (i + 1));
-                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
-                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
+//                        RectF rectF = new RectF(0, paddingTop + paddingBottom + lineHeight * i - DEFAULT_CORNER * 2, rect.right + paddingEnd, paddingBottom + lineHeight * (i + 1));
+//                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
+
+                        Path path = new Path();
+                        if (i == (lineCount - 1)) {
+//                            rectF = new RectF(0, paddingTop + lineHeight * i, rect.right + paddingEnd, paddingTop + paddingBottom + lineHeight * (i + 1));
+                            rectF = new RectF(0, paddingTop + cursorHeight * i, rect.right + paddingEnd, paddingTop + paddingBottom + cursorHeight * (i + 1));
+                            path.addRoundRect(rectF, CORNER_BOTTOM, Path.Direction.CW);
+                        } else {
+//                            rectF = new RectF(0, paddingTop + lineHeight * i, rect.right + paddingEnd, paddingTop + lineHeight * (i + 1));
+                            rectF = new RectF(0, paddingTop + cursorHeight * i, rect.right + paddingEnd, paddingTop + cursorHeight * (i + 1));
+                            path.addRoundRect(rectF, CORNER_NONE, Path.Direction.CW);
+                        }
+                        canvas.drawPath(path, mPaint);
                     }
                 }
-
-                /*if (i > 50) {
-                        RectF rectF = new RectF(0, paddingTop + getTextHeight(substring) * 2, width + DEFAULT_CORNER + paddingStart + paddingEnd, paddingTop + getTextHeight(substring) * 3 + paddingBottom + lineSpacingExtra * lineSpacingMultiplier);
-                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
-                        canvas.drawRoundRect(rectF, 10, 10, mPaint);
-//                        canvas.drawText(substring, getTextWidth(substring) + width, 50, mPaintText);
-                    } else if (i > 30) {
-                        RectF rectF = new RectF(0, paddingTop + getTextHeight(substring), width + DEFAULT_CORNER + paddingStart + paddingEnd, paddingTop + getTextHeight(substring) * 2 + lineSpacingExtra * lineSpacingMultiplier);
-                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color4));
-                        canvas.drawRect(rectF, mPaint);
-//                        canvas.drawText(substring, getTextWidth(substring) + width, 50, mPaintText);
-                    } else {
-                        RectF rectF = new RectF(width, 0, width + DEFAULT_CORNER + paddingStart + paddingEnd, paddingTop + getTextHeight(substring) + lineSpacingExtra * lineSpacingMultiplier);
-                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color5));
-                        canvas.drawRoundRect(rectF, 10, 10, mPaint);
-//                        canvas.drawText(substring, getTextWidth(substring) + width, 50, mPaintText);
-                    }*/
-
-//                for (int i = 0; i < length; i++) {
-//                    String substring = textString.substring(i, i + 1);
-//                    RectF rectF = new RectF(0, paddingTop + measuredHeight + lineHeight * 0, width + DEFAULT_CORNER + paddingStart + paddingEnd, paddingTop + paddingBottom + measuredHeight + lineHeight * 0);
-//                    mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color3));
-//                    canvas.drawRoundRect(rectF, 10, 10, mPaint);
-//
-//
-//                    width += getTextWidth(substring);
-//                }
             }
         }
         super.onDraw(canvas);

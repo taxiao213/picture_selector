@@ -48,7 +48,7 @@
         android:layout_below="@+id/rl_edit_top_root"
         android:background="@null"
         android:gravity="top"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp" />
+        android:padding="10dp"
+        android:textSize="24sp" />
 
 </RelativeLayout>
