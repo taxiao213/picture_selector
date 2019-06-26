@@ -115,9 +115,6 @@ public class EditTextBackGroundView extends android.support.v7.widget.AppCompatE
 //                        RectF rectF = new RectF(0, 0, 200 + paddingStart + paddingEnd, paddingTop   +paddingBottom + lineHeight);
 //                        RectF rectF = new RectF(0, 0, rect.right + paddingEnd, rect.bottom);
 
-//                        mPaint.setColor(getResources().getColor(R.color.picture_edit_round_color5));
-//                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
-//                        mPaint.setStyle(Paint.Style.FILL);
                         Path path = new Path();
                         if (i == (lineCount - 1)) {
 //                            rectF = new RectF(0, 0, rect.right + paddingEnd, paddingTop + paddingBottom + lineHeight);
@@ -135,7 +132,6 @@ public class EditTextBackGroundView extends android.support.v7.widget.AppCompatE
                         Log.e("padding " + i + " ", " right== " + rect.right + " bottom== " + rect.bottom);
 //                        RectF rectF = new RectF(0, paddingTop + paddingBottom + lineHeight * i - DEFAULT_CORNER * 2, 270 + paddingStart + paddingEnd, paddingBottom + lineHeight * (i + 1));
 //                        RectF rectF = new RectF(0, paddingTop + paddingBottom + lineHeight * i - DEFAULT_CORNER * 2, rect.right + paddingEnd, paddingBottom + lineHeight * (i + 1));
-//                        canvas.drawRoundRect(rectF, DEFAULT_CORNER, DEFAULT_CORNER, mPaint);
 
                         Path path = new Path();
                         if (i == (lineCount - 1)) {
