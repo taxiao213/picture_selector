@@ -1,33 +1,23 @@
-package com.selector.picture.view;
+package com.edit.picture.view;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
-import com.selector.picture.activity.PhotoEditActivity;
-import com.selector.picture.adapter.PhotoEditAdapter;
-import com.selector.picture.base.BaseActivity;
+import com.edit.picture.activity.PhotoEditActivity;
+import com.edit.picture.adapter.PhotoEditAdapter;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.ColorModel;
 import com.selector.picture.model.PicConfig;
@@ -44,16 +34,17 @@ import java.util.ArrayList;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class DialogEditTextUtils implements View.OnClickListener, OnItemClickListener<ColorModel> {
+public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemClickListener<ColorModel> {
     private Context mContext;
-    private Function<Boolean> function;
+    private Function<ColorModel> function;
     private AlertDialog dialog;
-    private EditText editText;
+    private PhotoEditTextView editText;
     private PhotoEditAdapter adapter;
     private ArrayList<ColorModel> list;//画笔颜色的结合
     private ImageView ivPencileBold;
+    private ColorModel currentColorModel;//当前的画笔model
 
-    public DialogEditTextUtils(Context context, Function<Boolean> function) {
+    public PhotoEditDialogTextUtils(Context context, Function<ColorModel> function) {
         this.mContext = context;
         this.function = function;
         initDialog();
@@ -66,9 +57,7 @@ public class DialogEditTextUtils implements View.OnClickListener, OnItemClickLis
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        if (function != null) {
-                            function.action(true);
-                        }
+
                     }
                 })
                 .setOnKeyListener(new DialogInterface.OnKeyListener() {
@@ -148,11 +137,15 @@ public class DialogEditTextUtils implements View.OnClickListener, OnItemClickLis
         for (int i = 0; i < paintColor.length; i++) {
             if (i == 0) {
                 list.add(new ColorModel(mContext.getResources().getColor(paintColor[i]), true));
+                editText.setTextColor(mContext.getResources().getColor(paintColor[i]));
             } else {
                 list.add(new ColorModel(mContext.getResources().getColor(paintColor[i]), false));
             }
         }
         adapter.notifyDataSetChanged();
+        if (list != null && list.size() > 0) {
+            currentColorModel = list.get(0);
+        }
     }
 
     @Override
@@ -166,9 +159,13 @@ public class DialogEditTextUtils implements View.OnClickListener, OnItemClickLis
                 case R.id.tv_edit_top_complete:
                     //完成
                     dissMiss();
+                    if (function != null) {
+                        function.action(new ColorModel(editText.getMPaintColor(), editText.getTextColors().getDefaultColor()));
+                    }
                     break;
                 case R.id.rl_pencile_bold:
                     ivPencileBold.setSelected(!ivPencileBold.isSelected());
+                    setCanvasPaintColor();
                     break;
             }
         }
@@ -186,5 +183,22 @@ public class DialogEditTextUtils implements View.OnClickListener, OnItemClickLis
         }
         colorModel.setScaleCoefficient();
         adapter.notifyDataSetChanged();
+        this.currentColorModel = colorModel;
+        setCanvasPaintColor();
+    }
+
+    /**
+     * 设置画笔颜色
+     */
+    private void setCanvasPaintColor() {
+        if (ivPencileBold != null && editText != null && currentColorModel != null) {
+            if (ivPencileBold.isSelected()) {
+                editText.setMPaintColor(currentColorModel.getFrontColor());
+                editText.invalidate();
+            } else {
+                editText.setMPaintColor(mContext.getResources().getColor(R.color.grey_00));
+                editText.setTextColor(currentColorModel.getFrontColor());
+            }
+        }
     }
 }

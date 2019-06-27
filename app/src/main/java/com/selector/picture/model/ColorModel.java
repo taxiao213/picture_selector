@@ -10,11 +10,17 @@ package com.selector.picture.model;
 public class ColorModel {
     private int frontColor;//前景色
     private int backColor;//后景色
+    private int textColor;//字体颜色
     private float scaleCoefficient;//缩放系数 默认1
     private float radius;//最小半径
     private float spacing;//间距
     private float COEFFICIENT_NORMAL = 1.0F;//正常系数
     private float COEFFICIENT_SCALE = 1.2F;//缩放系数
+
+    public ColorModel(int frontColor, int textColor) {
+        this.frontColor = frontColor;
+        this.textColor = textColor;
+    }
 
     /**
      * @param frontColor 前背景色

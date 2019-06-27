@@ -1,31 +1,26 @@
-package com.selector.picture.fragment;
+package com.edit.picture.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.selector.picture.GlideRequest;
 import com.selector.picture.R;
-import com.selector.picture.activity.PhotoEditActivity;
-import com.selector.picture.adapter.PhotoEditAdapter;
+import com.edit.picture.activity.PhotoEditActivity;
+import com.edit.picture.adapter.PhotoEditAdapter;
 import com.selector.picture.base.BaseFragment;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.ColorModel;
 import com.selector.picture.model.PicConfig;
 import com.selector.picture.utils.Function;
 import com.selector.picture.utils.OnItemClickListener;
-import com.selector.picture.view.DialogEditTextUtils;
+import com.edit.picture.view.PhotoEditDialogTextUtils;
 
 import java.util.ArrayList;
 
@@ -36,7 +31,7 @@ import java.util.ArrayList;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoEditFragment extends BaseFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, OnItemClickListener<ColorModel> {
+public class PhotoEditFragment extends BaseFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, OnItemClickListener<ColorModel>, Function<ColorModel> {
 
     private PhotoEditActivity activity;
     private RecyclerView ryEditPencileBottom;
@@ -150,12 +145,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                 case R.id.tv_edit_bottom_text:
                     //文本
                     topAndBottomVisible(false);
-                    new DialogEditTextUtils(activity, new Function<Boolean>() {
-                        @Override
-                        public void action(Boolean var) {
-                            topAndBottomVisible(true);
-                        }
-                    });
+                    new PhotoEditDialogTextUtils(activity, this);
                     break;
                 case R.id.tv_edit_bottom_cut:
                     //剪切
@@ -176,6 +166,15 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         }
         colorModel.setScaleCoefficient();
         adapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void action(ColorModel var) {
+        topAndBottomVisible(true);
+        if (var != null) {
+
+        }
     }
 
     /**

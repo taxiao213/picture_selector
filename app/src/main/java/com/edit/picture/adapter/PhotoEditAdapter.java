@@ -1,4 +1,4 @@
-package com.selector.picture.adapter;
+package com.edit.picture.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.selector.picture.R;
-import com.selector.picture.activity.PhotoEditActivity;
+import com.edit.picture.activity.PhotoEditActivity;
 import com.selector.picture.model.ColorModel;
-import com.selector.picture.model.LocalMedia;
 import com.selector.picture.utils.OnItemClickListener;
 
 import java.util.List;

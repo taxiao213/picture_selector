@@ -53,7 +53,7 @@
     <attr name="picture_edit_text_bold" format="reference" />                            <!--编辑界面text文字加粗图标-->
 
     <!--圆形view-->
-    <declare-styleable name="RoundView">
+    <declare-styleable name="PhotoEditRoundView">
         <attr name="round_radius" format="float"/>                                       <!--半径-->
         <attr name="round_spacing" format="float"/>                                      <!--间距-->
         <attr name="round_scale_coefficient" format="float"/>                            <!--缩放系数-->

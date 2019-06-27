@@ -1,4 +1,4 @@
-package com.selector.picture.activity;
+package com.edit.picture.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -6,8 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.selector.picture.R;
 import com.selector.picture.base.BaseActivity;
-import com.selector.picture.fragment.PhotoEditFragment;
-import com.selector.picture.fragment.PhotoSelectFragment;
+import com.edit.picture.fragment.PhotoEditFragment;
 import com.selector.picture.model.PicConfig;
 import com.selector.picture.view.StatusBarUtil;
 

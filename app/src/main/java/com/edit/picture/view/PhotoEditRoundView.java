@@ -1,4 +1,4 @@
-package com.selector.picture.view;
+package com.edit.picture.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,7 +16,7 @@ import com.selector.picture.R;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class RoundView extends View {
+public class PhotoEditRoundView extends View {
 
     private Paint mPaint;
     private float mRadius;//最小半径
@@ -27,25 +27,25 @@ public class RoundView extends View {
     private int mRadiusX;//圆形X
     private int mRadiusY;//圆形Y
 
-    public RoundView(Context context) {
+    public PhotoEditRoundView(Context context) {
         this(context, null);
     }
 
-    public RoundView(Context context, AttributeSet attrs) {
+    public PhotoEditRoundView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RoundView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PhotoEditRoundView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setAntiAlias(true);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundView);
-        mRadius = typedArray.getFloat(R.styleable.RoundView_round_radius, context.getResources().getDimension(R.dimen.picture_edit_circle_radius));
-        mSpacing = typedArray.getFloat(R.styleable.RoundView_round_spacing, context.getResources().getDimension(R.dimen.picture_edit_circle_spacing));
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PhotoEditRoundView);
+        mRadius = typedArray.getFloat(R.styleable.PhotoEditRoundView_round_radius, context.getResources().getDimension(R.dimen.picture_edit_circle_radius));
+        mSpacing = typedArray.getFloat(R.styleable.PhotoEditRoundView_round_spacing, context.getResources().getDimension(R.dimen.picture_edit_circle_spacing));
         float SCALE_COEFFICIENT = 1.0f;
-        mScaleCoefficient = typedArray.getFloat(R.styleable.RoundView_round_scale_coefficient, SCALE_COEFFICIENT);
-        mBackColor = typedArray.getColor(R.styleable.RoundView_round_back_color, context.getResources().getColor(R.color.white_trans));
-        mFrontColor = typedArray.getColor(R.styleable.RoundView_round_front_color, context.getResources().getColor(R.color.colorPrimary));
+        mScaleCoefficient = typedArray.getFloat(R.styleable.PhotoEditRoundView_round_scale_coefficient, SCALE_COEFFICIENT);
+        mBackColor = typedArray.getColor(R.styleable.PhotoEditRoundView_round_back_color, context.getResources().getColor(R.color.white_trans));
+        mFrontColor = typedArray.getColor(R.styleable.PhotoEditRoundView_round_front_color, context.getResources().getColor(R.color.colorPrimary));
         typedArray.recycle();
     }
 

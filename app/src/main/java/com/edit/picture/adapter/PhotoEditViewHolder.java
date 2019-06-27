@@ -1,23 +1,14 @@
-package com.selector.picture.adapter;
+package com.edit.picture.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.selector.picture.R;
-import com.selector.picture.activity.PhotoEditActivity;
-import com.selector.picture.activity.PhotoPreviewsActivity;
+import com.edit.picture.activity.PhotoEditActivity;
 import com.selector.picture.model.ColorModel;
-import com.selector.picture.model.LocalMedia;
-import com.selector.picture.model.MimeType;
 import com.selector.picture.utils.OnItemClickListener;
-import com.selector.picture.utils.PicUtils;
-import com.selector.picture.utils.StringUtils;
-import com.selector.picture.utils.UIUtils;
-import com.selector.picture.view.RoundView;
+import com.edit.picture.view.PhotoEditRoundView;
 
 /**
  * 图片剪切颜色ViewHolder
@@ -28,7 +19,7 @@ import com.selector.picture.view.RoundView;
  */
 public class PhotoEditViewHolder extends RecyclerView.ViewHolder {
 
-    private RoundView tv_round_view;
+    private PhotoEditRoundView tv_round_view;
     private View currentView;
     private OnItemClickListener<ColorModel> mOnItemClickListener;
 

@@ -1,10 +1,5 @@
 package com.selector.picture.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,18 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.selector.picture.R;
-import com.selector.picture.activity.PhotoEditActivity;
+import com.edit.picture.activity.PhotoEditActivity;
 import com.selector.picture.activity.PhotoPreviewsActivity;
-import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.adapter.PhotoPreviewAdapter;
 import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
 import com.selector.picture.base.BaseFragment;

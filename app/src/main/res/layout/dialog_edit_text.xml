@@ -40,7 +40,7 @@
     </LinearLayout>
 
 
-    <com.selector.picture.view.EditTextBackGroundView
+    <com.edit.picture.view.PhotoEditTextView
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,7 +48,8 @@
         android:layout_below="@+id/rl_edit_top_root"
         android:background="@null"
         android:gravity="top"
-        android:padding="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         android:textSize="24sp" />
 
 </RelativeLayout>

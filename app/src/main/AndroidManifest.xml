@@ -42,7 +42,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.PhotoEditActivity"
+            android:name="com.edit.picture.activity.PhotoEditActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
