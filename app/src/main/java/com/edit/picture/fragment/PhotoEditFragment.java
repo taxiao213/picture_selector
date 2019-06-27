@@ -1,6 +1,8 @@
 package com.edit.picture.fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -11,16 +13,21 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.selector.picture.R;
 import com.edit.picture.activity.PhotoEditActivity;
 import com.edit.picture.adapter.PhotoEditAdapter;
+import com.edit.picture.view.PhotoEditDialogTextUtils;
+import com.edit.picture.view.PhotoEditImageView;
+import com.selector.picture.R;
 import com.selector.picture.base.BaseFragment;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.ColorModel;
+import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.PicConfig;
+import com.selector.picture.utils.CompressPicUtil;
 import com.selector.picture.utils.Function;
 import com.selector.picture.utils.OnItemClickListener;
-import com.edit.picture.view.PhotoEditDialogTextUtils;
+import com.selector.picture.utils.StringUtils;
+import com.selector.picture.utils.UIUtils;
 
 import java.util.ArrayList;
 
@@ -42,6 +49,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     private RelativeLayout rlEditTopRoot;
     private PhotoEditAdapter adapter;
     private ArrayList<ColorModel> list;//画笔颜色的结合
+    private LocalMedia model;
 
     @Override
     public void onAttach(Context context) {
@@ -58,7 +66,11 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     protected void initData() {
         View view = getView();
         if (view == null) return;
-        ImageView ivEdit = view.findViewById(R.id.iv_edit);//图片
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            model = bundle.getParcelable(Constant.ACTION_TYPE1);
+        }
+        PhotoEditImageView photoEditImage = view.findViewById(R.id.iv_edit);//图片
         rlEditTopRoot = view.findViewById(R.id.rl_edit_top_root); //顶部根View
         TextView rlEditTopCancel = view.findViewById(R.id.tv_edit_top_cancel);//顶部取消按钮
         TextView rlEditTopComplete = view.findViewById(R.id.tv_edit_top_complete);//顶部完成按钮
@@ -86,6 +98,13 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         radioGroupEditMosaic.check(R.id.radio_edit_mosaic_grid);
         radioEditGroup.check(R.id.radio_edit_bottom_pencile);
         initColorList();
+        if (model != null) {
+            Bitmap bitmap = CompressPicUtil.getImage(StringUtils.nullToString(model.getPath()));
+//            Bitmap bitmap = BitmapFactory.decodeFile(StringUtils.nullToString(model.getPath()));
+            if (bitmap != null) {
+                photoEditImage.setPhotoEditImage(bitmap);
+            }
+        }
     }
 
     /**
@@ -135,6 +154,9 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
             switch (v.getId()) {
                 case R.id.tv_edit_top_cancel:
                     //取消
+                    if (activity != null) {
+                        activity.finish();
+                    }
                     break;
                 case R.id.tv_edit_top_complete:
                     //完成
@@ -173,7 +195,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     public void action(ColorModel var) {
         topAndBottomVisible(true);
         if (var != null) {
-
+            // TODO: 2019/6/27 addView
         }
     }
 

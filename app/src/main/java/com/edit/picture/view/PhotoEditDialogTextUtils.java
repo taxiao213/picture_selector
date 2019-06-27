@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.selector.picture.R;
 import com.edit.picture.activity.PhotoEditActivity;
 import com.edit.picture.adapter.PhotoEditAdapter;
+import com.selector.picture.R;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.ColorModel;
 import com.selector.picture.model.PicConfig;
@@ -54,17 +54,11 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
         dialog = new AlertDialog
                 .Builder(mContext)
                 .setCancelable(false)
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-
-                    }
-                })
                 .setOnKeyListener(new DialogInterface.OnKeyListener() {
                     @Override
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-                            dissMiss();
+                            dissMiss(Constant.TYPE1);
                         }
                         return false;
                     }
@@ -109,11 +103,22 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
 
     /**
      * 弹框消失
+     *
+     * @param type Constant.TYPE1 返回值null  Constant.TYPE2 有返回值
      */
-    private void dissMiss() {
+    private void dissMiss(int type) {
         if (dialog != null) {
             dialog.dismiss();
             UIUtils.closeBroad(mContext, editText);
+        }
+        if (type == Constant.TYPE2) {
+            if (function != null) {
+                function.action(new ColorModel(editText.getMPaintColor(), editText.getTextColors().getDefaultColor()));
+            }
+        } else {
+            if (function != null) {
+                function.action(null);
+            }
         }
     }
 
@@ -154,14 +159,11 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
             switch (v.getId()) {
                 case R.id.tv_edit_top_cancel:
                     //取消
-                    dissMiss();
+                    dissMiss(Constant.TYPE1);
                     break;
                 case R.id.tv_edit_top_complete:
                     //完成
-                    dissMiss();
-                    if (function != null) {
-                        function.action(new ColorModel(editText.getMPaintColor(), editText.getTextColors().getDefaultColor()));
-                    }
+                    dissMiss(Constant.TYPE2);
                     break;
                 case R.id.rl_pencile_bold:
                     ivPencileBold.setSelected(!ivPencileBold.isSelected());

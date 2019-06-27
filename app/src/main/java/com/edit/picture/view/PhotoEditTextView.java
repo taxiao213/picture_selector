@@ -11,6 +11,8 @@ import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.selector.picture.R;
+
 /**
  * 带背景色的EditText
  * Create by Han on 2019/6/21
@@ -38,6 +40,7 @@ public class PhotoEditTextView extends android.support.v7.widget.AppCompatEditTe
         super(context, attrs, defStyleAttr);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        mPaint.setColor(getContext().getResources().getColor(R.color.grey_00));//默认透明色
     }
 
     @Override
