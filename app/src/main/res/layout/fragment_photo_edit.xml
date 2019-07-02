@@ -7,7 +7,7 @@
         android:id="@+id/iv_edit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_00" />
+        android:background="@android:color/black" />
 
     <include layout="@layout/picture_photo_edit_top" />
 

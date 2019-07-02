@@ -7,18 +7,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.selector.picture.constant.Constant;
-import com.selector.picture.model.LocalMedia;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.HashMap;
 
 /**
  * 图片压缩工具类
@@ -72,7 +69,7 @@ public class CompressPicUtil {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        src.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        src.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] bytes = baos.toByteArray();
         BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
         int width = options.outWidth;
@@ -115,7 +112,7 @@ public class CompressPicUtil {
      * @return true 不是长图 false长图
      */
     private static boolean isNotLongPic(int width, int height) {
-        return height < (width * 3) || width < (height * 3);
+        return height < (width * 3) && width < (height * 3);
     }
 
     /**
@@ -127,15 +124,18 @@ public class CompressPicUtil {
     private static Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         if (image != null) {
-            image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩(代表的是压缩率)，把压缩后的数据存放到baos中
+            image.compress(Bitmap.CompressFormat.PNG, 100, baos);//质量压缩方法，这里100表示不压缩(代表的是压缩率)，把压缩后的数据存放到baos中
         }
         byte[] bytes = baos.toByteArray();
         int options = 100;
         while (bytes.length / 1024 > QUALITY_COMPRESSION) {//循环判断如果压缩后图片是否大于400kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             options -= 10;//每次都减少10
+            if (options <= 0) {
+                break;
+            }
             if (image != null) {
-                image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+                image.compress(Bitmap.CompressFormat.PNG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             }
             bytes = baos.toByteArray();
         }

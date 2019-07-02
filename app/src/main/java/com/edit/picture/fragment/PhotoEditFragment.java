@@ -2,9 +2,11 @@ package com.edit.picture.fragment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +29,6 @@ import com.selector.picture.utils.CompressPicUtil;
 import com.selector.picture.utils.Function;
 import com.selector.picture.utils.OnItemClickListener;
 import com.selector.picture.utils.StringUtils;
-import com.selector.picture.utils.UIUtils;
 
 import java.util.ArrayList;
 
@@ -99,10 +100,17 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         radioEditGroup.check(R.id.radio_edit_bottom_pencile);
         initColorList();
         if (model != null) {
-            Bitmap bitmap = CompressPicUtil.getImage(StringUtils.nullToString(model.getPath()));
-//            Bitmap bitmap = BitmapFactory.decodeFile(StringUtils.nullToString(model.getPath()));
-            if (bitmap != null) {
-                photoEditImage.setPhotoEditImage(bitmap);
+            String path = model.getPath();
+            if (!TextUtils.isEmpty(path)) {
+                Bitmap bitmap = BitmapFactory.decodeFile(StringUtils.nullToString(model.getPath()));
+                //修正角度
+                if (bitmap != null) {
+                    int degree = CompressPicUtil.readPictureDegree(path);
+                    Bitmap rotaingBt = CompressPicUtil.rotaingImageView(degree, bitmap);
+                    if (rotaingBt != null) {
+                        photoEditImage.setPhotoEditImage(rotaingBt);
+                    }
+                }
             }
         }
     }
