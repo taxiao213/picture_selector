@@ -36,6 +36,13 @@ public class PhotoEditImage {
     }
 
     /**
+     * 获取图片
+     */
+    public Bitmap getPhotoEditImage() {
+        return mBitmap;
+    }
+
+    /**
      * 绘制图片 小图片放大问题
      *
      * @param canvas Canvas 画布
@@ -96,12 +103,16 @@ public class PhotoEditImage {
      * @param screenSize 屏幕的宽和高尺寸
      * @return float
      */
-    public float getTranslate(float trans, int screenSize) {
+    private float getTranslate(float trans, int screenSize) {
         if (trans <= screenSize) {
             trans = (screenSize - trans) / 2;
         } else {
             trans = screenSize;
         }
         return trans;
+    }
+
+    public Matrix getMatrix() {
+        return matrix;
     }
 }

@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 
 import com.edit.picture.util.PhotoEditImage;
 
+import java.util.function.ToDoubleBiFunction;
+
 /**
  * 编辑界面加载ImageView 需要实现 手势放大缩小，裁剪，旋转，马赛克，画笔功能
  * 裁剪可以旋转，有取消按钮操作
@@ -30,7 +32,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     private PhotoEditImage photoEditImage = new PhotoEditImage();
     private ScaleGestureDetector mScaleGestureDetector;
     private GestureDetector mGestureDetector;
-    private Matrix matrix;
     private int mPointerCount;//手指接触的个数
 
     public PhotoEditImageView(@NonNull Context context) {
@@ -49,7 +50,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     private void initView(Context context) {
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
         mGestureDetector = new GestureDetector(context, new GestureListener());
-        matrix = new Matrix();
     }
 
     /**
@@ -70,7 +70,9 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      * @param canvas Canvas 画布
      */
     private void onDrawImage(Canvas canvas) {
+        canvas.save();
         photoEditImage.drawImage(getContext(), canvas);
+        canvas.restore();
     }
 
 
@@ -95,9 +97,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      * @return boolean
      */
     private boolean onScroll(float distanceX, float distanceY) {
-        if (mPointerCount > 1) {
-            return false;
-        }
 //        IMGHoming homing = mImage.onScroll(getScrollX(), getScrollY(), -dx, -dy);
 //        if (homing != null) {
 //            toApplyHoming(homing);
@@ -223,8 +222,11 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     @Override
     public void run() {
+        // TODO: 2019/7/3  如果尺寸小于屏幕宽高需要还原
+        if (photoEditImage != null) {
+            Matrix matrix = photoEditImage.getMatrix();
 
+        }
     }
-
 
 }
