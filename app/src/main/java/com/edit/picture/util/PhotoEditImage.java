@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.selector.picture.utils.UIUtils;
 
@@ -44,12 +44,24 @@ public class PhotoEditImage {
 
     /**
      * 绘制图片 小图片放大问题
+     * canvas.drawBitmap(mBitmap, rect, rectF1, null); 第一个Rect 代表要绘制的bitmap 区域，第二个 Rect 代表的是要将bitmap 绘制在屏幕的什么地方
      *
      * @param canvas Canvas 画布
      */
     public void drawImage(Context context, Canvas canvas) {
         if (mBitmap == null) return;
-        canvas.drawBitmap(mBitmap, matrix, null);
+
+
+        int width = mBitmap.getWidth();
+        int height = mBitmap.getHeight();
+        Rect rect = new Rect(0, 0, width, height);
+        int screenWidth = UIUtils.getScreenWidth(context);
+        int screenHeight = UIUtils.getScreenHeight(context);
+
+        RectF rectF1 = new RectF((screenWidth - width) / 2, (screenHeight - height) / 2, (screenWidth - width) / 2 + width, (screenHeight - height) / 2 + height);
+        canvas.drawBitmap(mBitmap, rect, rectF1, null);
+//        canvas.drawBitmap(mBitmap, matrix, null);
+
     }
 
 
@@ -88,6 +100,11 @@ public class PhotoEditImage {
         scale = Math.min(width * 1f / mBitmap.getWidth(), height * 1f / mBitmap.getHeight());
         float tranWidth = scale * mBitmap.getWidth();
         float tranHeight = scale * mBitmap.getHeight();
+
+//       mBitmap.setWidth(Math.round(tranWidth));
+//       mBitmap.setHeight(Math.round(tranHeight));
+
+
         int screenWidth = UIUtils.getScreenWidth(context);
         int screenHeight = UIUtils.getScreenHeight(context);
         tranWidth = getTranslate(tranWidth, screenWidth);
