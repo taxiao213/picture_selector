@@ -269,4 +269,26 @@ public class CompressPicUtil {
         }
         return path;
     }
+
+    /**
+     * 把图片缩放到屏幕宽高的大小
+     *
+     * @param srcPath 图片路径
+     * @return Bitmap
+     */
+    public static Bitmap getEditImage(String srcPath, Context context) {
+        Bitmap src = BitmapFactory.decodeFile(srcPath);
+        if (src == null) return null;
+        int screenWidth = UIUtils.getScreenWidth(context);
+        int screenHeight = UIUtils.getScreenHeight(context);
+        int srcWidth = src.getWidth();
+        int srcHeight = src.getHeight();
+        float scale = Math.min(screenWidth * 1f / srcWidth, screenHeight * 1f / srcHeight);
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        Bitmap bitmap = Bitmap.createBitmap(src, 0, 0, srcWidth, srcHeight, matrix, true);
+        int degree = readPictureDegree(srcPath);
+        Bitmap rotaingBt = rotaingImageView(degree, bitmap);
+        return rotaingBt;
+    }
 }

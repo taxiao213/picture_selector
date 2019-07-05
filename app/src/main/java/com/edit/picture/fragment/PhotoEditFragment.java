@@ -2,7 +2,6 @@ package com.edit.picture.fragment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -102,14 +101,9 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         if (model != null) {
             String path = model.getPath();
             if (!TextUtils.isEmpty(path)) {
-                Bitmap bitmap = BitmapFactory.decodeFile(StringUtils.nullToString(model.getPath()));
-                //修正角度
+                Bitmap bitmap = CompressPicUtil.getEditImage(StringUtils.nullToString(model.getPath()), activity);
                 if (bitmap != null) {
-                    int degree = CompressPicUtil.readPictureDegree(path);
-                    Bitmap rotaingBt = CompressPicUtil.rotaingImageView(degree, bitmap);
-                    if (rotaingBt != null) {
-                        photoEditImage.setPhotoEditImage(rotaingBt);
-                    }
+                    photoEditImage.setPhotoEditImage(bitmap);
                 }
             }
         }
