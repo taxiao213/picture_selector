@@ -279,16 +279,16 @@ public class CompressPicUtil {
     public static Bitmap getEditImage(String srcPath, Context context) {
         Bitmap src = BitmapFactory.decodeFile(srcPath);
         if (src == null) return null;
+        int degree = readPictureDegree(srcPath);
+        Bitmap rotaingBt = rotaingImageView(degree, src);
         int screenWidth = UIUtils.getScreenWidth(context);
         int screenHeight = UIUtils.getScreenHeight(context);
-        int srcWidth = src.getWidth();
-        int srcHeight = src.getHeight();
+        int srcWidth = rotaingBt.getWidth();
+        int srcHeight = rotaingBt.getHeight();
         float scale = Math.min(screenWidth * 1f / srcWidth, screenHeight * 1f / srcHeight);
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
-        Bitmap bitmap = Bitmap.createBitmap(src, 0, 0, srcWidth, srcHeight, matrix, true);
-        int degree = readPictureDegree(srcPath);
-        Bitmap rotaingBt = rotaingImageView(degree, bitmap);
-        return rotaingBt;
+        Bitmap bitmap = Bitmap.createBitmap(rotaingBt, 0, 0, srcWidth, srcHeight, matrix, true);
+        return bitmap;
     }
 }

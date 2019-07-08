@@ -1,9 +1,10 @@
 package com.edit.picture.view;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -14,9 +15,9 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.FrameLayout;
 
-import com.edit.picture.util.PhotoEditImage;
-
-import java.util.function.ToDoubleBiFunction;
+import com.edit.picture.model.PhotoEditImage;
+import com.edit.picture.util.PhotoEditAnimator;
+import com.selector.picture.utils.UIUtils;
 
 /**
  * 编辑界面加载ImageView 需要实现 手势放大缩小，裁剪，旋转，马赛克，画笔功能
@@ -28,11 +29,13 @@ import java.util.function.ToDoubleBiFunction;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetector.OnScaleGestureListener, Runnable {
-    private PhotoEditImage photoEditImage = new PhotoEditImage();
+public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetector.OnScaleGestureListener, Runnable, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
+    private PhotoEditImage photoEditImage;
     private ScaleGestureDetector mScaleGestureDetector;
     private GestureDetector mGestureDetector;
+    private PhotoEditAnimator mPhotoEditAnimator;
     private int mPointerCount;//手指接触的个数
+    private final int DELAY_TIME = 100;//延迟时间
 
     public PhotoEditImageView(@NonNull Context context) {
         this(context, null);
@@ -48,6 +51,8 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     }
 
     private void initView(Context context) {
+        photoEditImage = new PhotoEditImage();
+        mPhotoEditAnimator = new PhotoEditAnimator(this, this);
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
         mGestureDetector = new GestureDetector(context, new GestureListener());
     }
@@ -123,9 +128,9 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (photoEditImage != null) {
-            photoEditImage.onSizeChange(w, h, getContext());
-        }
+        /*if (photoEditImage != null) {
+            photoEditImage.onSizeChange(w, h);
+        }*/
     }
 
     @Override
@@ -152,7 +157,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    postDelayed(this, 1200);
+                    postDelayed(this, DELAY_TIME);
                     break;
             }
         }
@@ -161,32 +166,14 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
-        float currentSpanX = detector.getCurrentSpanX();
-        float currentSpanY = detector.getCurrentSpanY();
-        float currentSpan = detector.getCurrentSpan();
-        float previousSpanX = detector.getPreviousSpanX();
-        float previousSpanY = detector.getPreviousSpanY();
-        float previousSpan = detector.getPreviousSpan();
-        float scaleFactor = detector.getScaleFactor();
-        float focusX = detector.getFocusX();
-        float focusY = detector.getFocusY();
         if (mPointerCount > 1) {
             if (photoEditImage != null) {
-                photoEditImage.setGestureScale(detector.getScaleFactor(), getScaleX() + detector.getFocusX(), getScaleY() + detector.getFocusY());
+//                photoEditImage.setGestureScale(detector.getScaleFactor(), getScaleX() + detector.getFocusX(), getScaleY() + detector.getFocusY());
+                photoEditImage.setGestureScale(detector.getScaleFactor(), UIUtils.getScreenWidth(getContext()) / 2.0F, UIUtils.getScreenHeight(getContext()) / 2.0F);
                 invalidate();
             }
             return true;
         }
-        Log.e("onScale",
-                " currentSpanX== " + currentSpanX + "\n"
-                        + " currentSpanY== " + currentSpanY + "\n"
-                        + " currentSpan== " + currentSpan + "\n"
-                        + " previousSpanX== " + previousSpanX + "\n"
-                        + " previousSpanY== " + previousSpanY + "\n"
-                        + " previousSpan== " + previousSpan + "\n"
-                        + " scaleFactor== " + scaleFactor + "\n"
-                        + " focusX== " + focusX + "\n"
-                        + " focusY== " + focusY);
         return false;
     }
 
@@ -222,11 +209,65 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     @Override
     public void run() {
-        // TODO: 2019/7/3  如果尺寸小于屏幕宽高需要还原
         if (photoEditImage != null) {
-            Matrix matrix = photoEditImage.getMatrix();
-
+            //动画效果
+            final float scaleX = photoEditImage.getMatrixScaleX();
+            if (scaleX < 1) {
+                if (mPhotoEditAnimator != null) {
+                    cancelAnimator();
+                    mPhotoEditAnimator.setFloat(scaleX);
+                    mPhotoEditAnimator.start();
+                }
+            }
         }
     }
 
+
+    @Override
+    public void onAnimationStart(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+        cancelAnimator();
+    }
+
+
+    @Override
+    public void onAnimationCancel(Animator animation) {
+        cancelAnimator();
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator animation) {
+        if (photoEditImage != null) {
+            Float animatedValue = (Float) animation.getAnimatedValue();
+            Log.e("animated ", " value == " + animatedValue);
+            photoEditImage.setMatrixScaleX(animatedValue);
+//            photoEditImage.setPositionCorrection(getContext());
+            invalidate();
+        }
+    }
+
+    /**
+     * 取消动画
+     */
+    private void cancelAnimator() {
+        if (mPhotoEditAnimator != null) {
+            mPhotoEditAnimator.cancel();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        cancelAnimator();
+        Log.e("onDetachedFromWindow ", "取消动画");
+    }
 }
