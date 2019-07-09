@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.selector.picture.R;
 import com.edit.picture.activity.PhotoEditActivity;
+import com.selector.picture.R;
 import com.selector.picture.activity.PhotoPreviewsActivity;
 import com.selector.picture.adapter.PhotoPreviewAdapter;
 import com.selector.picture.adapter.PhotoPreviewFragmentAdapter;
@@ -327,55 +327,57 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
      * 设置当前的vp 信息   0时没有onPageSelected 回调
      */
     private void setVPCurrent() {
-        LocalMedia media = list.get(currentPosition);
-        if (media != null) {
-            String mimeType = StringUtils.nullToString(media.getPictureType());
-            int pictureType = MimeType.isPictureType(mimeType);
-            if (pictureType == MimeType.TYPE_IMAGE) {
-                if (MimeType.isGif(mimeType)) {
+        if (list != null && list.size() > 0) {
+            LocalMedia media = list.get(currentPosition);
+            if (media != null) {
+                String mimeType = StringUtils.nullToString(media.getPictureType());
+                int pictureType = MimeType.isPictureType(mimeType);
+                if (pictureType == MimeType.TYPE_IMAGE) {
+                    if (MimeType.isGif(mimeType)) {
+                        tvBottomLeftTextPreviews.setVisibility(View.GONE);
+                        tvBottomCenterTextPreviews.setVisibility(View.GONE);
+                    } else {
+                        tvBottomLeftTextPreviews.setVisibility(PicConfig.getInstances().isEditable() ? View.VISIBLE : View.GONE);
+                        tvBottomCenterTextPreviews.setVisibility(PicConfig.getInstances().isOptionOriginalImage() ? View.VISIBLE : View.GONE);
+                    }
+                } else {
                     tvBottomLeftTextPreviews.setVisibility(View.GONE);
                     tvBottomCenterTextPreviews.setVisibility(View.GONE);
-                } else {
-                    tvBottomLeftTextPreviews.setVisibility(PicConfig.getInstances().isEditable() ? View.VISIBLE : View.GONE);
-                    tvBottomCenterTextPreviews.setVisibility(PicConfig.getInstances().isOptionOriginalImage() ? View.VISIBLE : View.GONE);
                 }
-            } else {
-                tvBottomLeftTextPreviews.setVisibility(View.GONE);
-                tvBottomCenterTextPreviews.setVisibility(View.GONE);
-            }
-            tvBottomSelectTextPreviews.setSelected(media.isChecked());
-            if (listPreview != null && listPreview.size() > 0) {
-                String id = media.getId();
-                for (int i = 0; i < listPreview.size(); i++) {
-                    LocalMedia localMedia = listPreview.get(i);
-                    if (localMedia != null) {
-                        if (TextUtils.equals(id, localMedia.getId())) {
-                            localMedia.setSelect(true);
-                            ryPreviews.scrollToPosition(i);
-                        } else {
-                            localMedia.setSelect(false);
+                tvBottomSelectTextPreviews.setSelected(media.isChecked());
+                if (listPreview != null && listPreview.size() > 0) {
+                    String id = media.getId();
+                    for (int i = 0; i < listPreview.size(); i++) {
+                        LocalMedia localMedia = listPreview.get(i);
+                        if (localMedia != null) {
+                            if (TextUtils.equals(id, localMedia.getId())) {
+                                localMedia.setSelect(true);
+                                ryPreviews.scrollToPosition(i);
+                            } else {
+                                localMedia.setSelect(false);
+                            }
                         }
                     }
+                    if (!isHide) {
+                        ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
+                        params.height = (int) heightBottom + (int) heightBottomRy + (int) heightBottomLine;
+                        llBottomRootPreviews.requestLayout();
+                        ryPreviews.setVisibility(View.VISIBLE);
+                    }
+                    adapterPreview.notifyDataSetChanged();
+                } else {
+                    if (!isHide) {
+                        ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
+                        params.height = (int) heightBottom;
+                        llBottomRootPreviews.requestLayout();
+                        ryPreviews.setVisibility(View.GONE);
+                    }
                 }
-                if (!isHide) {
-                    ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
-                    params.height = (int) heightBottom + (int) heightBottomRy + (int) heightBottomLine;
-                    llBottomRootPreviews.requestLayout();
-                    ryPreviews.setVisibility(View.VISIBLE);
-                }
-                adapterPreview.notifyDataSetChanged();
             } else {
-                if (!isHide) {
-                    ViewGroup.LayoutParams params = llBottomRootPreviews.getLayoutParams();
-                    params.height = (int) heightBottom;
-                    llBottomRootPreviews.requestLayout();
-                    ryPreviews.setVisibility(View.GONE);
-                }
+                tvBottomSelectTextPreviews.setSelected(false);
             }
-        } else {
-            tvBottomSelectTextPreviews.setSelected(false);
+            tvTopLeftText.setText(getString(R.string.picture_previews_top_left_text, String.valueOf(currentPosition + 1), String.valueOf(list.size())));
         }
-        tvTopLeftText.setText(getString(R.string.picture_previews_top_left_text, String.valueOf(currentPosition + 1), String.valueOf(list.size())));
     }
 
     /**
@@ -466,7 +468,7 @@ public class PhotoPreviewsFragment extends BaseFragment implements View.OnClickL
                 }
             }
         }
-        if (adapter != null) {
+        if (adapter != null && list != null && list.size() > 0) {
             Fragment item = adapter.getItem(currentPosition);
             if (item != null) {
                 item.onDestroyView();

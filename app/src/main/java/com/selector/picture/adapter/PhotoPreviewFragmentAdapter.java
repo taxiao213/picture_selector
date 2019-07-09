@@ -3,11 +3,9 @@ package com.selector.picture.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.LayoutInflater;
 
 import com.selector.picture.fragment.PhotoFragment;
 import com.selector.picture.model.LocalMedia;
-import com.selector.picture.utils.OnItemClickListener;
 
 import java.util.ArrayList;
 
