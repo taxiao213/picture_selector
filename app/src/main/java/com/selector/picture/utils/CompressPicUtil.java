@@ -291,4 +291,20 @@ public class CompressPicUtil {
         Bitmap bitmap = Bitmap.createBitmap(rotaingBt, 0, 0, srcWidth, srcHeight, matrix, true);
         return bitmap;
     }
+
+    /**
+     * 获取需要移动的距离
+     *
+     * @param trans      bitmap的宽和高
+     * @param screenSize 屏幕的宽和高尺寸
+     * @return float
+     */
+    public static float getTranslate(float trans, int screenSize) {
+        if (trans <= screenSize) {
+            trans = (screenSize - trans) / 2;
+        } else {
+            trans = screenSize;
+        }
+        return trans;
+    }
 }

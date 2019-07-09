@@ -15,8 +15,10 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.FrameLayout;
 
+import com.edit.picture.model.PhotoEditCorrection;
 import com.edit.picture.model.PhotoEditImage;
 import com.edit.picture.util.PhotoEditAnimator;
+import com.edit.picture.util.PhotoEditCorrectionAnimator;
 import com.selector.picture.utils.UIUtils;
 
 /**
@@ -88,7 +90,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      */
     private boolean onTouch(MotionEvent event) {
         mPointerCount = event.getPointerCount();
-        Log.e("touch ", " mPointerCount == " + mPointerCount);
         boolean touch = mScaleGestureDetector.onTouchEvent(event);
         mGestureDetector.onTouchEvent(event);
         return touch;
@@ -102,11 +103,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      * @return boolean
      */
     private boolean onScroll(float distanceX, float distanceY) {
-//        IMGHoming homing = mImage.onScroll(getScrollX(), getScrollY(), -dx, -dy);
-//        if (homing != null) {
-//            toApplyHoming(homing);
-//            return true;
-//        }
         return onScrollTo(getScrollX() + Math.round(distanceX), getScrollY() + Math.round(distanceY));
     }
 
@@ -123,14 +119,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
             return true;
         }
         return false;
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        /*if (photoEditImage != null) {
-            photoEditImage.onSizeChange(w, h);
-        }*/
     }
 
     @Override
@@ -169,7 +157,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         if (mPointerCount > 1) {
             if (photoEditImage != null) {
 //                photoEditImage.setGestureScale(detector.getScaleFactor(), getScaleX() + detector.getFocusX(), getScaleY() + detector.getFocusY());
-                photoEditImage.setGestureScale(detector.getScaleFactor(), UIUtils.getScreenWidth(getContext()) / 2.0F, UIUtils.getScreenHeight(getContext()) / 2.0F);
+                photoEditImage.setGestureScale(detector.getScaleFactor(), getScreenWidth(), getScreenHeight());
                 invalidate();
             }
             return true;
@@ -202,7 +190,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            Log.e("distanceX == " + distanceX, "distanceY == " + distanceY);
             return PhotoEditImageView.this.onScroll(distanceX, distanceY);
         }
     }
@@ -211,13 +198,15 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     public void run() {
         if (photoEditImage != null) {
             //动画效果
-            final float scaleX = photoEditImage.getMatrixScaleX();
+            float scaleX = photoEditImage.getMatrixScaleX();
             if (scaleX < 1) {
                 if (mPhotoEditAnimator != null) {
                     cancelAnimator();
                     mPhotoEditAnimator.setFloat(scaleX);
                     mPhotoEditAnimator.start();
                 }
+            } else {
+                correctionPosition();
             }
         }
     }
@@ -231,6 +220,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     @Override
     public void onAnimationEnd(Animator animation) {
         cancelAnimator();
+        correctionPosition();
     }
 
 
@@ -248,11 +238,27 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     public void onAnimationUpdate(ValueAnimator animation) {
         if (photoEditImage != null) {
             Float animatedValue = (Float) animation.getAnimatedValue();
-            Log.e("animated ", " value == " + animatedValue);
-            photoEditImage.setMatrixScaleX(animatedValue);
-//            photoEditImage.setPositionCorrection(getContext());
+            photoEditImage.setMatrixScaleX(animatedValue, getScreenWidth(), getScreenHeight());
             invalidate();
         }
+    }
+
+    /**
+     * 获取屏幕高度 坐标
+     *
+     * @return float
+     */
+    private float getScreenHeight() {
+        return UIUtils.getScreenHeight(getContext()) / 2.0F;
+    }
+
+    /**
+     * 获取屏幕宽度 坐标
+     *
+     * @return float
+     */
+    private float getScreenWidth() {
+        return UIUtils.getScreenWidth(getContext()) / 2.0F;
     }
 
     /**
@@ -262,6 +268,82 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         if (mPhotoEditAnimator != null) {
             mPhotoEditAnimator.cancel();
         }
+    }
+
+    /**
+     * 位置修正
+     */
+    private void correctionPosition() {
+        if (photoEditImage != null) {
+            float scale = photoEditImage.getMatrixScaleX();
+            int scrollX = getScrollX();
+            int scrollY = getScrollY();
+            float absoluteValue = Math.abs(scale - 1);//缩放的系数 绝对值
+            float transX = absoluteValue * getScreenWidth();//修正的X移动距离
+            float transY = absoluteValue * getScreenHeight();//修正的Y移动距离
+            Log.e("scroll ", " scale == " + scale + " scrollX == " + getScrollX() + " scrollY == " + getScrollY() + " transX == " + transX + " transY == " + transY);
+            if (Math.abs(scrollX) >= transX && Math.abs(scrollY) >= transY) {
+                //相对当前位置移动 四个边角
+                if (scrollX < 0 && scrollY < 0) {
+                    //左上角
+                    scroll(-Math.round(transX), -Math.round(transY));
+                } else if (scrollX < 0 && scrollY > 0) {
+                    //左下角
+                    scroll(-Math.round(transX), Math.round(transY));
+                } else if (scrollX >= 0 && scrollY < 0) {
+                    //右上角
+                    scroll(Math.round(transX), -Math.round(transY));
+                } else if (scrollX >= 0 && scrollY > 0) {
+                    //右下角
+                    scroll(Math.round(transX), Math.round(transY));
+                }
+            } else if (Math.abs(scrollX) >= transX) {
+                //相对当前位置移动 左右移动 如果scrollX < 0,从右向左移动 正 ; 反之 从左向右移动 负
+                if (scrollX < 0) {
+                    scroll(-Math.round(transX), scrollY);
+                } else {
+                    scroll(Math.round(transX), scrollY);
+                }
+            } else if (Math.abs(scrollY) >= transY) {
+                //相对当前位置移动 上下移动 如果scrollY < 0,从下向上移动 正 ; 反之 从上向下移动 负
+                if (scrollY < 0) {
+                    scroll(scrollX, -Math.round(transY));
+                } else {
+                    scroll(scrollX, Math.round(transY));
+                }
+            }
+            Log.e("scroll ", " scale == " + scale + " scrollX == " + getScrollX() + " scrollY == " + getScrollY() + " transX == " + transX + " transY == " + transY);
+
+        }
+    }
+
+
+    /**
+     * View滑动
+     *
+     * @param transX X移动距离
+     * @param transY Y移动距离
+     */
+    public void scroll(float transX, float transY) {
+//        scrollTo(Math.round(transX), Math.round(transY));
+
+        PhotoEditCorrectionAnimator valueAnimator = new PhotoEditCorrectionAnimator();
+        PhotoEditCorrection start = new PhotoEditCorrection(getScrollX(), getScrollY(), 0);
+        PhotoEditCorrection end = new PhotoEditCorrection(Math.round(transX), Math.round(transY), 0);
+        valueAnimator.setCorrectionValues(start, end);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                PhotoEditCorrection animatedValue = (PhotoEditCorrection) animation.getAnimatedValue();
+                float startX = animatedValue.getTranX();
+                float endX = animatedValue.getTranY();
+                scrollTo(Math.round(startX), Math.round(endX));
+                Log.e("update", " startX == " + startX + " endX == " + endX);
+            }
+        });
+        valueAnimator.start();
+
+
     }
 
     @Override

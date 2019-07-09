@@ -4,10 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 
+import com.selector.picture.utils.CompressPicUtil;
 import com.selector.picture.utils.UIUtils;
 
 
@@ -23,7 +22,6 @@ public class PhotoEditImage {
     private Matrix matrix = new Matrix();
     /*完整图片边框*/
     private RectF mFrame = new RectF();
-    private float scale;
     private float SCALE_MAX = 4.0F;
     private float SCALE_MIN = 1.0F;
     private boolean isInit = true;//初始化
@@ -57,11 +55,15 @@ public class PhotoEditImage {
         if (isInit) {
             int width = mBitmap.getWidth();
             int height = mBitmap.getHeight();
-            Rect rect = new Rect(0, 0, width, height);
             int screenWidth = UIUtils.getScreenWidth(context);
             int screenHeight = UIUtils.getScreenHeight(context);
-            RectF rectF1 = new RectF((screenWidth - width) / 2, (screenHeight - height) / 2, (screenWidth - width) / 2 + width, (screenHeight - height) / 2 + height);
-            canvas.drawBitmap(mBitmap, rect, rectF1, null);
+            float scale = Math.min(screenWidth * 1f / width, screenHeight * 1f / height);
+            float tranWidth = scale * mBitmap.getWidth();
+            float tranHeight = scale * mBitmap.getHeight();
+            tranWidth = CompressPicUtil.getTranslate(tranWidth, screenWidth);
+            tranHeight = CompressPicUtil.getTranslate(tranHeight, screenHeight);
+            matrix.postTranslate(tranWidth, tranHeight);
+            canvas.drawBitmap(mBitmap, matrix, null);
             isInit = false;
         } else {
             canvas.drawBitmap(mBitmap, matrix, null);
@@ -92,58 +94,9 @@ public class PhotoEditImage {
         return mFrame;
     }
 
-    /**
-     * 设置matrix
-     *
-     * @param width  宽
-     * @param height 高
-     */
-    public void onSizeChange(int width, int height) {
-        if (mBitmap == null) return;
-        if (!isInit) {
-            scale = Math.min(width * 1f / mBitmap.getWidth(), height * 1f / mBitmap.getHeight());
-            matrix.postScale(scale, scale);
-        }
-    }
-
-    /**
-     * 获取需要移动的距离
-     *
-     * @param trans      bitmap的宽和高
-     * @param screenSize 屏幕的宽和高尺寸
-     * @return float
-     */
-    private float getTranslate(float trans, int screenSize) {
-        if (trans <= screenSize) {
-            trans = (screenSize - trans) / 2;
-        } else {
-            trans = screenSize;
-        }
-        return trans;
-    }
 
     public Matrix getMatrix() {
         return matrix;
-    }
-
-    /**
-     * 缩放位置调整
-     *
-     * @param context Context
-     */
-    public void setPositionCorrection(Context context) {
-//        float scale = getMatrixScaleX();
-//        float tranWidth = scale * mBitmap.getWidth();
-//        float tranHeight = scale * mBitmap.getHeight();
-//        int screenWidth = UIUtils.getScreenWidth(context);
-//        int screenHeight = UIUtils.getScreenHeight(context);
-//        tranWidth = getTranslate(tranWidth, screenWidth);
-//        tranHeight = getTranslate(tranHeight, screenHeight);
-//        matrix.postTranslate(tranWidth, tranHeight);
-
-        MATRIX_FLOAT[Matrix.MTRANS_X] = 0.0F;
-        MATRIX_FLOAT[Matrix.MTRANS_Y] = 0.0F;
-        matrix.setValues(MATRIX_FLOAT);
     }
 
     /**
@@ -161,11 +114,16 @@ public class PhotoEditImage {
      *
      * @param scale 缩放比
      */
-    public void setMatrixScaleX(float scale) {
-        Log.e("scale ", " scale == " + scale);
-        MATRIX_FLOAT[Matrix.MSCALE_X] = scale;
-        MATRIX_FLOAT[Matrix.MSCALE_Y] = scale;
-        Log.e("scale ", " setMatrixScaleX == " + MATRIX_FLOAT[Matrix.MSCALE_X]);
-        matrix.setValues(MATRIX_FLOAT);
+    public void setMatrixScaleX(float scale, float focusX, float focusY) {
+//        MATRIX_FLOAT[Matrix.MSCALE_X] = scale;
+//        MATRIX_FLOAT[Matrix.MSCALE_Y] = scale;
+//        Log.e("scale ", " setMatrixScaleX == " + MATRIX_FLOAT[Matrix.MSCALE_X]);
+//        matrix.setValues(MATRIX_FLOAT);
+
+        float matrixScaleX = getMatrixScaleX();
+        if (scale >= matrixScaleX) {
+            setGestureScale(scale / matrixScaleX, focusX, focusY);
+        }
     }
+
 }
