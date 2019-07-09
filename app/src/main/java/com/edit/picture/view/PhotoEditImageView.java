@@ -31,11 +31,12 @@ import com.selector.picture.utils.UIUtils;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetector.OnScaleGestureListener, Runnable, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
+public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetector.OnScaleGestureListener, Runnable, ValueAnimator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
     private PhotoEditImage photoEditImage;
     private ScaleGestureDetector mScaleGestureDetector;
     private GestureDetector mGestureDetector;
     private PhotoEditAnimator mPhotoEditAnimator;
+    private PhotoEditCorrectionAnimator mPhotoEditCorrectionAnimator;
     private int mPointerCount;//手指接触的个数
     private final int DELAY_TIME = 100;//延迟时间
 
@@ -55,6 +56,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     private void initView(Context context) {
         photoEditImage = new PhotoEditImage();
         mPhotoEditAnimator = new PhotoEditAnimator(this, this);
+        mPhotoEditCorrectionAnimator = new PhotoEditCorrectionAnimator(this);
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
         mGestureDetector = new GestureDetector(context, new GestureListener());
     }
@@ -197,12 +199,12 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     @Override
     public void run() {
         if (photoEditImage != null) {
-            //动画效果
             float scaleX = photoEditImage.getMatrixScaleX();
             if (scaleX < 1) {
                 if (mPhotoEditAnimator != null) {
-                    cancelAnimator();
-                    mPhotoEditAnimator.setFloat(scaleX);
+                    cancelAnimator(PhotoEditCorrection.TYPE1);
+                    PhotoEditCorrection photoEditCorrection = new PhotoEditCorrection(PhotoEditCorrection.TYPE1, 0F, 0F, 0F, scaleX);
+                    mPhotoEditAnimator.setFloatValues(photoEditCorrection);
                     mPhotoEditAnimator.start();
                 }
             } else {
@@ -219,14 +221,12 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        cancelAnimator();
         correctionPosition();
     }
 
-
     @Override
     public void onAnimationCancel(Animator animation) {
-        cancelAnimator();
+
     }
 
     @Override
@@ -237,9 +237,20 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     @Override
     public void onAnimationUpdate(ValueAnimator animation) {
         if (photoEditImage != null) {
-            Float animatedValue = (Float) animation.getAnimatedValue();
-            photoEditImage.setMatrixScaleX(animatedValue, getScreenWidth(), getScreenHeight());
-            invalidate();
+            PhotoEditCorrection animatedValue = (PhotoEditCorrection) animation.getAnimatedValue();
+            if (animatedValue != null) {
+                int type = animatedValue.getType();
+                if (type == PhotoEditCorrection.TYPE1) {
+                    float scale = animatedValue.getScale();
+                    photoEditImage.setMatrixScaleX(scale, getScreenWidth(), getScreenHeight());
+                    invalidate();
+                } else if (type == PhotoEditCorrection.TYPE2) {
+                    float startX = animatedValue.getTranX();
+                    float endX = animatedValue.getTranY();
+                    scrollTo(Math.round(startX), Math.round(endX));
+                    Log.e("update", " startX == " + startX + " endX == " + endX);
+                }
+            }
         }
     }
 
@@ -263,15 +274,23 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     /**
      * 取消动画
+     *
+     * @param type PhotoEditCorrection.TYPE1 取消缩放动画  PhotoEditCorrection.TYPE2 取消滑动动画
      */
-    private void cancelAnimator() {
-        if (mPhotoEditAnimator != null) {
-            mPhotoEditAnimator.cancel();
+    private void cancelAnimator(int type) {
+        if (type == PhotoEditCorrection.TYPE1) {
+            if (mPhotoEditAnimator != null) {
+                mPhotoEditAnimator.cancel();
+            }
+        } else if (type == PhotoEditCorrection.TYPE2) {
+            if (mPhotoEditCorrectionAnimator != null) {
+                mPhotoEditCorrectionAnimator.cancel();
+            }
         }
     }
 
     /**
-     * 位置修正
+     * 位置修正动画
      */
     private void correctionPosition() {
         if (photoEditImage != null) {
@@ -325,31 +344,18 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      * @param transY Y移动距离
      */
     public void scroll(float transX, float transY) {
-//        scrollTo(Math.round(transX), Math.round(transY));
-
-        PhotoEditCorrectionAnimator valueAnimator = new PhotoEditCorrectionAnimator();
-        PhotoEditCorrection start = new PhotoEditCorrection(getScrollX(), getScrollY(), 0);
-        PhotoEditCorrection end = new PhotoEditCorrection(Math.round(transX), Math.round(transY), 0);
-        valueAnimator.setCorrectionValues(start, end);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                PhotoEditCorrection animatedValue = (PhotoEditCorrection) animation.getAnimatedValue();
-                float startX = animatedValue.getTranX();
-                float endX = animatedValue.getTranY();
-                scrollTo(Math.round(startX), Math.round(endX));
-                Log.e("update", " startX == " + startX + " endX == " + endX);
-            }
-        });
-        valueAnimator.start();
-
-
+        cancelAnimator(PhotoEditCorrection.TYPE2);
+        PhotoEditCorrection start = new PhotoEditCorrection(PhotoEditCorrection.TYPE2, getScrollX(), getScrollY(), 0F, 0F);
+        PhotoEditCorrection end = new PhotoEditCorrection(PhotoEditCorrection.TYPE2, Math.round(transX), Math.round(transY), 0F, 0F);
+        mPhotoEditCorrectionAnimator.setCorrectionValues(start, end);
+        mPhotoEditCorrectionAnimator.start();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        cancelAnimator();
+        cancelAnimator(PhotoEditCorrection.TYPE1);
+        cancelAnimator(PhotoEditCorrection.TYPE2);
         Log.e("onDetachedFromWindow ", "取消动画");
     }
 }

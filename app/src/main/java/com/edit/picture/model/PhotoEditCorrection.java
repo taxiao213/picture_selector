@@ -8,17 +8,27 @@ package com.edit.picture.model;
  * Github:https://github.com/yin13753884368
  */
 public class PhotoEditCorrection {
+    public static int TYPE1 = 1;
+    public static int TYPE2 = 2;
+    private int type;//1 缩放 2 滑动
     private float tranX;//X
     private float tranY;//Y
     private float angle;//角度
+    private float scale;//缩放系数
 
     public PhotoEditCorrection() {
     }
 
-    public PhotoEditCorrection(float tranX, float tranY, float angle) {
+    public PhotoEditCorrection(int type, float tranX, float tranY, float angle, float scale) {
+        this.type = type;
         this.tranX = tranX;
         this.tranY = tranY;
         this.angle = angle;
+        this.scale = scale;
+    }
+
+    public int getType() {
+        return type;
     }
 
     public float getTranX() {
@@ -33,10 +43,16 @@ public class PhotoEditCorrection {
         return angle;
     }
 
-    public void setValue(float tranX, float tranY, float angle) {
+    public float getScale() {
+        return scale;
+    }
+
+    public void setValue(int type, float tranX, float tranY, float angle, float scale) {
+        this.type = type;
         this.tranX = tranX;
         this.tranY = tranY;
         this.angle = angle;
+        this.scale = scale;
     }
 
 }

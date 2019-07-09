@@ -2,6 +2,9 @@ package com.edit.picture.util;
 
 import android.animation.ValueAnimator;
 
+import com.edit.picture.model.PhotoEditCorrection;
+import com.edit.picture.model.PhotoEditEvaluator;
+
 /**
  * 动画缩放
  * Create by yin13 smyhvae on 2019/7/8
@@ -19,8 +22,15 @@ public class PhotoEditAnimator extends ValueAnimator {
         addUpdateListener(animatorUpdateListener);
     }
 
-    public void setFloat(float values) {
-        setFloatValues(values, 1.0F);
+    @Override
+    public void setObjectValues(Object... values) {
+        super.setObjectValues(values);
+        PhotoEditEvaluator evaluator = new PhotoEditEvaluator();
+        setEvaluator(evaluator);
     }
 
+    public void setFloatValues(PhotoEditCorrection start) {
+        PhotoEditCorrection end = new PhotoEditCorrection(PhotoEditCorrection.TYPE1, 0F, 0F, 0F, 1.0F);
+        setObjectValues(start, end);
+    }
 }

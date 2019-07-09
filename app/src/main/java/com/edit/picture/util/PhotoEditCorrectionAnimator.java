@@ -16,8 +16,9 @@ public class PhotoEditCorrectionAnimator extends ValueAnimator {
 
     private final int DURATION_TIME = 300;//默认加载时长
 
-    public PhotoEditCorrectionAnimator( ) {
+    public PhotoEditCorrectionAnimator(AnimatorUpdateListener animatorUpdateListener) {
         setDuration(DURATION_TIME);
+        addUpdateListener(animatorUpdateListener);
     }
 
     @Override
