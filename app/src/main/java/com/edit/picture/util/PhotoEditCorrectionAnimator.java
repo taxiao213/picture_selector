@@ -1,6 +1,7 @@
 package com.edit.picture.util;
 
 import android.animation.ValueAnimator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.edit.picture.model.PhotoEditCorrection;
 import com.edit.picture.model.PhotoEditEvaluator;
@@ -14,11 +15,12 @@ import com.edit.picture.model.PhotoEditEvaluator;
  */
 public class PhotoEditCorrectionAnimator extends ValueAnimator {
 
-    private final int DURATION_TIME = 300;//默认加载时长
+    private final int DURATION_TIME = 500;//默认加载时长
 
     public PhotoEditCorrectionAnimator(AnimatorUpdateListener animatorUpdateListener) {
         setDuration(DURATION_TIME);
         addUpdateListener(animatorUpdateListener);
+        setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
     @Override
