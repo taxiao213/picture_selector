@@ -40,6 +40,7 @@ public class PhotoEditTextView extends android.support.v7.widget.AppCompatEditTe
         super(context, attrs, defStyleAttr);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
         mPaint.setColor(getContext().getResources().getColor(R.color.grey_00));//默认透明色
     }
 

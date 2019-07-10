@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.edit.picture.activity.PhotoEditActivity;
 import com.edit.picture.adapter.PhotoEditAdapter;
+import com.edit.picture.model.Mode;
 import com.edit.picture.view.PhotoEditDialogTextUtils;
 import com.edit.picture.view.PhotoEditImageView;
 import com.selector.picture.R;
@@ -43,13 +44,16 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     private PhotoEditActivity activity;
     private RecyclerView ryEditPencileBottom;
     private RadioGroup radioGroupEditMosaic;
-    //    private LinearLayout llEditBottomTopRoot;
     private LinearLayout llEditBottomRoot;
     private ImageView tvEditBottomWithdraw;
     private RelativeLayout rlEditTopRoot;
+    private TextView tvEditBottomPencile;
+    private TextView tvEditBottomMosaic;
+    private LinearLayout llEditColorBottom;
     private PhotoEditAdapter adapter;
     private ArrayList<ColorModel> list;//画笔颜色的结合
     private LocalMedia model;
+    private PhotoEditImageView photoEditImage;
 
     @Override
     public void onAttach(Context context) {
@@ -70,25 +74,32 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         if (bundle != null) {
             model = bundle.getParcelable(Constant.ACTION_TYPE1);
         }
-        PhotoEditImageView photoEditImage = view.findViewById(R.id.iv_edit);//图片
+        photoEditImage = view.findViewById(R.id.iv_edit); //图片
         rlEditTopRoot = view.findViewById(R.id.rl_edit_top_root); //顶部根View
         TextView rlEditTopCancel = view.findViewById(R.id.tv_edit_top_cancel);//顶部取消按钮
         TextView rlEditTopComplete = view.findViewById(R.id.tv_edit_top_complete);//顶部完成按钮
         llEditBottomRoot = view.findViewById(R.id.ll_edit_bottom_root); //底部根View
-//        llEditBottomTopRoot = view.findViewById(R.id.ll_edit_bottom_top_root);//底部根View
         ryEditPencileBottom = view.findViewById(R.id.ry_edit_pencile_bottom);//底部RecyclerView 展示颜色
         radioGroupEditMosaic = view.findViewById(R.id.radio_group_edit_mosaic); //底部Mosaic
-        RadioGroup radioEditGroup = view.findViewById(R.id.radio_group_edit_bottom);//底部RadioGroup
+        LinearLayout llEditBottom = view.findViewById(R.id.ll_edit_bottom);//底部按钮根View
+        llEditColorBottom = view.findViewById(R.id.ll_edit_color_bottom);//底部按钮选择颜色根View
+        tvEditBottomPencile = view.findViewById(R.id.tv_edit_bottom_pencile); //底部铅笔按钮
         TextView tvEditBottomText = view.findViewById(R.id.tv_edit_bottom_text);//底部文本按钮
+        tvEditBottomMosaic = view.findViewById(R.id.tv_edit_bottom_mosaic); //底部马赛克按钮
         TextView tvEditBottomCut = view.findViewById(R.id.tv_edit_bottom_cut);//底部剪切按钮
         tvEditBottomWithdraw = view.findViewById(R.id.tv_edit_bottom_withdraw); //底部撤回按钮
         rlEditTopCancel.setOnClickListener(this);
         rlEditTopComplete.setOnClickListener(this);
+        tvEditBottomPencile.setOnClickListener(this);
         tvEditBottomText.setOnClickListener(this);
+        tvEditBottomMosaic.setOnClickListener(this);
         tvEditBottomCut.setOnClickListener(this);
         tvEditBottomWithdraw.setOnClickListener(this);
         radioGroupEditMosaic.setOnCheckedChangeListener(this);
-        radioEditGroup.setOnCheckedChangeListener(this);
+        llEditColorBottom.setVisibility(View.GONE);
+        tvEditBottomPencile.setSelected(false);
+        tvEditBottomMosaic.setSelected(false);
+
         list = new ArrayList<>();
         adapter = new PhotoEditAdapter(activity, this, list);
         LinearLayoutManager manager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
@@ -96,14 +107,15 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         ryEditPencileBottom.setLayoutManager(manager);
 
         radioGroupEditMosaic.check(R.id.radio_edit_mosaic_grid);
-        radioEditGroup.check(R.id.radio_edit_bottom_pencile);
         initColorList();
         if (model != null) {
             String path = model.getPath();
             if (!TextUtils.isEmpty(path)) {
                 Bitmap bitmap = CompressPicUtil.getEditImage(StringUtils.nullToString(model.getPath()), activity);
                 if (bitmap != null) {
-                    photoEditImage.setPhotoEditImage(bitmap);
+                    if (photoEditImage != null) {
+                        photoEditImage.setPhotoEditImage(bitmap);
+                    }
                 }
             }
         }
@@ -125,18 +137,13 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
             }
         }
         adapter.notifyDataSetChanged();
+        setPaintColor();
     }
 
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.radio_edit_bottom_pencile:
-                switchPencileAndMosaic(true);
-                break;
-            case R.id.radio_edit_bottom_mosaic:
-                switchPencileAndMosaic(false);
-                break;
             case R.id.radio_edit_mosaic_grid:
                 //底部MosaicGrid网格
 
@@ -166,10 +173,18 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                 case R.id.tv_edit_bottom_withdraw:
                     //撤回
                     break;
+                case R.id.tv_edit_bottom_pencile:
+                    //画笔
+                    switchPencileAndMosaic(true);
+                    break;
                 case R.id.tv_edit_bottom_text:
                     //文本
                     topAndBottomVisible(false);
                     new PhotoEditDialogTextUtils(activity, this);
+                    break;
+                case R.id.tv_edit_bottom_mosaic:
+                    //马赛克
+                    switchPencileAndMosaic(false);
                     break;
                 case R.id.tv_edit_bottom_cut:
                     //剪切
@@ -190,6 +205,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         }
         colorModel.setScaleCoefficient();
         adapter.notifyDataSetChanged();
+        setPaintColor();
     }
 
 
@@ -204,12 +220,36 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     /**
      * pencile和mosaic切换
      *
-     * @param isVisible true pencile可见 false mosaic不可见
+     * @param isVisible true pencile  false mosaic
      */
     private void switchPencileAndMosaic(boolean isVisible) {
-        llEditBottomRoot.setVisibility(View.VISIBLE);
-        ryEditPencileBottom.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-        radioGroupEditMosaic.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+        if (isVisible) {
+            boolean selected = tvEditBottomPencile.isSelected();
+            tvEditBottomPencile.setSelected(!selected);
+            tvEditBottomMosaic.setSelected(false);
+            radioGroupEditMosaic.setVisibility(View.GONE);
+            if (tvEditBottomPencile.isSelected()) {
+                llEditColorBottom.setVisibility(View.VISIBLE);
+                ryEditPencileBottom.setVisibility(View.VISIBLE);
+                setMode(Mode.PENCILE);
+            } else {
+                llEditColorBottom.setVisibility(View.GONE);
+                setMode(Mode.NONE);
+            }
+        } else {
+            boolean selected = tvEditBottomMosaic.isSelected();
+            tvEditBottomMosaic.setSelected(!selected);
+            tvEditBottomPencile.setSelected(false);
+            ryEditPencileBottom.setVisibility(View.GONE);
+            if (tvEditBottomMosaic.isSelected()) {
+                llEditColorBottom.setVisibility(View.VISIBLE);
+                radioGroupEditMosaic.setVisibility(View.VISIBLE);
+                setMode(Mode.MOSAIC);
+            } else {
+                llEditColorBottom.setVisibility(View.GONE);
+                setMode(Mode.NONE);
+            }
+        }
         if (isVisible) {
             setGravity(Gravity.CENTER);
         } else {
@@ -251,4 +291,27 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         return model;
     }
 
+    /**
+     * 设置画笔颜色
+     */
+    public void setPaintColor() {
+        ColorModel currentModel = getCurrentModel();
+        if (currentModel != null) {
+            if (photoEditImage != null) {
+                photoEditImage.setPaintColor(currentModel.getFrontColor());
+            }
+        }
+    }
+
+
+    /**
+     * 设置模式
+     *
+     * @param mode Mode
+     */
+    private void setMode(Mode mode) {
+        if (photoEditImage != null) {
+            photoEditImage.setMode(mode);
+        }
+    }
 }

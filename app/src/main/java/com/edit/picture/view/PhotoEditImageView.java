@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.FrameLayout;
 
+import com.edit.picture.model.Mode;
 import com.edit.picture.model.PhotoEditCorrection;
 import com.edit.picture.model.PhotoEditImage;
 import com.edit.picture.util.PhotoEditAnimator;
@@ -37,6 +39,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     private GestureDetector mGestureDetector;
     private PhotoEditAnimator mPhotoEditAnimator;
     private PhotoEditCorrectionAnimator mPhotoEditCorrectionAnimator;
+    private Paint mPaint;
     private int mPointerCount;//手指接触的个数
     private final int DELAY_TIME = 100;//延迟时间
 
@@ -59,6 +62,9 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         mPhotoEditCorrectionAnimator = new PhotoEditCorrectionAnimator(this);
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
         mGestureDetector = new GestureDetector(context, new GestureListener());
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
     }
 
     /**
@@ -110,12 +116,21 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     /**
      * 手势拖动
+     * 画笔和马赛克状态禁用拖动
      *
      * @param distanceX X移动距离
      * @param distanceY Y移动距离
      * @return boolean
      */
     private boolean onScrollTo(int distanceX, int distanceY) {
+        if (photoEditImage != null) {
+            Mode mode = photoEditImage.getMode();
+            if (mode != null) {
+                if (mode == Mode.PENCILE || mode == Mode.MOSAIC) {
+                    return false;
+                }
+            }
+        }
         if (getScrollX() != distanceX || getScrollY() != distanceY) {
             scrollTo(distanceX, distanceY);
             return true;
@@ -349,6 +364,28 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         PhotoEditCorrection end = new PhotoEditCorrection(PhotoEditCorrection.TYPE2, Math.round(transX), Math.round(transY), 0F, 0F);
         mPhotoEditCorrectionAnimator.setCorrectionValues(start, end);
         mPhotoEditCorrectionAnimator.start();
+    }
+
+    /**
+     * 设置模式
+     *
+     * @param mode Mode
+     */
+    public void setMode(Mode mode) {
+        if (photoEditImage != null) {
+            photoEditImage.setMode(mode);
+        }
+    }
+
+    /**
+     * 设置画笔颜色
+     *
+     * @param frontColor 画笔颜色
+     */
+    public void setPaintColor(int frontColor) {
+        if (mPaint != null) {
+            mPaint.setColor(frontColor);
+        }
     }
 
     @Override

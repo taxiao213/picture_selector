@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.RectF;
 
 import com.selector.picture.utils.CompressPicUtil;
 import com.selector.picture.utils.UIUtils;
@@ -20,8 +19,7 @@ import com.selector.picture.utils.UIUtils;
 public class PhotoEditImage {
     private Bitmap mBitmap;
     private Matrix matrix = new Matrix();
-    /*完整图片边框*/
-    private RectF mFrame = new RectF();
+    private Mode mode = Mode.NONE;//默认
     private float SCALE_MAX = 4.0F;
     private float SCALE_MIN = 1.0F;
     private boolean isInit = true;//初始化
@@ -83,17 +81,6 @@ public class PhotoEditImage {
         matrix.postScale(scale, scale, focusX, focusY);
     }
 
-    /**
-     * 获取原始尺寸
-     * post是后乘，当前的矩阵乘以参数给出的矩阵
-     * pre是前乘，参数给出的矩阵乘以当前的矩阵
-     *
-     * @return RectF
-     */
-    public RectF getmFrame() {
-        return mFrame;
-    }
-
 
     public Matrix getMatrix() {
         return matrix;
@@ -124,6 +111,24 @@ public class PhotoEditImage {
         if (scale >= matrixScaleX) {
             setGestureScale(scale / matrixScaleX, focusX, focusY);
         }
+    }
+
+    /**
+     * 设置模式
+     *
+     * @param mode Mode
+     */
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    /**
+     * 获取模式
+     *
+     * @return Mode
+     */
+    public Mode getMode() {
+        return mode;
     }
 
 }

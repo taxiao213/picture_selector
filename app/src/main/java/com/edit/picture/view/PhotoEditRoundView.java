@@ -37,8 +37,9 @@ public class PhotoEditRoundView extends View {
 
     public PhotoEditRoundView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PhotoEditRoundView);
         mRadius = typedArray.getFloat(R.styleable.PhotoEditRoundView_round_radius, context.getResources().getDimension(R.dimen.picture_edit_circle_radius));
         mSpacing = typedArray.getFloat(R.styleable.PhotoEditRoundView_round_spacing, context.getResources().getDimension(R.dimen.picture_edit_circle_spacing));

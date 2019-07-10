@@ -9,15 +9,15 @@
         android:layout_alignParentTop="true"
         android:background="@color/grey_db" />
 
-    <RadioGroup
-        android:id="@+id/radio_group_edit_bottom"
+    <LinearLayout
+        android:id="@+id/ll_edit_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radio_edit_bottom_pencile"
+        <TextView
+            android:id="@+id/tv_edit_bottom_pencile"
             style="@style/radio_button"
             android:drawableTop="?attr/picture_edit_bottom_pencile" />
 
@@ -26,8 +26,8 @@
             style="@style/radio_button"
             android:drawableTop="?attr/picture_edit_bottom_text" />
 
-        <RadioButton
-            android:id="@+id/radio_edit_bottom_mosaic"
+        <TextView
+            android:id="@+id/tv_edit_bottom_mosaic"
             style="@style/radio_button"
             android:drawableTop="?attr/picture_edit_bottom_mosaic" />
 
@@ -36,7 +36,7 @@
             style="@style/radio_button"
             android:drawableTop="?attr/picture_edit_bottom_cut" />
 
-    </RadioGroup>
+    </LinearLayout>
 
 
 </RelativeLayout>
