@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import com.edit.picture.model.Mode;
 import com.edit.picture.model.PhotoEditCorrection;
 import com.edit.picture.model.PhotoEditImage;
+import com.edit.picture.model.PhotoEditPath;
 import com.edit.picture.util.PhotoEditAnimator;
 import com.edit.picture.util.PhotoEditCorrectionAnimator;
 import com.selector.picture.utils.UIUtils;
@@ -80,18 +81,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     }
 
     /**
-     * 绘制图片
-     *
-     * @param canvas Canvas 画布
-     */
-    private void onDrawImage(Canvas canvas) {
-        canvas.save();
-        photoEditImage.drawImage(getContext(), canvas);
-        canvas.restore();
-    }
-
-
-    /**
      * 缩放照片
      *
      * @param event MotionEvent
@@ -138,9 +127,90 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         return false;
     }
 
+    /**
+     * 绘制画布过程
+     *
+     * @param event MotionEvent
+     */
+    private void drawPathMove(MotionEvent event) {
+        if (photoEditImage != null) {
+            Mode mode = photoEditImage.getMode();
+            if (mode != null && mode == Mode.PENCILE) {
+                PhotoEditPath path = photoEditImage.getPath();
+                if (path != null) {
+                    if (path.isPointerId(event.getPointerId(0))) {
+                        path.lineTo(event.getRawX(), event.getRawY());
+                        invalidate();
+                    }
+                }
+            } else {
+
+            }
+        }
+    }
+
+    /**
+     * 绘制画布起点
+     *
+     * @param event MotionEvent
+     */
+    private void drawPathBegin(MotionEvent event) {
+        if (photoEditImage != null) {
+            Mode mode = photoEditImage.getMode();
+            if (mode != null && mode == Mode.PENCILE) {
+                float rawX = event.getRawX();//相对于屏幕
+                float rawY = event.getRawY();
+                float x = event.getX();//相对于画布
+                float y = event.getY();
+                PhotoEditPath path = photoEditImage.getPath();
+                path.setRest(rawX, rawY);
+                path.setPointerId(event.getPointerId(0));
+                Log.e(" rawX == ", rawX + " rawY == " + rawY + " x == " + x + " y == " + y);
+            } else {
+
+            }
+        }
+    }
+
+    /**
+     * 绘制图片
+     *
+     * @param canvas Canvas 画布
+     */
+    private void onDrawImage(Canvas canvas) {
+        canvas.save();
+        photoEditImage.drawImage(getContext(), canvas);
+        canvas.restore();
+    }
+
+
+    /**
+     * 绘制路径
+     *
+     * @param canvas Canvas 画布
+     */
+    private void onDrawPath(Canvas canvas) {
+        if (photoEditImage != null) {
+            Mode mode = photoEditImage.getMode();
+            if (mode != null && mode == Mode.PENCILE) {
+                PhotoEditPath path = photoEditImage.getPath();
+                if (path != null) {
+                    canvas.save();
+                    mPaint.setStrokeWidth(10);
+                    mPaint.setStyle(Paint.Style.STROKE);
+                    canvas.drawPath(path, mPaint);
+                    canvas.restore();
+                }
+            } else {
+
+            }
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         onDrawImage(canvas);
+        onDrawPath(canvas);
     }
 
     @Override
@@ -159,6 +229,10 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
                     removeCallbacks(this);
+                    drawPathBegin(event);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    drawPathMove(event);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:

@@ -24,7 +24,11 @@ public class PhotoEditImage {
     private float SCALE_MIN = 1.0F;
     private boolean isInit = true;//初始化
     private float[] MATRIX_FLOAT = new float[9];
+    private PhotoEditPath mPath;//绘制路径
 
+    public PhotoEditImage() {
+        mPath = new PhotoEditPath();
+    }
 
     /**
      * 设置图片
@@ -129,6 +133,21 @@ public class PhotoEditImage {
      */
     public Mode getMode() {
         return mode;
+    }
+
+    /**
+     * 获取路径
+     * @return PhotoEditPath
+     */
+    public PhotoEditPath getPath() {
+        return mPath;
+    }
+
+    /**
+     * 绘制路径
+     */
+    public void setPath() {
+
     }
 
 }
