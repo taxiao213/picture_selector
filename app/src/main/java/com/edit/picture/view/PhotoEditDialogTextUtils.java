@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemClickListener<ColorModel> {
+public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemClickListener<Integer> {
     private Context mContext;
     private Function<ColorModel> function;
     private AlertDialog dialog;
@@ -107,9 +107,9 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
      * @param type Constant.TYPE1 返回值null  Constant.TYPE2 有返回值
      */
     private void dissMiss(int type) {
+        UIUtils.closeBroad(mContext, editText);
         if (dialog != null) {
             dialog.dismiss();
-            UIUtils.closeBroad(mContext, editText);
         }
         if (type == Constant.TYPE2) {
             if (function != null) {
@@ -174,7 +174,7 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
     }
 
     @Override
-    public void onItemClick(ColorModel colorModel) {
+    public void onItemClick(Integer position) {
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 ColorModel model = list.get(i);
@@ -182,10 +182,11 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
                     model.reductionCoefficient();
                 }
             }
+            ColorModel colorModel = list.get(position);
+            colorModel.setScaleCoefficient();
+            this.currentColorModel = colorModel;
         }
-        colorModel.setScaleCoefficient();
         adapter.notifyDataSetChanged();
-        this.currentColorModel = colorModel;
         setCanvasPaintColor();
     }
 

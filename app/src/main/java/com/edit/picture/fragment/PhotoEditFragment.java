@@ -39,7 +39,7 @@ import java.util.ArrayList;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoEditFragment extends BaseFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, OnItemClickListener<ColorModel>, Function<ColorModel> {
+public class PhotoEditFragment extends BaseFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, OnItemClickListener<Integer>, Function<ColorModel> {
 
     private PhotoEditActivity activity;
     private RecyclerView ryEditPencileBottom;
@@ -50,10 +50,11 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     private TextView tvEditBottomPencile;
     private TextView tvEditBottomMosaic;
     private LinearLayout llEditColorBottom;
+    private PhotoEditImageView photoEditImage;
     private PhotoEditAdapter adapter;
     private ArrayList<ColorModel> list;//画笔颜色的结合
     private LocalMedia model;
-    private PhotoEditImageView photoEditImage;
+    private int currentPosition = -1;//当前位置
 
     @Override
     public void onAttach(Context context) {
@@ -135,6 +136,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
             } else {
                 list.add(new ColorModel(activity.getResources().getColor(paintColor[i]), false));
             }
+            this.currentPosition = 0;
         }
         adapter.notifyDataSetChanged();
         setPaintColor();
@@ -194,7 +196,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     }
 
     @Override
-    public void onItemClick(ColorModel colorModel) {
+    public void onItemClick(Integer position) {
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 ColorModel model = list.get(i);
@@ -202,8 +204,12 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                     model.reductionCoefficient();
                 }
             }
+            if (position != null && position != -1) {
+                this.currentPosition = position;
+                ColorModel colorModel = list.get(position);
+                colorModel.setScaleCoefficient();
+            }
         }
-        colorModel.setScaleCoefficient();
         adapter.notifyDataSetChanged();
         setPaintColor();
     }
@@ -285,8 +291,8 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
      */
     public ColorModel getCurrentModel() {
         ColorModel model = null;
-        if (adapter != null) {
-            model = adapter.getCurrentModel();
+        if (currentPosition != -1) {
+            model = list.get(currentPosition);
         }
         return model;
     }

@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.selector.picture.R;
 import com.edit.picture.activity.PhotoEditActivity;
+import com.selector.picture.R;
 import com.selector.picture.model.ColorModel;
 import com.selector.picture.utils.OnItemClickListener;
 
@@ -24,10 +24,9 @@ public class PhotoEditAdapter extends RecyclerView.Adapter<PhotoEditViewHolder> 
 
     private PhotoEditActivity mContext;
     private List<ColorModel> mList;
-    private OnItemClickListener<ColorModel> mOnItemClickListener;
-    private PhotoEditViewHolder holder;
+    private OnItemClickListener<Integer> mOnItemClickListener;
 
-    public PhotoEditAdapter(PhotoEditActivity context, OnItemClickListener<ColorModel> onItemClickListener, List<ColorModel> list) {
+    public PhotoEditAdapter(PhotoEditActivity context, OnItemClickListener<Integer> onItemClickListener, List<ColorModel> list) {
         this.mContext = context;
         this.mOnItemClickListener = onItemClickListener;
         this.mList = list;
@@ -37,13 +36,13 @@ public class PhotoEditAdapter extends RecyclerView.Adapter<PhotoEditViewHolder> 
     @Override
     public PhotoEditViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_photo_edit, viewGroup, false);
-        holder = new PhotoEditViewHolder(view, mOnItemClickListener);
+        PhotoEditViewHolder holder = new PhotoEditViewHolder(view, mOnItemClickListener);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull PhotoEditViewHolder viewHolder, int position) {
-        viewHolder.bindViewHolder(mContext, mList.get(position));
+        viewHolder.bindViewHolder(mContext, mList.get(position), position);
     }
 
     @Override
@@ -51,17 +50,4 @@ public class PhotoEditAdapter extends RecyclerView.Adapter<PhotoEditViewHolder> 
         return mList.size();
     }
 
-    /**
-     * 获取当前model
-     *
-     * @return ColorModel
-     */
-    public ColorModel getCurrentModel() {
-        ColorModel model = null;
-        if (holder != null) {
-            int adapterPosition = holder.getAdapterPosition();
-            model = mList.get(adapterPosition);
-        }
-        return model;
-    }
 }

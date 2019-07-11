@@ -4,11 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.selector.picture.R;
 import com.edit.picture.activity.PhotoEditActivity;
+import com.edit.picture.view.PhotoEditRoundView;
+import com.selector.picture.R;
 import com.selector.picture.model.ColorModel;
 import com.selector.picture.utils.OnItemClickListener;
-import com.edit.picture.view.PhotoEditRoundView;
 
 /**
  * 图片剪切颜色ViewHolder
@@ -21,16 +21,16 @@ public class PhotoEditViewHolder extends RecyclerView.ViewHolder {
 
     private PhotoEditRoundView tv_round_view;
     private View currentView;
-    private OnItemClickListener<ColorModel> mOnItemClickListener;
+    private OnItemClickListener<Integer> mOnItemClickListener;
 
-    PhotoEditViewHolder(@NonNull View itemView,  OnItemClickListener<ColorModel> onItemClickListener) {
+    PhotoEditViewHolder(@NonNull View itemView, OnItemClickListener<Integer> onItemClickListener) {
         super(itemView);
         this.currentView = itemView;
         this.mOnItemClickListener = onItemClickListener;
         tv_round_view = itemView.findViewById(R.id.tv_round_view);
     }
 
-    public void bindViewHolder(final PhotoEditActivity context, final ColorModel model) {
+    public void bindViewHolder(final PhotoEditActivity context, ColorModel model, final int position) {
         if (context == null || model == null) return;
         int frontColor = model.getFrontColor();
         float scaleCoefficient = model.getScaleCoefficient();
@@ -40,7 +40,7 @@ public class PhotoEditViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(model);
+                    mOnItemClickListener.onItemClick(position);
                 }
             }
         });
