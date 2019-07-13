@@ -226,6 +226,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
                 movePath.setPaintStyle(mPaintMosaicStyle);
                 mMosaicPath.add(movePath);
             }
+            path.reset();
         }
     }
 
@@ -297,6 +298,12 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     private void onDrawPath(Canvas canvas) {
         if (photoEditImage != null) {
             canvas.save();
+         /*   float scaleX = photoEditImage.getMatrixScaleX();
+            canvas.scale(scaleX, scaleX);
+            float matrixTranX = photoEditImage.getMatrixTranX();
+            float matrixTranY = photoEditImage.getMatrixTranY();
+            Log.e("onDrawPath", "scaleX == " + scaleX + " matrixTranX== " + matrixTranX + " matrixTranY== " + matrixTranY);
+            canvas.translate(-matrixTranX, -matrixTranY);*/
             PhotoEditPath path = photoEditImage.getPath();
             Mode mode = photoEditImage.getMode();
             if (path != null && mode != null) {

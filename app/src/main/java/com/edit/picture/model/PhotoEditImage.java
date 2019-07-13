@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.util.Log;
-import android.view.MotionEvent;
 
 import com.selector.picture.utils.CompressPicUtil;
 import com.selector.picture.utils.UIUtils;
@@ -27,7 +25,6 @@ public class PhotoEditImage {
     private boolean isInit = true;//初始化
     private float[] MATRIX_FLOAT = new float[9];
     private PhotoEditPath mPath;//绘制路径
-
 
     public PhotoEditImage() {
         mPath = new PhotoEditPath();
@@ -76,7 +73,6 @@ public class PhotoEditImage {
         }
     }
 
-
     /**
      * 设置手势缩放系数
      *
@@ -87,11 +83,6 @@ public class PhotoEditImage {
     public void setGestureScale(float scale, float focusX, float focusY) {
         if (scale >= SCALE_MIN && getMatrixScaleX() >= SCALE_MAX) return;
         matrix.postScale(scale, scale, focusX, focusY);
-    }
-
-
-    public Matrix getMatrix() {
-        return matrix;
     }
 
     /**
@@ -114,11 +105,30 @@ public class PhotoEditImage {
 //        MATRIX_FLOAT[Matrix.MSCALE_Y] = scale;
 //        Log.e("scale ", " setMatrixScaleX == " + MATRIX_FLOAT[Matrix.MSCALE_X]);
 //        matrix.setValues(MATRIX_FLOAT);
-
         float matrixScaleX = getMatrixScaleX();
         if (scale >= matrixScaleX) {
             setGestureScale(scale / matrixScaleX, focusX, focusY);
         }
+    }
+
+    /**
+     * 获取矩阵的缩放比
+     *
+     * @return float
+     */
+    public float getMatrixTranX() {
+        matrix.getValues(MATRIX_FLOAT);
+        return MATRIX_FLOAT[Matrix.MTRANS_X];
+    }
+
+    /**
+     * 获取矩阵的缩放比
+     *
+     * @return float
+     */
+    public float getMatrixTranY() {
+        matrix.getValues(MATRIX_FLOAT);
+        return MATRIX_FLOAT[Matrix.MTRANS_Y];
     }
 
     /**
@@ -148,76 +158,4 @@ public class PhotoEditImage {
         return mPath;
     }
 
-    /**
-     * 绘制路径
-     */
-    public void setPath() {
-
-    }
-
-    /**
-     * 绘制画布起点
-     *
-     * @param event MotionEvent
-     */
-    public void drawPathBegin(MotionEvent event) {
-        if (mode != null) {
-            if ( mode == Mode.PENCIL) {
-                float rawX = event.getRawX();//相对于屏幕
-                float rawY = event.getRawY();
-                float x = event.getX();//相对于画布
-                float y = event.getY();
-                if (mPath != null) {
-                    mPath.setRest(rawX, rawY);
-                    mPath.setPointerId(event.getPointerId(0));
-                }
-
-                Log.e(" rawX == ", rawX + " rawY == " + rawY + " x == " + x + " y == " + y);
-            } else  if ( mode == Mode.MOSAIC) {
-
-            }
-        }
-    }
-
-    /**
-     * 绘制画布过程
-     *
-     * @param event MotionEvent
-     */
-    public void drawPathMove(MotionEvent event) {
-//        if (mode != null) {
-//            if ( mode == Mode.PENCIL) {
-//                float rawX = event.getRawX();//相对于屏幕
-//                float rawY = event.getRawY();
-//                float x = event.getX();//相对于画布
-//                float y = event.getY();
-//                if (mPath != null&&mPath.isPointerId(event.getPointerId(0))) {
-//                    mPath.lineTo(event.getRawX(), event.getRawY());
-//                    invalidate();
-//                }
-//
-//                Log.e(" rawX == ", rawX + " rawY == " + rawY + " x == " + x + " y == " + y);
-//            } else  if ( mode == Mode.MOSAIC) {
-//
-//            }
-//        }
-//
-//
-//
-//
-//        if (photoEditImage != null) {
-//            Mode mode = photoEditImage.getMode();
-//            if (mode != null && mode == Mode.PENCIL) {
-//                PhotoEditPath path = photoEditImage.getPath();
-//                if (path != null) {
-//                    if (path.isPointerId(event.getPointerId(0))) {
-//                        path.lineTo(event.getRawX(), event.getRawY());
-//                        invalidate();
-//                    }
-//                }
-//            } else {
-//
-//            }
-//        }
-    }
 }
