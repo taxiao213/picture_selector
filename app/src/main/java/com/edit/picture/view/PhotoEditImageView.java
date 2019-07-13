@@ -181,6 +181,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         float rawY = event.getRawY();
         float x = event.getX();//相对于画布
         float y = event.getY();
+        Log.e("draw", "rawx == " + rawX + " rawY== " + rawY + " x== " + x + " y== " + y);
         path.setPointerId(event.getPointerId(0));
         path.setRest(rawX, rawY);
         mPaint.setColor(mPaintColor);
@@ -249,6 +250,34 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     }
 
     /**
+     * 撤回路径
+     */
+    public void withdrawPath() {
+        if (photoEditImage != null) {
+            Mode mode = photoEditImage.getMode();
+            if (mode != null) {
+                if (mode == Mode.PENCIL) {
+                    deletePath(mPencilPath);
+                } else if (mode == Mode.MOSAIC) {
+                    deletePath(mMosaicPath);
+                }
+            }
+        }
+    }
+
+    /**
+     * 将最后一条路径删除 重绘
+     *
+     * @param pathList ArrayList<PhotoEditMovePath>
+     */
+    private void deletePath(ArrayList<PhotoEditMovePath> pathList) {
+        if (pathList != null && pathList.size() > 0) {
+            pathList.remove(pathList.size() - 1);
+            invalidate();
+        }
+    }
+
+    /**
      * 绘制图片
      *
      * @param canvas Canvas 画布
@@ -287,7 +316,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
             canvas.restore();
         }
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -546,34 +574,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 //            mPaint.setColor(frontColor);
 //        }
         this.mPaintColor = frontColor;
-    }
-
-    /**
-     * 撤回路径
-     */
-    public void withdrawPath() {
-        if (photoEditImage != null) {
-            Mode mode = photoEditImage.getMode();
-            if (mode != null) {
-                if (mode == Mode.PENCIL) {
-                    deletePath(mPencilPath);
-                } else if (mode == Mode.MOSAIC) {
-                    deletePath(mMosaicPath);
-                }
-            }
-        }
-    }
-
-    /**
-     * 将最后一条路径删除 重绘
-     *
-     * @param pathList ArrayList<PhotoEditMovePath>
-     */
-    private void deletePath(ArrayList<PhotoEditMovePath> pathList) {
-        if (pathList != null && pathList.size() > 0) {
-            pathList.remove(pathList.size() - 1);
-            invalidate();
-        }
     }
 
     @Override
