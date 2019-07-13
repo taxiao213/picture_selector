@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/radio_group_edit_mosaic"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_group_edit_mosaic"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <RadioButton
-        android:id="@+id/radio_edit_mosaic_grid"
-        style="@style/radio_button"
-        android:layout_weight="3"
-        android:drawableTop="?attr/picture_edit_bottom_mosaic_grid" />
-
-    <RadioButton
-        android:id="@+id/radio_edit_mosaic_sand"
-        style="@style/radio_button"
-        android:layout_weight="1"
-        android:drawableTop="?attr/picture_edit_bottom_mosaic_sand" />
-
-    <RadioButton
-        style="@style/radio_button"
-        android:layout_weight="1"
+    <TextView
+        style="@style/edit_button"
+        android:layout_weight="1.8"
         android:visibility="invisible" />
 
-</RadioGroup>
+    <TextView
+        android:id="@+id/tv_edit_mosaic_grid"
+        style="@style/edit_button"
+        android:layout_gravity="center"
+        android:layout_weight="1.3"
+        android:drawableStart="?attr/picture_edit_bottom_mosaic_grid"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" />
+
+    <TextView
+        android:id="@+id/tv_edit_mosaic_sand"
+        style="@style/edit_button"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:drawableStart="?attr/picture_edit_bottom_mosaic_sand"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" />
+
+
+</LinearLayout>
 

@@ -18,22 +18,22 @@
 
         <TextView
             android:id="@+id/tv_edit_bottom_pencile"
-            style="@style/radio_button"
+            style="@style/edit_button"
             android:drawableTop="?attr/picture_edit_bottom_pencile" />
 
         <TextView
             android:id="@+id/tv_edit_bottom_text"
-            style="@style/radio_button"
+            style="@style/edit_button"
             android:drawableTop="?attr/picture_edit_bottom_text" />
 
         <TextView
             android:id="@+id/tv_edit_bottom_mosaic"
-            style="@style/radio_button"
+            style="@style/edit_button"
             android:drawableTop="?attr/picture_edit_bottom_mosaic" />
 
         <TextView
             android:id="@+id/tv_edit_bottom_cut"
-            style="@style/radio_button"
+            style="@style/edit_button"
             android:drawableTop="?attr/picture_edit_bottom_cut" />
 
     </LinearLayout>

@@ -8,7 +8,7 @@ package com.edit.picture.model;
  * Github:https://github.com/yin13753884368
  */
 public enum Mode {
-    PENCILE,
+    PENCIL,
     MOSAIC,
     CUT,
     TEXT,

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -19,10 +20,14 @@ import android.widget.FrameLayout;
 import com.edit.picture.model.Mode;
 import com.edit.picture.model.PhotoEditCorrection;
 import com.edit.picture.model.PhotoEditImage;
+import com.edit.picture.model.PhotoEditMovePath;
 import com.edit.picture.model.PhotoEditPath;
 import com.edit.picture.util.PhotoEditAnimator;
 import com.edit.picture.util.PhotoEditCorrectionAnimator;
+import com.selector.picture.constant.Constant;
 import com.selector.picture.utils.UIUtils;
+
+import java.util.ArrayList;
 
 /**
  * 编辑界面加载ImageView 需要实现 手势放大缩小，裁剪，旋转，马赛克，画笔功能
@@ -40,9 +45,16 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     private GestureDetector mGestureDetector;
     private PhotoEditAnimator mPhotoEditAnimator;
     private PhotoEditCorrectionAnimator mPhotoEditCorrectionAnimator;
-    private Paint mPaint;
-    private int mPointerCount;//手指接触的个数
     private final int DELAY_TIME = 100;//延迟时间
+    private ArrayList<PhotoEditMovePath> mPencilPath;//绘制铅笔路径
+    private ArrayList<PhotoEditMovePath> mMosaicPath;//绘制马赛克路径
+    private int mPointerCount;//手指接触的个数
+    private Paint mPaint;
+    private float mPaintPencilWidth = 12F;
+    private float mPaintMosaicWidth = 40F;
+    private int mPaintColor;
+    private Paint.Style mPaintPencilStyle = Paint.Style.STROKE;
+    private Paint.Style mPaintMosaicStyle = Paint.Style.FILL_AND_STROKE;
 
     public PhotoEditImageView(@NonNull Context context) {
         this(context, null);
@@ -63,6 +75,8 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         mPhotoEditCorrectionAnimator = new PhotoEditCorrectionAnimator(this);
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
         mGestureDetector = new GestureDetector(context, new GestureListener());
+        mPencilPath = new ArrayList<>();
+        mMosaicPath = new ArrayList<>();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -115,7 +129,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         if (photoEditImage != null) {
             Mode mode = photoEditImage.getMode();
             if (mode != null) {
-                if (mode == Mode.PENCILE || mode == Mode.MOSAIC) {
+                if (mode == Mode.PENCIL || mode == Mode.MOSAIC) {
                     return false;
                 }
             }
@@ -128,46 +142,108 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     }
 
     /**
-     * 绘制画布过程
-     *
      * @param event MotionEvent
+     * @param type  {@link Constant#ACTION_TYPE1 绘制起点}
+     *              {@link Constant#ACTION_TYPE2 绘制过程}
+     *              {@link Constant#ACTION_TYPE3 绘制结束}
      */
-    private void drawPathMove(MotionEvent event) {
-        if (photoEditImage != null) {
+    private void drawPath(MotionEvent event, int type) {
+        Log.e("drawPath == ", type + "");
+        mPointerCount = event.getPointerCount();
+        if (photoEditImage != null && mPointerCount == 1) {
             Mode mode = photoEditImage.getMode();
-            if (mode != null && mode == Mode.PENCILE) {
-                PhotoEditPath path = photoEditImage.getPath();
-                if (path != null) {
-                    if (path.isPointerId(event.getPointerId(0))) {
-                        path.lineTo(event.getRawX(), event.getRawY());
-                        invalidate();
+            if (mode != null) {
+                if (mode == Mode.PENCIL || mode == Mode.MOSAIC) {
+                    PhotoEditPath path = photoEditImage.getPath();
+                    if (path != null) {
+                        if (type == Constant.TYPE1) {
+                            drawPathStart(mode, event, path);
+                        } else if (type == Constant.TYPE2) {
+                            drawPathMove(event, path);
+                        } else if (type == Constant.TYPE3) {
+                            drawPathEnd(mode, event, path);
+                        }
                     }
                 }
-            } else {
-
             }
         }
     }
 
     /**
-     * 绘制画布起点
+     * 绘制开始
+     *
+     * @param mode  Mode
+     * @param event MotionEvent
+     * @param path  PhotoEditPath
+     */
+    private void drawPathStart(Mode mode, MotionEvent event, PhotoEditPath path) {
+        float rawX = event.getRawX();//相对于屏幕
+        float rawY = event.getRawY();
+        float x = event.getX();//相对于画布
+        float y = event.getY();
+        path.setPointerId(event.getPointerId(0));
+        path.setRest(rawX, rawY);
+        mPaint.setColor(mPaintColor);
+        if (mode == Mode.PENCIL) {
+            mPaint.setStyle(mPaintPencilStyle);
+            mPaint.setStrokeWidth(mPaintPencilWidth);
+        } else if (mode == Mode.MOSAIC) {
+            mPaint.setStyle(mPaintMosaicStyle);
+            mPaint.setStrokeWidth(mPaintMosaicWidth);
+        }
+    }
+
+    /**
+     * 绘制过程
      *
      * @param event MotionEvent
+     * @param path  PhotoEditPath
      */
-    private void drawPathBegin(MotionEvent event) {
-        if (photoEditImage != null) {
-            Mode mode = photoEditImage.getMode();
-            if (mode != null && mode == Mode.PENCILE) {
-                float rawX = event.getRawX();//相对于屏幕
-                float rawY = event.getRawY();
-                float x = event.getX();//相对于画布
-                float y = event.getY();
-                PhotoEditPath path = photoEditImage.getPath();
-                path.setRest(rawX, rawY);
-                path.setPointerId(event.getPointerId(0));
-                Log.e(" rawX == ", rawX + " rawY == " + rawY + " x == " + x + " y == " + y);
-            } else {
+    private void drawPathMove(MotionEvent event, PhotoEditPath path) {
+        if (path.isPointerId(event.getPointerId(0))) {
+            path.lineTo(event.getRawX(), event.getRawY());
+            invalidate();
+        }
+    }
 
+    /**
+     * 绘制结束
+     *
+     * @param mode  Mode
+     * @param event MotionEvent
+     * @param path  PhotoEditPath
+     */
+    private void drawPathEnd(Mode mode, MotionEvent event, PhotoEditPath path) {
+        if (path.isPointerId(event.getPointerId(0))) {
+            PhotoEditMovePath movePath = new PhotoEditMovePath(new Path(path), mPaintColor);
+            if (mode == Mode.PENCIL) {
+                movePath.setPaintWidth(mPaintPencilWidth);
+                movePath.setPaintStyle(mPaintPencilStyle);
+                mPencilPath.add(movePath);
+            } else if (mode == Mode.MOSAIC) {
+                movePath.setPaintWidth(mPaintMosaicWidth);
+                movePath.setPaintStyle(mPaintMosaicStyle);
+                mMosaicPath.add(movePath);
+            }
+        }
+    }
+
+    /**
+     * 绘制集合路径
+     *
+     * @param canvas Canvas
+     * @param list   ArrayList<PhotoEditMovePath>
+     */
+    private void drawPathList(Canvas canvas, ArrayList<PhotoEditMovePath> list) {
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                PhotoEditMovePath editMovePath = list.get(i);
+                if (editMovePath != null) {
+                    mPaint.setStyle(editMovePath.getPaintStyle());
+                    mPaint.setStrokeWidth(editMovePath.getPaintWidth());
+                    mPaint.setColor(editMovePath.getPaintColor());
+                    canvas.drawPath(editMovePath.getPath(), mPaint);
+                }
             }
         }
     }
@@ -191,21 +267,27 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      */
     private void onDrawPath(Canvas canvas) {
         if (photoEditImage != null) {
+            canvas.save();
+            PhotoEditPath path = photoEditImage.getPath();
             Mode mode = photoEditImage.getMode();
-            if (mode != null && mode == Mode.PENCILE) {
-                PhotoEditPath path = photoEditImage.getPath();
-                if (path != null) {
-                    canvas.save();
-                    mPaint.setStrokeWidth(10);
-                    mPaint.setStyle(Paint.Style.STROKE);
+            if (path != null && mode != null) {
+                mPaint.setColor(mPaintColor);
+                if (mode == Mode.PENCIL) {
+                    mPaint.setStyle(mPaintPencilStyle);
+                    mPaint.setStrokeWidth(mPaintPencilWidth);
                     canvas.drawPath(path, mPaint);
-                    canvas.restore();
+                } else if (mode == Mode.MOSAIC) {
+                    mPaint.setStrokeWidth(mPaintMosaicWidth);
+                    mPaint.setStyle(mPaintMosaicStyle);
+                    canvas.drawPath(path, mPaint);
                 }
-            } else {
-
             }
+            drawPathList(canvas, mPencilPath);
+            drawPathList(canvas, mMosaicPath);
+            canvas.restore();
         }
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -229,19 +311,22 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
                     removeCallbacks(this);
-                    drawPathBegin(event);
+                    drawPath(event, Constant.TYPE1);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    drawPathMove(event);
+                    drawPath(event, Constant.TYPE2);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     postDelayed(this, DELAY_TIME);
+                    drawPath(event, Constant.TYPE3);
                     break;
             }
+            return onTouch(event);
         }
-        return onTouch(event);
+        return false;
     }
+
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
@@ -457,8 +542,37 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      * @param frontColor 画笔颜色
      */
     public void setPaintColor(int frontColor) {
-        if (mPaint != null) {
-            mPaint.setColor(frontColor);
+//        if (mPaint != null) {
+//            mPaint.setColor(frontColor);
+//        }
+        this.mPaintColor = frontColor;
+    }
+
+    /**
+     * 撤回路径
+     */
+    public void withdrawPath() {
+        if (photoEditImage != null) {
+            Mode mode = photoEditImage.getMode();
+            if (mode != null) {
+                if (mode == Mode.PENCIL) {
+                    deletePath(mPencilPath);
+                } else if (mode == Mode.MOSAIC) {
+                    deletePath(mMosaicPath);
+                }
+            }
+        }
+    }
+
+    /**
+     * 将最后一条路径删除 重绘
+     *
+     * @param pathList ArrayList<PhotoEditMovePath>
+     */
+    private void deletePath(ArrayList<PhotoEditMovePath> pathList) {
+        if (pathList != null && pathList.size() > 0) {
+            pathList.remove(pathList.size() - 1);
+            invalidate();
         }
     }
 
@@ -467,6 +581,8 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         super.onDetachedFromWindow();
         cancelAnimator(PhotoEditCorrection.TYPE1);
         cancelAnimator(PhotoEditCorrection.TYPE2);
+        mPencilPath.clear();
+        mMosaicPath.clear();
         Log.e("onDetachedFromWindow ", "取消动画");
     }
 }

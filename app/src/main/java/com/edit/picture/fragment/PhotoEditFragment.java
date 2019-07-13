@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,16 +38,18 @@ import java.util.ArrayList;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoEditFragment extends BaseFragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, OnItemClickListener<Integer>, Function<ColorModel> {
+public class PhotoEditFragment extends BaseFragment implements View.OnClickListener, OnItemClickListener<Integer>, Function<ColorModel> {
 
     private PhotoEditActivity activity;
     private RecyclerView ryEditPencileBottom;
-    private RadioGroup radioGroupEditMosaic;
+    private LinearLayout llGroupEditMosaic;
     private LinearLayout llEditBottomRoot;
     private ImageView tvEditBottomWithdraw;
     private RelativeLayout rlEditTopRoot;
     private TextView tvEditBottomPencile;
     private TextView tvEditBottomMosaic;
+    private TextView tvEditMosaicGrid;
+    private TextView tvEditMosaicSand;
     private LinearLayout llEditColorBottom;
     private PhotoEditImageView photoEditImage;
     private PhotoEditAdapter adapter;
@@ -81,7 +82,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         TextView rlEditTopComplete = view.findViewById(R.id.tv_edit_top_complete);//顶部完成按钮
         llEditBottomRoot = view.findViewById(R.id.ll_edit_bottom_root); //底部根View
         ryEditPencileBottom = view.findViewById(R.id.ry_edit_pencile_bottom);//底部RecyclerView 展示颜色
-        radioGroupEditMosaic = view.findViewById(R.id.radio_group_edit_mosaic); //底部Mosaic
+        llGroupEditMosaic = view.findViewById(R.id.ll_group_edit_mosaic); //底部Mosaic
         LinearLayout llEditBottom = view.findViewById(R.id.ll_edit_bottom);//底部按钮根View
         llEditColorBottom = view.findViewById(R.id.ll_edit_color_bottom);//底部按钮选择颜色根View
         tvEditBottomPencile = view.findViewById(R.id.tv_edit_bottom_pencile); //底部铅笔按钮
@@ -89,6 +90,8 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         tvEditBottomMosaic = view.findViewById(R.id.tv_edit_bottom_mosaic); //底部马赛克按钮
         TextView tvEditBottomCut = view.findViewById(R.id.tv_edit_bottom_cut);//底部剪切按钮
         tvEditBottomWithdraw = view.findViewById(R.id.tv_edit_bottom_withdraw); //底部撤回按钮
+        tvEditMosaicGrid = view.findViewById(R.id.tv_edit_mosaic_grid); //底部MosaicGrid网格
+        tvEditMosaicSand = view.findViewById(R.id.tv_edit_mosaic_sand); //底部MosaicSand网格
         rlEditTopCancel.setOnClickListener(this);
         rlEditTopComplete.setOnClickListener(this);
         tvEditBottomPencile.setOnClickListener(this);
@@ -96,7 +99,8 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         tvEditBottomMosaic.setOnClickListener(this);
         tvEditBottomCut.setOnClickListener(this);
         tvEditBottomWithdraw.setOnClickListener(this);
-        radioGroupEditMosaic.setOnCheckedChangeListener(this);
+        tvEditMosaicGrid.setOnClickListener(this);
+        tvEditMosaicSand.setOnClickListener(this);
         llEditColorBottom.setVisibility(View.GONE);
         tvEditBottomPencile.setSelected(false);
         tvEditBottomMosaic.setSelected(false);
@@ -106,8 +110,8 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         LinearLayoutManager manager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
         ryEditPencileBottom.setAdapter(adapter);
         ryEditPencileBottom.setLayoutManager(manager);
+        setMosaicSelect(Constant.TYPE1);
 
-        radioGroupEditMosaic.check(R.id.radio_edit_mosaic_grid);
         initColorList();
         if (model != null) {
             String path = model.getPath();
@@ -142,23 +146,6 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         setPaintColor();
     }
 
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.radio_edit_mosaic_grid:
-                //底部MosaicGrid网格
-
-                break;
-            case R.id.radio_edit_mosaic_sand:
-                //底部MosaicSand网格
-
-                break;
-        }
-
-    }
-
-
     @Override
     public void onClick(View v) {
         if (v != null) {
@@ -174,6 +161,9 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                     break;
                 case R.id.tv_edit_bottom_withdraw:
                     //撤回
+                    if (photoEditImage != null) {
+                        photoEditImage.withdrawPath();
+                    }
                     break;
                 case R.id.tv_edit_bottom_pencile:
                     //画笔
@@ -187,6 +177,14 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                 case R.id.tv_edit_bottom_mosaic:
                     //马赛克
                     switchPencileAndMosaic(false);
+                    break;
+                case R.id.tv_edit_mosaic_grid:
+                    //底部MosaicGrid网格
+                    setMosaicSelect(Constant.TYPE1);
+                    break;
+                case R.id.tv_edit_mosaic_sand:
+                    //底部MosaicSand网格
+                    setMosaicSelect(Constant.TYPE2);
                     break;
                 case R.id.tv_edit_bottom_cut:
                     //剪切
@@ -233,11 +231,11 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
             boolean selected = tvEditBottomPencile.isSelected();
             tvEditBottomPencile.setSelected(!selected);
             tvEditBottomMosaic.setSelected(false);
-            radioGroupEditMosaic.setVisibility(View.GONE);
+            llGroupEditMosaic.setVisibility(View.GONE);
             if (tvEditBottomPencile.isSelected()) {
                 llEditColorBottom.setVisibility(View.VISIBLE);
                 ryEditPencileBottom.setVisibility(View.VISIBLE);
-                setMode(Mode.PENCILE);
+                setMode(Mode.PENCIL);
             } else {
                 llEditColorBottom.setVisibility(View.GONE);
                 setMode(Mode.NONE);
@@ -249,18 +247,18 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
             ryEditPencileBottom.setVisibility(View.GONE);
             if (tvEditBottomMosaic.isSelected()) {
                 llEditColorBottom.setVisibility(View.VISIBLE);
-                radioGroupEditMosaic.setVisibility(View.VISIBLE);
+                llGroupEditMosaic.setVisibility(View.VISIBLE);
                 setMode(Mode.MOSAIC);
             } else {
                 llEditColorBottom.setVisibility(View.GONE);
                 setMode(Mode.NONE);
             }
         }
-        if (isVisible) {
-            setGravity(Gravity.CENTER);
-        } else {
-            setGravity(Gravity.TOP);
-        }
+//        if (isVisible) {
+//            setGravity(Gravity.CENTER);
+//        } else {
+//            setGravity(Gravity.TOP);
+//        }
     }
 
     /**
@@ -272,6 +270,22 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tvEditBottomWithdraw.getLayoutParams();
         params.gravity = gravity;
         tvEditBottomWithdraw.requestLayout();
+    }
+
+    /**
+     * 设置马赛克选中
+     *
+     * @param type {@link Constant#ACTION_TYPE1 tvEditMosaicGrid 选中 默认选中}
+     *             {@link Constant#ACTION_TYPE2 tvEditMosaicSand 选中}
+     */
+    private void setMosaicSelect(int type) {
+        if (type == Constant.TYPE1) {
+            tvEditMosaicGrid.setSelected(true);
+            tvEditMosaicSand.setSelected(false);
+        } else if (type == Constant.TYPE2) {
+            tvEditMosaicGrid.setSelected(false);
+            tvEditMosaicSand.setSelected(true);
+        }
     }
 
     /**
@@ -308,7 +322,6 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
             }
         }
     }
-
 
     /**
      * 设置模式
