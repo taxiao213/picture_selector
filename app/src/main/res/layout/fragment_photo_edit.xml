@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black_trans_20">
+    android:layout_height="match_parent">
 
     <com.edit.picture.view.PhotoEditImageView
         android:id="@+id/iv_edit"
@@ -10,52 +9,57 @@
         android:layout_height="match_parent"
         android:background="@android:color/black" />
 
-    <include layout="@layout/picture_photo_edit_top" />
-
-    <LinearLayout
-        android:id="@+id/ll_edit_bottom_root"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@drawable/picture_edit_bg">
+
+        <include layout="@layout/picture_photo_edit_top" />
 
         <LinearLayout
-            android:id="@+id/ll_edit_color_bottom"
+            android:id="@+id/ll_edit_bottom_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/ll_edit_color_bottom"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1">
+                android:orientation="horizontal">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/ry_edit_pencile_bottom"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
 
-                <include layout="@layout/fragment_photo_edit_mosaic" />
-            </FrameLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/ry_edit_pencile_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
 
-            <ImageView
-                android:id="@+id/tv_edit_bottom_withdraw"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:src="?attr/picture_edit_bottom_withdraw" />
+                    <include layout="@layout/fragment_photo_edit_mosaic" />
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/tv_edit_bottom_withdraw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:src="?attr/picture_edit_bottom_withdraw" />
+            </LinearLayout>
+
+            <include
+                layout="@layout/picture_photo_edit_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
-        <include
-            layout="@layout/picture_photo_edit_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
+    </FrameLayout>
 </FrameLayout>
 
