@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -46,6 +47,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     private LinearLayout llEditBottomRoot;
     private ImageView tvEditBottomWithdraw;
     private RelativeLayout rlEditTopRoot;
+    private FrameLayout flEdit;
     private TextView tvEditBottomPencile;
     private TextView tvEditBottomMosaic;
     private TextView tvEditMosaicGrid;
@@ -78,6 +80,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         }
         photoEditImage = view.findViewById(R.id.iv_edit); //图片
         rlEditTopRoot = view.findViewById(R.id.rl_edit_top_root); //顶部根View
+        flEdit = view.findViewById(R.id.fl_edit); //可编辑View
         TextView rlEditTopCancel = view.findViewById(R.id.tv_edit_top_cancel);//顶部取消按钮
         TextView rlEditTopComplete = view.findViewById(R.id.tv_edit_top_complete);//顶部完成按钮
         llEditBottomRoot = view.findViewById(R.id.ll_edit_bottom_root); //底部根View
