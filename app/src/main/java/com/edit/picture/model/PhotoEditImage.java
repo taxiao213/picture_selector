@@ -22,6 +22,7 @@ public class PhotoEditImage {
     private Mode mode = Mode.NONE;//默认
     private float SCALE_MAX = 4.0F;
     private float SCALE_MIN = 1.0F;
+    private float SCALE_ADD = 1.3F;
     private boolean isInit = true;//初始化
     private float[] MATRIX_FLOAT = new float[9];
     private PhotoEditPath mPath;//绘制路径
@@ -77,12 +78,26 @@ public class PhotoEditImage {
      * 设置手势缩放系数
      *
      * @param scale  float
-     * @param focusX
+     * @param focusX float
      * @param focusY float
      */
     public void setGestureScale(float scale, float focusX, float focusY) {
         if (scale >= SCALE_MIN && getMatrixScaleX() >= SCALE_MAX) return;
         matrix.postScale(scale, scale, focusX, focusY);
+    }
+
+    /**
+     * 返回双击缩放系数 放大事件
+     *
+     * @return float
+     */
+    public float getDoubleScale() {
+        float scale = getMatrixScaleX();
+        scale += SCALE_ADD;
+        if (scale >= SCALE_MAX) {
+            scale = SCALE_MIN;
+        }
+        return scale;
     }
 
     /**
@@ -106,9 +121,7 @@ public class PhotoEditImage {
 //        Log.e("scale ", " setMatrixScaleX == " + MATRIX_FLOAT[Matrix.MSCALE_X]);
 //        matrix.setValues(MATRIX_FLOAT);
         float matrixScaleX = getMatrixScaleX();
-        if (scale >= matrixScaleX) {
-            setGestureScale(scale / matrixScaleX, focusX, focusY);
-        }
+        setGestureScale(scale / matrixScaleX, focusX, focusY);
     }
 
     /**

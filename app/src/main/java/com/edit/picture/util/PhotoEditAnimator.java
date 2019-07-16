@@ -29,8 +29,8 @@ public class PhotoEditAnimator extends ValueAnimator {
         setEvaluator(evaluator);
     }
 
-    public void setFloatValues(PhotoEditCorrection start) {
-        PhotoEditCorrection end = new PhotoEditCorrection(PhotoEditCorrection.TYPE1, 0F, 0F, 0F, 1.0F);
+    public void setFloatValues(PhotoEditCorrection start, float endScale) {
+        PhotoEditCorrection end = new PhotoEditCorrection(PhotoEditCorrection.TYPE1, 0F, 0F, 0F, endScale);
         setObjectValues(start, end);
     }
 }

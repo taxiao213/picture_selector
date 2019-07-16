@@ -149,6 +149,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      */
     private void drawPath(MotionEvent event, int type) {
         Log.e("drawPath == ", type + "");
+        if (isCorrectAnimator()) return;
         mPointerCount = event.getPointerCount();
         if (photoEditImage != null && mPointerCount == 1) {
             Mode mode = photoEditImage.getMode();
@@ -324,6 +325,21 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         }
     }
 
+    /**
+     * 是否在执行缩放动画
+     *
+     * @return true 不绘制路径 false 绘制路径
+     */
+    private boolean isCorrectAnimator() {
+        if (photoEditImage != null) {
+            float scaleX = photoEditImage.getMatrixScaleX();
+            if (scaleX < 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         onDrawImage(canvas);
@@ -392,6 +408,8 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     /**
      * 手势监听
+     * {@link GestureListener#onDoubleTap(MotionEvent) 双击放大缩小}
+     * {@link GestureListener#onScroll(MotionEvent, MotionEvent, float, float)}  拖动图片}
      */
     public class GestureListener extends SimpleOnGestureListener {
         @Override
@@ -403,6 +421,27 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             return PhotoEditImageView.this.onScroll(distanceX, distanceY);
         }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            if (photoEditImage != null) {
+                Mode mode = photoEditImage.getMode();
+                if (mode != null && mode == Mode.NONE) {
+                    if (!isCorrectAnimator()) {
+                        float scaleX = photoEditImage.getMatrixScaleX();
+                        float endScale = photoEditImage.getDoubleScale();
+                        if (mPhotoEditAnimator != null) {
+                            cancelAnimator(PhotoEditCorrection.TYPE1);
+                            PhotoEditCorrection photoEditCorrection = new PhotoEditCorrection(PhotoEditCorrection.TYPE1, 0F, 0F, 0F, scaleX);
+                            mPhotoEditAnimator.setFloatValues(photoEditCorrection, endScale);
+                            mPhotoEditAnimator.start();
+                        }
+                        return true;
+                    }
+                }
+            }
+            return super.onDoubleTap(e);
+        }
     }
 
     @Override
@@ -413,7 +452,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
                 if (mPhotoEditAnimator != null) {
                     cancelAnimator(PhotoEditCorrection.TYPE1);
                     PhotoEditCorrection photoEditCorrection = new PhotoEditCorrection(PhotoEditCorrection.TYPE1, 0F, 0F, 0F, scaleX);
-                    mPhotoEditAnimator.setFloatValues(photoEditCorrection);
+                    mPhotoEditAnimator.setFloatValues(photoEditCorrection, 1.0F);
                     mPhotoEditAnimator.start();
                 }
             } else {
