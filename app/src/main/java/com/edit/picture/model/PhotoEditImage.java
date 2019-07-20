@@ -26,6 +26,7 @@ public class PhotoEditImage {
     private boolean isInit = true;//初始化
     private float[] MATRIX_FLOAT = new float[9];
     private PhotoEditPath mPath;//绘制路径
+    private boolean isScale;//是否在缩放
 
     public PhotoEditImage() {
         mPath = new PhotoEditPath();
@@ -171,4 +172,21 @@ public class PhotoEditImage {
         return mPath;
     }
 
+    /**
+     * 设置是否在缩放中
+     *
+     * @param isScale true 缩放  false 不缩放
+     */
+    public void setScale(boolean isScale) {
+        this.isScale = isScale;
+    }
+
+    /**
+     * 是否缩放
+     *
+     * @return true 缩放  false 不缩放
+     */
+    public boolean isScale() {
+        return isScale;
+    }
 }

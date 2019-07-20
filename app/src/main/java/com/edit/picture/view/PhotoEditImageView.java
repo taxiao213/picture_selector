@@ -103,6 +103,21 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         mPointerCount = event.getPointerCount();
         boolean touch = mScaleGestureDetector.onTouchEvent(event);
         mGestureDetector.onTouchEvent(event);
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                removeCallbacks(this);
+                drawPath(event, Constant.TYPE1);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                drawPath(event, Constant.TYPE2);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                postDelayed(this, DELAY_TIME);
+                setSacle(false);
+                drawPath(event, Constant.TYPE3);
+                break;
+        }
         return touch;
     }
 
@@ -115,6 +130,17 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      */
     private boolean onScroll(float distanceX, float distanceY) {
         return onScrollTo(getScrollX() + Math.round(distanceX), getScrollY() + Math.round(distanceY));
+    }
+
+    /**
+     * 设置是否在缩放中
+     *
+     * @param isScale true 缩放  false 不缩放
+     */
+    private void setSacle(boolean isScale) {
+        if (photoEditImage != null) {
+            photoEditImage.setScale(isScale);
+        }
     }
 
     /**
@@ -148,8 +174,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      *              {@link Constant#ACTION_TYPE3 绘制结束}
      */
     private void drawPath(MotionEvent event, int type) {
-        Log.e("drawPath == ", type + "");
-        if (isCorrectAnimator()) return;
+        if (isCorrectAnimator(event)) return;
         mPointerCount = event.getPointerCount();
         if (photoEditImage != null && mPointerCount == 1) {
             Mode mode = photoEditImage.getMode();
@@ -330,12 +355,15 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
      *
      * @return true 不绘制路径 false 绘制路径
      */
-    private boolean isCorrectAnimator() {
+    private boolean isCorrectAnimator(MotionEvent event) {
+        int pointerCount = event.getPointerCount();
+        if (pointerCount > 1) return true;
         if (photoEditImage != null) {
             float scaleX = photoEditImage.getMatrixScaleX();
             if (scaleX < 1) {
                 return true;
             }
+            if (photoEditImage.isScale()) return true;
         }
         return false;
     }
@@ -359,20 +387,6 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event != null) {
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    removeCallbacks(this);
-                    drawPath(event, Constant.TYPE1);
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    drawPath(event, Constant.TYPE2);
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    postDelayed(this, DELAY_TIME);
-                    drawPath(event, Constant.TYPE3);
-                    break;
-            }
             return onTouch(event);
         }
         return false;
@@ -381,6 +395,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
+        setSacle(true);
         if (mPointerCount > 1) {
             if (photoEditImage != null) {
 //                photoEditImage.setGestureScale(detector.getScaleFactor(), getScaleX() + detector.getFocusX(), getScaleY() + detector.getFocusY());
@@ -423,11 +438,11 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
         }
 
         @Override
-        public boolean onDoubleTap(MotionEvent e) {
+        public boolean onDoubleTap(MotionEvent event) {
             if (photoEditImage != null) {
                 Mode mode = photoEditImage.getMode();
                 if (mode != null && mode == Mode.NONE) {
-                    if (!isCorrectAnimator()) {
+                    if (!isCorrectAnimator(event)) {
                         float scaleX = photoEditImage.getMatrixScaleX();
                         float endScale = photoEditImage.getDoubleScale();
                         if (mPhotoEditAnimator != null) {
@@ -440,7 +455,7 @@ public class PhotoEditImageView extends FrameLayout implements ScaleGestureDetec
                     }
                 }
             }
-            return super.onDoubleTap(e);
+            return super.onDoubleTap(event);
         }
     }
 
