@@ -16,11 +16,8 @@ public class ColorModel {
     private float spacing;//间距
     private float COEFFICIENT_NORMAL = 1.0F;//正常系数
     private float COEFFICIENT_SCALE = 1.2F;//缩放系数
-
-    public ColorModel(int frontColor, int textColor) {
-        this.frontColor = frontColor;
-        this.textColor = textColor;
-    }
+    private boolean isSelected = false;//是否选择状态
+    private String text;//文本
 
     /**
      * @param frontColor 前背景色
@@ -33,6 +30,12 @@ public class ColorModel {
             this.scaleCoefficient = COEFFICIENT_NORMAL;
         }
         this.frontColor = frontColor;
+    }
+
+    public ColorModel(int frontColor, boolean isSelected, String text) {
+        this.frontColor = frontColor;
+        this.isSelected = isSelected;
+        this.text = text;
     }
 
     /**
@@ -89,4 +92,15 @@ public class ColorModel {
         this.spacing = spacing;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public int getTextColor() {
+        return textColor;
+    }
 }

@@ -14,7 +14,7 @@ import com.edit.picture.model.PhotoEditEvaluator;
  */
 public class PhotoEditAnimator extends ValueAnimator {
 
-    private final int DURATION_TIME = 300;//默认加载时长
+    private final int DURATION_TIME = 220;//默认加载时长
 
     public PhotoEditAnimator(AnimatorListener animatorListener, AnimatorUpdateListener animatorUpdateListener) {
         setDuration(DURATION_TIME);

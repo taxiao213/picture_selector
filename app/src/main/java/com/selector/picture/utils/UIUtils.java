@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -379,6 +380,26 @@ public class UIUtils {
             uri = Uri.fromFile(file);
         }
         return uri;
+    }
+
+    /**
+     * 设置字体颜色
+     *
+     * @param context Context
+     * @param color   字体颜色
+     * @return Uri
+     */
+    public static int setTextColor(Context context, int color) {
+        int textColor;
+        double calculate = ColorUtils.calculateLuminance(color);
+        if (calculate >= 0.5) {
+            //设置黑色字体
+            textColor = context.getResources().getColor(android.R.color.black);
+        } else {
+            //设置白色字体
+            textColor = context.getResources().getColor(android.R.color.white);
+        }
+        return textColor;
     }
 
 }

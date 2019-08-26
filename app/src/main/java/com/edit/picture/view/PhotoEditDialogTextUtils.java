@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -44,9 +45,10 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
     private ImageView ivPencileBold;
     private ColorModel currentColorModel;//当前的画笔model
 
-    public PhotoEditDialogTextUtils(Context context, Function<ColorModel> function) {
+    public PhotoEditDialogTextUtils(Context context, ColorModel colorModel, Function<ColorModel> function) {
         this.mContext = context;
         this.function = function;
+        this.currentColorModel = colorModel;
         initDialog();
     }
 
@@ -113,7 +115,8 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
         }
         if (type == Constant.TYPE2) {
             if (function != null) {
-                function.action(new ColorModel(editText.getMPaintColor(), editText.getTextColors().getDefaultColor()));
+                Editable text = editText.getText();
+                function.action(new ColorModel(editText.getBackgroudColor(), ivPencileBold.isSelected(), text == null ? "" : text.toString()));
             }
         } else {
             if (function != null) {
@@ -140,16 +143,30 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
             paintColor = Constant.PIC_EDIT_PAINT_COLOR;
         }
         for (int i = 0; i < paintColor.length; i++) {
-            if (i == 0) {
-                list.add(new ColorModel(mContext.getResources().getColor(paintColor[i]), true));
-                editText.setTextColor(mContext.getResources().getColor(paintColor[i]));
+            int color = mContext.getResources().getColor(paintColor[i]);
+            if (currentColorModel != null) {
+                if (color == currentColorModel.getFrontColor()) {
+                    list.add(new ColorModel(color, true));
+                    ivPencileBold.setSelected(currentColorModel.isSelected());
+                    editText.setText(currentColorModel.getText());
+                    setCanvasPaintColor();
+                } else {
+                    list.add(new ColorModel(color, false));
+                }
             } else {
-                list.add(new ColorModel(mContext.getResources().getColor(paintColor[i]), false));
+                if (i == 0) {
+                    list.add(new ColorModel(color, true));
+                    editText.setTextColor(color);
+                } else {
+                    list.add(new ColorModel(color, false));
+                }
             }
         }
         adapter.notifyDataSetChanged();
-        if (list != null && list.size() > 0) {
-            currentColorModel = list.get(0);
+        if (currentColorModel == null) {
+            if (list != null && list.size() > 0) {
+                currentColorModel = list.get(0);
+            }
         }
     }
 
@@ -195,13 +212,15 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
      */
     private void setCanvasPaintColor() {
         if (ivPencileBold != null && editText != null && currentColorModel != null) {
-            if (ivPencileBold.isSelected()) {
-                editText.setMPaintColor(currentColorModel.getFrontColor());
-                editText.invalidate();
+            boolean selected = ivPencileBold.isSelected();
+            if (selected) {
+                editText.setTextColor(UIUtils.setTextColor(mContext, currentColorModel.getFrontColor()));
             } else {
-                editText.setMPaintColor(mContext.getResources().getColor(R.color.grey_00));
                 editText.setTextColor(currentColorModel.getFrontColor());
             }
+            editText.setSelect(selected);
+            editText.setBackgroudColor(currentColorModel.getFrontColor());
+            editText.invalidate();
         }
     }
 }

@@ -21,8 +21,12 @@ public class PhotoEditPath extends Path {
     }
 
     public void setRest(float x, float y) {
-        reset();
+        clearStatus();
         moveTo(x, y);
     }
 
+    public void clearStatus() {
+        reset();
+        rewind();
+    }
 }

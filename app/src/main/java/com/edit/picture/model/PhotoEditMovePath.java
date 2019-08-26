@@ -1,5 +1,6 @@
 package com.edit.picture.model;
 
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 
@@ -15,10 +16,13 @@ public class PhotoEditMovePath {
     private int paintColor;//画笔颜色
     private float paintWidth;//画笔宽度
     private Paint.Style paintStyle;//画笔风格
-
-    public PhotoEditMovePath(Path path, int paintColor) {
+    private float scale;//放大系数
+    private Matrix matrix;//矩阵
+    private float paintMosaicWidth;//马赛克宽度
+    public PhotoEditMovePath(Path path, int paintColor, float scale) {
         this.path = path;
         this.paintColor = paintColor;
+        this.scale = scale;
     }
 
     public PhotoEditMovePath(Path path, int paintColor, float paintWidth, Paint.Style paintStyle) {
@@ -58,5 +62,25 @@ public class PhotoEditMovePath {
 
     public void setPaintStyle(Paint.Style paintStyle) {
         this.paintStyle = paintStyle;
+    }
+
+    public float getScale() {
+        return scale;
+    }
+
+    public Matrix getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(Matrix matrix) {
+        this.matrix = matrix;
+    }
+
+    public float getPaintMosaicWidth() {
+        return paintMosaicWidth;
+    }
+
+    public void setPaintMosaicWidth(float paintMosaicWidth) {
+        this.paintMosaicWidth = paintMosaicWidth;
     }
 }

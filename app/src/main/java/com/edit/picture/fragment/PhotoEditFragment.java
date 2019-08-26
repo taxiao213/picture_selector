@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,6 +57,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
     private ArrayList<ColorModel> list;//画笔颜色的结合
     private LocalMedia model;
     private int currentPosition = -1;//当前位置
+    private ColorModel colorModel;
 
     @Override
     public void onAttach(Context context) {
@@ -122,7 +122,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                 Bitmap bitmap = CompressPicUtil.getEditImage(StringUtils.nullToString(model.getPath()), activity);
                 if (bitmap != null) {
                     if (photoEditImage != null) {
-                        photoEditImage.setPhotoEditImage(bitmap);
+                        photoEditImage.setPhotoEditImage(PhotoEditFragment.this, bitmap);
                     }
                 }
             }
@@ -175,7 +175,7 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
                 case R.id.tv_edit_bottom_text:
                     //文本
                     topAndBottomVisible(false);
-                    new PhotoEditDialogTextUtils(activity, this);
+                    new PhotoEditDialogTextUtils(activity, colorModel, this);
                     break;
                 case R.id.tv_edit_bottom_mosaic:
                     //马赛克
@@ -217,11 +217,10 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
 
 
     @Override
-    public void action(ColorModel var) {
+    public void action(ColorModel colorModel) {
         topAndBottomVisible(true);
-        if (var != null) {
-            // TODO: 2019/6/27 addView
-        }
+        // TODO: 2019/6/27 addView
+        this.colorModel = colorModel;
     }
 
     /**
@@ -335,5 +334,14 @@ public class PhotoEditFragment extends BaseFragment implements View.OnClickListe
         if (photoEditImage != null) {
             photoEditImage.setMode(mode);
         }
+    }
+
+    /**
+     * 设置编辑按钮是否隐藏
+     *
+     * @param isVisible true 显示  false 隐藏
+     */
+    public void setEditVisible(boolean isVisible) {
+        flEdit.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

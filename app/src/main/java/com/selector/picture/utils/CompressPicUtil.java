@@ -288,7 +288,7 @@ public class CompressPicUtil {
         float scale = Math.min(screenWidth * 1f / srcWidth, screenHeight * 1f / srcHeight);
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
-        Bitmap bitmap = Bitmap.createBitmap(rotaingBt, 0, 0, srcWidth, srcHeight, matrix, true);
+        Bitmap bitmap = Bitmap.createBitmap(rotaingBt, 0, 0, srcWidth, srcHeight, matrix, true).copy(Bitmap.Config.ARGB_8888, true);
         return bitmap;
     }
 
