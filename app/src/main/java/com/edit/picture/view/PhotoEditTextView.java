@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
 /**
@@ -13,7 +14,7 @@ import android.util.AttributeSet;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class PhotoEditTextView extends android.support.v7.widget.AppCompatEditText {
+public class PhotoEditTextView extends AppCompatEditText {
     private int mBackgroundColor;
     private GradientDrawable background;
     private boolean isSelected = false;
