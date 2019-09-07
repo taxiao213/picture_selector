@@ -554,6 +554,7 @@ public class PhotoEditImage {
      * @return float
      */
     public float getMatrixScaleX() {
+        if (mMatrix == null) return 1.0F;
         mMatrix.getValues(MATRIX_FLOAT);
         return MATRIX_FLOAT[Matrix.MSCALE_X];
     }
