@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -213,14 +214,16 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
     private void setCanvasPaintColor() {
         if (ivPencileBold != null && editText != null && currentColorModel != null) {
             boolean selected = ivPencileBold.isSelected();
+            GradientDrawable background = (GradientDrawable) mContext.getResources().getDrawable(R.drawable.picture_edit_shape);
             if (selected) {
                 editText.setTextColor(UIUtils.setTextColor(mContext, currentColorModel.getFrontColor()));
+                background.setColor(currentColorModel.getFrontColor());
             } else {
                 editText.setTextColor(currentColorModel.getFrontColor());
+                background.setColor(mContext.getResources().getColor(android.R.color.transparent));
             }
-            editText.setSelect(selected);
+            editText.setBackground(background);
             editText.setBackgroudColor(currentColorModel.getFrontColor());
-            editText.invalidate();
         }
     }
 }

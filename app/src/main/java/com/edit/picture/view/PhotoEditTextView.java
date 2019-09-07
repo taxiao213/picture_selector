@@ -1,9 +1,6 @@
 package com.edit.picture.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
@@ -16,8 +13,6 @@ import android.util.AttributeSet;
  */
 public class PhotoEditTextView extends AppCompatEditText {
     private int mBackgroundColor;
-    private GradientDrawable background;
-    private boolean isSelected = false;
 
     public PhotoEditTextView(Context context) {
         this(context, null);
@@ -29,20 +24,6 @@ public class PhotoEditTextView extends AppCompatEditText {
 
     public PhotoEditTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        background = (GradientDrawable) getBackground();
-    }
-
-    @SuppressLint("ResourceAsColor")
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (background != null) {
-            if (isSelected) {
-                background.setColor(mBackgroundColor);
-            } else {
-                background.setColor(android.R.color.transparent);
-            }
-        }
     }
 
     /**
@@ -63,7 +44,4 @@ public class PhotoEditTextView extends AppCompatEditText {
         return mBackgroundColor;
     }
 
-    public void setSelect(boolean isSelected) {
-        this.isSelected = isSelected;
-    }
 }
