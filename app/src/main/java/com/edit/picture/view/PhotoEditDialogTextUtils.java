@@ -169,6 +169,7 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
                 currentColorModel = list.get(0);
             }
         }
+        setCanvasPaintColor();
     }
 
     @Override
