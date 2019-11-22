@@ -117,7 +117,11 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
         if (type == Constant.TYPE2) {
             if (function != null) {
                 Editable text = editText.getText();
-                function.action(new ColorModel(editText.getBackgroudColor(), ivPencileBold.isSelected(), text == null ? "" : text.toString()));
+                if (text != null && text.length() > 0) {
+                    function.action(new ColorModel(editText.getBackgroudColor(), ivPencileBold.isSelected(), text.toString()));
+                } else {
+                    function.action(null);
+                }
             }
         } else {
             if (function != null) {
