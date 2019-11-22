@@ -402,4 +402,29 @@ public class UIUtils {
         return textColor;
     }
 
+    /**
+     * 将弧度转为角度
+     * 弧度   radian = π / 180 * degree = Math.PI / 180 * degree
+     * 角度   degree = 180 / π * radian = 180 / Math.PI * radian
+     *
+     * @param y y距离
+     * @param x x距离
+     * @return double
+     */
+    public static float getDegree(double y, double x) {
+        double radian = Math.atan2(y, x);
+        return (float) (180 / Math.PI * radian);
+    }
+
+    /**
+     * 将角度转为弧度
+     * 弧度   radian = π / 180 * degree = Math.PI / 180 * degree
+     * 角度   degree = 180 / π * radian = 180 / Math.PI * radian
+     *
+     * @param degree 角度
+     * @return double
+     */
+    public static double getradian(double degree) {
+        return Math.PI / 180 * degree;
+    }
 }
