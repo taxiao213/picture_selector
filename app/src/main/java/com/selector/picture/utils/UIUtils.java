@@ -413,7 +413,7 @@ public class UIUtils {
      */
     public static float getDegree(double y, double x) {
         double radian = Math.atan2(y, x);
-        return (float) (180 / Math.PI * radian);
+        return (float) Math.toDegrees(radian);
     }
 
     /**
@@ -425,6 +425,6 @@ public class UIUtils {
      * @return double
      */
     public static double getradian(double degree) {
-        return Math.PI / 180 * degree;
+        return Math.toRadians(degree);
     }
 }
