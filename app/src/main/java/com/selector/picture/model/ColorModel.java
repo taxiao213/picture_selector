@@ -96,11 +96,39 @@ public class ColorModel {
         return isSelected;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public String getText() {
         return text;
     }
 
     public int getTextColor() {
         return textColor;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    public float getCOEFFICIENT_NORMAL() {
+        return COEFFICIENT_NORMAL;
+    }
+
+    public void setCOEFFICIENT_NORMAL(float COEFFICIENT_NORMAL) {
+        this.COEFFICIENT_NORMAL = COEFFICIENT_NORMAL;
+    }
+
+    public float getCOEFFICIENT_SCALE() {
+        return COEFFICIENT_SCALE;
+    }
+
+    public void setCOEFFICIENT_SCALE(float COEFFICIENT_SCALE) {
+        this.COEFFICIENT_SCALE = COEFFICIENT_SCALE;
     }
 }

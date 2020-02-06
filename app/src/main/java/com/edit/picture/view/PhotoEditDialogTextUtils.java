@@ -118,7 +118,17 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
             if (function != null) {
                 Editable text = editText.getText();
                 if (text != null && text.length() > 0) {
-                    function.action(new ColorModel(editText.getBackgroudColor(), ivPencileBold.isSelected(), text.toString()));
+                    int frontColor = editText.getBackgroudColor();
+                    boolean selected = ivPencileBold.isSelected();
+                    String string = text.toString();
+                    if (currentColorModel != null) {
+                        currentColorModel.setFrontColor(frontColor);
+                        currentColorModel.setSelected(selected);
+                        currentColorModel.setText(string);
+                        function.action(currentColorModel);
+                    } else {
+                        function.action(new ColorModel(frontColor, selected, string));
+                    }
                 } else {
                     function.action(null);
                 }
@@ -207,7 +217,7 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
             }
             ColorModel colorModel = list.get(position);
             colorModel.setScaleCoefficient();
-            this.currentColorModel = colorModel;
+            currentColorModel.setFrontColor(colorModel.getFrontColor());
         }
         adapter.notifyDataSetChanged();
         setCanvasPaintColor();
