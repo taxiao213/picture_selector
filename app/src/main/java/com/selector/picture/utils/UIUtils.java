@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
@@ -19,9 +20,11 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -30,10 +33,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.edit.picture.util.NotchScreenTool;
 import com.selector.picture.R;
 import com.selector.picture.activity.PhotoPreviewsActivity;
 import com.selector.picture.activity.PhotoSelectActivity;
 import com.selector.picture.base.BaseActivity;
+import com.selector.picture.base.MyApplication;
 import com.selector.picture.constant.Constant;
 import com.selector.picture.model.LocalMedia;
 import com.selector.picture.model.MimeType;
@@ -96,6 +101,31 @@ public class UIUtils {
     public static int getScreenHeight(Context context) {
         if (context == null) return 0;
         return context.getResources().getDisplayMetrics().heightPixels;
+    }
+
+    /**
+     * 获取屏幕高度包含 水滴屏幕顶部状态栏
+     *
+     * @return 屏幕高度
+     */
+    public static int getRealScreenHeight(Context context) {
+        int mScreenHeight = 0;
+        Point display = getDisplay(context);
+        if (display != null) {
+            mScreenHeight = display.y;
+        }
+        return mScreenHeight;
+    }
+
+    private static Point getDisplay(Context context) {
+        Point point = null;
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm != null) {
+            Display defaultDisplay = wm.getDefaultDisplay();
+            point = new Point();
+            defaultDisplay.getRealSize(point);
+        }
+        return point;
     }
 
     /**
