@@ -19,6 +19,7 @@ public class PhotoEditMovePath {
     private float scale;//放大系数
     private Matrix matrix;//矩阵
     private float paintMosaicWidth;//马赛克宽度
+    private float angle;//旋转角度
     public PhotoEditMovePath(Path path, int paintColor, float scale) {
         this.path = path;
         this.paintColor = paintColor;
@@ -82,5 +83,13 @@ public class PhotoEditMovePath {
 
     public void setPaintMosaicWidth(float paintMosaicWidth) {
         this.paintMosaicWidth = paintMosaicWidth;
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 }
