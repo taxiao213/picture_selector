@@ -3,11 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.edit.picture.view.PhotoEditImageView
-        android:id="@+id/iv_edit"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black" />
+        android:background="@android:color/black">
+
+        <com.edit.picture.view.PhotoEditImageView
+            android:id="@+id/iv_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fl_edit"
@@ -51,8 +58,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:paddingEnd="10dp"
                     android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:src="?attr/picture_edit_bottom_withdraw" />
             </LinearLayout>
 
