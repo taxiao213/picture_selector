@@ -235,10 +235,22 @@ public class PicSelector {
     /**
      * 设置编辑界面画笔的颜色
      * 格式 new int[]{R.color.picture_edit_top_complete}
+     *
      * @param colorArray int[]
      */
     public PicSelector editPaintColor(int[] colorArray) {
         mConfig.setEditPaintColor(colorArray);
+        return this;
+    }
+
+    /**
+     * 设置编辑界面画笔的默认颜色
+     * 格式 new int[]{R.color.picture_edit_top_complete}
+     *
+     * @param num int
+     */
+    public PicSelector editPaintDefault(int num) {
+        mConfig.editPaintDefault(num);
         return this;
     }
 

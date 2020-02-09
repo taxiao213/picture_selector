@@ -14,7 +14,7 @@ public class ColorModel {
     private float scaleCoefficient;//缩放系数 默认1
     private float radius;//最小半径
     private float spacing;//间距
-    private float COEFFICIENT_NORMAL = 1.0F;//正常系数
+    public static float COEFFICIENT_NORMAL = 1.0F;//正常系数
     private float COEFFICIENT_SCALE = 1.2F;//缩放系数
     private boolean isSelected = false;//是否选择状态
     private String text;//文本

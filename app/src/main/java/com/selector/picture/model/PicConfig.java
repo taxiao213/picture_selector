@@ -31,6 +31,7 @@ public class PicConfig implements Parcelable {
     private boolean optionOriginalImage;//是否有原图，默认false
     private boolean editable;//是否可编辑，默认false
     private int[] editPaintColor;//编辑界面画笔的颜色
+    private int editPaintColorDefault;//编辑界面画笔的默认颜色
 
     private PicConfig() {
         this.mTheme = Constant.PIC_DEFAULT_THEME;
@@ -48,6 +49,7 @@ public class PicConfig implements Parcelable {
         this.optionOriginalImage = Constant.PIC_OPTION_ORIGINAL_IMAGE;
         this.editable = Constant.PIC_EDITABLE;
         this.editPaintColor = Constant.PIC_EDIT_PAINT_COLOR;
+        this.editPaintColorDefault = Constant.PIC_EDIT_PAINT_DEFAULT_COLOR;
     }
 
 
@@ -67,6 +69,7 @@ public class PicConfig implements Parcelable {
         optionOriginalImage = in.readByte() != 0;
         editable = in.readByte() != 0;
         editPaintColor = in.createIntArray();
+        editPaintColorDefault = in.readInt();
     }
 
     @Override
@@ -86,6 +89,7 @@ public class PicConfig implements Parcelable {
         dest.writeByte((byte) (optionOriginalImage ? 1 : 0));
         dest.writeByte((byte) (editable ? 1 : 0));
         dest.writeIntArray(editPaintColor);
+        dest.writeInt(editPaintColorDefault);
     }
 
     @Override
@@ -380,6 +384,24 @@ public class PicConfig implements Parcelable {
     }
 
     /**
+     * 设置编辑界面画笔的默认颜色
+     *
+     * @param num int
+     */
+    public void editPaintDefault(int num) {
+        this.editPaintColorDefault = num;
+    }
+
+    /**
+     * 获取设置编辑界面画笔的默认颜色
+     *
+     * @return int 默认2
+     */
+    public int getEditPaintDefault() {
+        return editPaintColorDefault;
+    }
+
+    /**
      * 还原配置
      */
     public void restoreConfig() {
@@ -409,6 +431,7 @@ public class PicConfig implements Parcelable {
         this.optionOriginalImage = config.optionOriginalImage;
         this.editable = config.editable;
         this.editPaintColor = config.editPaintColor;
+        this.editPaintColorDefault = config.editPaintColorDefault;
     }
 
 }
