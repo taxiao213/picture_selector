@@ -157,6 +157,7 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
         if (paintColor == null) {
             paintColor = Constant.PIC_EDIT_PAINT_COLOR;
         }
+        int editPaintDefault = PicConfig.getInstances().getEditPaintDefault();
         for (int i = 0; i < paintColor.length; i++) {
             int color = mContext.getResources().getColor(paintColor[i]);
             if (currentColorModel != null) {
@@ -169,7 +170,7 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
                     list.add(new ColorModel(color, false));
                 }
             } else {
-                if (i == 0) {
+                if (i == editPaintDefault) {
                     list.add(new ColorModel(color, true));
                     editText.setTextColor(color);
                 } else {
@@ -180,7 +181,8 @@ public class PhotoEditDialogTextUtils implements View.OnClickListener, OnItemCli
         adapter.notifyDataSetChanged();
         if (currentColorModel == null) {
             if (list != null && list.size() > 0) {
-                currentColorModel = list.get(0);
+                ColorModel colorModel = list.get(editPaintDefault);
+                currentColorModel = new ColorModel(colorModel.getFrontColor(), colorModel.getScaleCoefficient() == ColorModel.COEFFICIENT_NORMAL);
             }
         }
         setCanvasPaintColor();
